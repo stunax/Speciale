@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage [danish]{babel}
+\usepackage[a4paper, hmargin={2.8cm, 2.8cm}, vmargin={2.5cm, 2.5cm}]{geometry}
+\usepackage{eso-pic} % \AddToShipoutPicture
+\usepackage{graphicx} % \includegraphics
+\linespread{1.2}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{tikz}
+\usepackage{amsfonts}
+
+\author{
+\Large{dpj482}\\
+    \\ \texttt{}
+}
+
+\title{
+  \vspace{3cm}
+  \Huge{Project blok 2 2017} \\
+  \Large{Christian Edsberg Møllgaard}
+}
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+%% Change `ku-farve` to `nat-farve` to use SCIENCE's old colors or
+%% `natbio-farve` to use SCIENCE's new colors and logo.
+% \AddToShipoutPicture*{\put(0,0){\includegraphics*[viewport=0 0 700 600]{natbio-farve}}}
+% \AddToShipoutPicture*{\put(0,602){\includegraphics*[viewport=0 600 700 1600]{natbio-farve}}}
+
+%% Change `ku-en` to `nat-en` to use the `Faculty of Science` header
+% \AddToShipoutPicture*{\put(0,0){\includegraphics*{nat-en}}}
+
+\clearpage\maketitle
+\thispagestyle{empty}
+
+\newpage
+
+\section{Exploratory data analysis in preparation for neural network 
+segmentation of tubular structures in the pancreas} % (fold)
+\label{sec:title}
+
+% section title (end)
+
+\section{Project goal} % (fold)
+\label{sec:project_goal}
+The goal of this project is to perform an exploratory analysis preparing for an
+advanced deep learning segmentation algorithm in a followup project.
+A previously implemented deep learning implementation proved inadequate,
+and the purpose of this project is to understand why,
+and how we might be able to take full advantage of the power of CNNs.
+
+\begin{itemize}
+    \item Test current annotation with "simple" classifiers for segmentation
+    \item Use unsupervised method and compare with supervised
+    \item Test the previous using different preprossecing methods
+    \item Postprocess results, and compare result
+    \item Test 2d versus 3d features measuring both performance and gains when going 3d
+    \item Compare with previous results
+\end{itemize}
+
+
+% section project_goal (end)
+
+\section{Learning goals}
+The learning goals of this project are:
+\begin{itemize}
+    \item Learn to manipulate data in several dimensions where structure is important.
+    Both in two and in three image dimensions.
+    \item Learn to use unsupervised learning, to produce ground truth annotation for segmentation
+    \item Learn the basics of semisupervised learning
+    
+\end{itemize}
+
+
+\end{document}
