@@ -18,7 +18,7 @@
 
 \title{
   \vspace{3cm}
-  \Huge{Project blok 2 2017} \\
+  \Huge{Master thesis 2018} \\
   \Large{Christian Edsberg Møllgaard}
 }
 \usepackage{natbib}
@@ -37,41 +37,40 @@
 \clearpage\maketitle
 \thispagestyle{empty}
 
-\newpage
+% \newpage
 
-\section{Exploratory data analysis in preparation for neural network 
-segmentation of tubular structures in the pancreas} % (fold)
+\section*{Segmenting tubular structures in pancreas using deep learning} % (fold)
 \label{sec:title}
-
+There is a hypotheses that during pancreatic differentiation, the structure of
+the lumen network, in which the cells are situated, dictates which cells are
+turning into beta cells.
+Finding these structures so they can be studied is the first step in proving
+this hypotheses.
+For this analasys, five 3d films of pancreas development have been recorded on
+mice, and have been annotated with some labels in preperation for this study.
+The data have already been shown to include some errors, so these have to be
+fixed or removed before segmentation
 % section title (end)
 
-\section{Project goal} % (fold)
+\section*{Project objectives} % (fold)
 \label{sec:project_goal}
-The goal of this project is to perform an exploratory analysis preparing for an
-advanced deep learning segmentation algorithm in a followup project.
-A previously implemented deep learning implementation proved inadequate,
-and the purpose of this project is to understand why,
-and how we might be able to take full advantage of the power of CNNs.
-
 \begin{itemize}
-    \item Test current annotation with "simple" classifiers for segmentation
-    \item Use unsupervised method and compare with supervised
-    \item Test the previous using different preprossecing methods
-    \item Postprocess results, and compare result
-    \item Test 2d versus 3d features measuring both performance and gains when going 3d
-    \item Compare with previous results
+    \item Explore the data, and fix errors in the dataset
+    \item Segment the images using CNN with current labels.
+    \item Try different preprossesing methods and record the impact
+    \item Try different semisupervised learning techniques to include unlabeled
+    data in analasys
 \end{itemize}
 
 
 % section project_goal (end)
 
-\section{Learning goals}
-The learning goals of this project are:
+\section*{Learning goals}
+
 \begin{itemize}
-    \item Learn to manipulate data in several dimensions where structure is important.
-    Both in two and in three image dimensions.
-    \item Learn to use unsupervised learning, to produce ground truth annotation for segmentation
-    \item Learn the basics of semisupervised learning
+    \item Learn to explore and preprocess data for segmentation
+    \item Make convolutional networks in tensorflow
+    \item Make semisupervised networks in tensorflow
     
 \end{itemize}
 
