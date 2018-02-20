@@ -77,6 +77,10 @@ def run(median_filter, kernel_size, bag_size):
     print("%f %f" % (np.sum(ytest == 1) / ytest.size,
                      np.sum(ytest_filled == 1) / ytest_filled.size))
 
+    print("%i %i" % (ytrain.size, ytrain_filled.size))
+    print("%f %f" % (np.sum(ytrain == 1) / ytrain.size,
+                     np.sum(ytrain_filled == 1) / ytrain_filled.size))
+
     model = RandomForestClassifier(
         n_jobs=10, max_depth=None, max_features="log2", n_estimators=2**10)
     model.fit(Xtrain, ytrain)
