@@ -60,6 +60,10 @@ def run(median_filter, kernel_size, bag_size):
     Xtest, ytest = datam.handle_images(test_X, test_y)
     Xtest_filled, ytest_filled = datam.handle_images(test_X, test_y_filled)
 
+    print("%i %i" % (ytest.size, ytest_filled.size))
+    print("%f %f" % (ytest.size / np.sum(ytest == 1),
+                     ytest_filled.size / np.sum(ytest_filled == 1)))
+
     model = RandomForestClassifier(
         n_jobs=10, max_depth=None, max_features="log2", n_estimators=2**10)
     model.fit(Xtrain, ytrain)
@@ -73,6 +77,9 @@ def run(median_filter, kernel_size, bag_size):
         print("Accuracy score test is %f" % accuracy_score(ytest, y_pred))
         print("Accuracy score test filled is %f" %
               accuracy_score(ytest_filled, y_pred_filled))
+        '''
+        Accuracy score test is 0.980311
+        Accuracy score test filled is 0.972167'''
 
 
 for kernel_size in config.kernel_size:
