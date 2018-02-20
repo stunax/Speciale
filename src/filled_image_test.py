@@ -31,7 +31,7 @@ def load_images():
     test_y_filled = make_annotation(data_path + "plane_124_18_filled.png")
     train_y = make_annotation(data_path + "plane_135_14.png")
 
-    return train_X, test_X, train_y, test_y, test_y_filled
+    return [train_X], [test_X], [train_y], [test_y], [test_y_filled]
 
 
 train_X, test_X, train_y, test_y, test_y_filled = load_images()
