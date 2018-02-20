@@ -34,6 +34,8 @@ def load_images():
     test_X = imread(data_path + "test.png").reshape(x_shape)
     test_y = imread(data_path + "test_anno.png").reshape(x_shape)
     test_y_filled = make_annotation(data_path + "plane_124_18_filled.png")
+    test_y_filled[test_y == -1] = -1
+    test_y_filled[test_y == 1] = 1
     train_y = make_annotation(data_path + "plane_135_14.png")
 
     return [train_X], [test_X], [train_y], [test_y], [test_y_filled]
