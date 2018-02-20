@@ -49,7 +49,7 @@ def load_images():
     train_y_filled = make_annotation(data_path + "plane_135_14_filled.png")
     train_y_filled[train_y == -1] = -1
     train_y_filled[train_y == 1] = 1
-    print(np.prod(train_y.shape) - np.sum(train_y - train_y_filled))
+    print(np.prod(train_y.shape) - np.sum(train_y==train_y_filled))
 
     return ([train_X], [test_X], [train_y],
             [test_y], [test_y_filled], [train_y_filled])
