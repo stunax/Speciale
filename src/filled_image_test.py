@@ -47,8 +47,8 @@ def run(median_filter, kernel_size, bag_size):
     report(bag_size, kernel_size, median_filter)
 
     datam = model_data.Model_data(
-        kernel_size=kernel_size, preprocess=False, one_hot = False,
-        bag_size=bag_size, median_time=median_filter)
+        kernel_size=kernel_size, preprocess=False, one_hot=False,
+        flat_features=True, bag_size=bag_size, median_time=median_filter)
 
     Xtrain, ytrain = datam.handle_images(train_X, train_y)
     Xtest, ytest = datam.handle_images(test_X, test_y)
