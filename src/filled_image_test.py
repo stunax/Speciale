@@ -43,12 +43,12 @@ def load_images():
     test_X = imread(data_path + "test.png").reshape(shape)
     test_y = read_image(data_path + "test_anno.png", shape)
     test_y_filled = make_annotation(data_path + "plane_124_18_filled.bmp")
-    # test_y_filled[test_y == -1] = -1
-    # test_y_filled[test_y == 1] = 1
+    test_y_filled[test_y == -1] = -1
+    test_y_filled[test_y == 1] = 1
     train_y = read_image(data_path + "train_anno.png", shape)
     train_y_filled = make_annotation(data_path + "plane_135_14_filled.bmp")
-    # train_y_filled[train_y == -1] = -1
-    # train_y_filled[train_y == 1] = 1
+    train_y_filled[train_y == -1] = -1
+    train_y_filled[train_y == 1] = 1
     print(np.prod(train_y.shape) - np.sum(train_y == train_y_filled))
 
     return ([train_X], [test_X], [train_y],
