@@ -26,19 +26,28 @@ def make_annotation(path):
     return res
 
 
+def read_image(path, shape):
+    image = imread(path)
+    res = np.zeros(shape)
+    res[image == 0] = -1
+    res[image == 128] = 0
+    res[image == 255] = 1
+    return res
+
+
 def load_images():
     data_path = config.imag_path
-    x_shape = (1024, 1024, 1, 1)
-    train_X = imread(data_path + "train.png").reshape(x_shape)
-    test_X = imread(data_path + "test.png").reshape(x_shape)
-    test_y = make_annotation(data_path + "plane_124_18.png")
+    shape = (1024, 1024, 1, 1)
+    train_X = imread(data_path + "train.png").reshape(shape)
+    test_X = imread(data_path + "test.png").reshape(shape)
+    test_y = read_image(data_path + "test_anno.png")
     test_y_filled = make_annotation(data_path + "plane_124_18_filled.png")
-    # test_y_filled[test_y == 255] = 1
-    # test_y_filled[test_y == 0] = -1
-    train_y = make_annotation(data_path + "plane_135_14.png")
+    test_y_filled[test_y == 255] = 1
+    test_y_filled[test_y == 0] = -1
+    train_y = read_image(data_path + "train_anno.png")
     train_y_filled = make_annotation(data_path + "plane_135_14_filled.png")
-    # train_y_filled[train_y == 1] = 1
-    # train_y_filled[train_y == -1] = -1
+    train_y_filled[train_y == 1] = 1
+    train_y_filled[train_y == -1] = -1
     print(np.unique(train_y, return_counts=True))
 
     return ([train_X], [test_X], [train_y],
