@@ -23,6 +23,7 @@ def make_annotation(path):
     res = np.zeros(image.shape[:2] + (1, 1))
     res[foreground] = 1
     res[background] = -1
+    print("%i fore %i back" % (np.sum(foreground), np.sum(background)))
     return res
 
 
