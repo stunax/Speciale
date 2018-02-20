@@ -24,8 +24,9 @@ def make_annotation(path):
 
 def load_images():
     data_path = config.imag_path
-    train_X = imread(data_path + "train.png")
-    test_X = imread(data_path + "test.png")
+    x_shape = (1024,1024,1,1)
+    train_X = imread(data_path + "train.png").reshape(x_shape)
+    test_X = imread(data_path + "test.png").reshape(x_shape)
     test_y = imread(data_path + "test_anno.png")
     test_y_filled = make_annotation(data_path + "plane_124_18_filled.png")
     train_y = make_annotation(data_path + "plane_135_14.png")
