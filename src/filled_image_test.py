@@ -31,7 +31,7 @@ def load_images():
     x_shape = (1024, 1024, 1, 1)
     train_X = imread(data_path + "train.png").reshape(x_shape)
     test_X = imread(data_path + "test.png").reshape(x_shape)
-    test_y = imread(data_path + "test_anno.png").reshape(x_shape)
+    test_y = make_annotation(data_path + "test_anno.png")
     test_y_filled = make_annotation(data_path + "plane_124_18_filled.png")
     test_y_filled[test_y == -1] = -1
     test_y_filled[test_y == 1] = 1
@@ -70,8 +70,8 @@ def run(median_filter, kernel_size, bag_size):
         print("f1 score test filled is %f" %
               f1_score(ytest_filled, y_pred_filled))
     else:
-        print("f1 score test is %f" % accuracy_score(ytest, y_pred))
-        print("f1 score test filled is %f" %
+        print("Accuracy score test is %f" % accuracy_score(ytest, y_pred))
+        print("Accuracy score test filled is %f" %
               accuracy_score(ytest_filled, y_pred_filled))
 
 
