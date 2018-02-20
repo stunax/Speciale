@@ -8,18 +8,19 @@ from scipy.ndimage import imread
 
 score = "f1"
 score = "acc"
+offset = 20
 
 
 def make_annotation(path):
     image = imread(path)
     foreground = np.logical_and(np.logical_and(
-        image[:, :, 0] < 10,
-        image[:, :, 1] > 245),
-        image[:, :, 2] < 10)
+        image[:, :, 0] < offset,
+        image[:, :, 1] > 255 - offset),
+        image[:, :, 2] < offset)
     background = np.logical_and(np.logical_and(
-        image[:, :, 0] < 10,
-        image[:, :, 1] > 245),
-        image[:, :, 2] > 245)
+        image[:, :, 0] < offset,
+        image[:, :, 1] > 255 - offset),
+        image[:, :, 2] > 255 - offset)
     res = np.zeros(image.shape[:2] + (1, 1))
     res[foreground] = 1
     res[background] = -1
@@ -48,7 +49,6 @@ def load_images():
     train_y_filled = make_annotation(data_path + "plane_135_14_filled.png")
     train_y_filled[train_y == -1] = -1
     train_y_filled[train_y == 1] = 1
-    print(np.unique(train_y, return_counts=True))
 
     return ([train_X], [test_X], [train_y],
             [test_y], [test_y_filled], [train_y_filled])
