@@ -12,7 +12,7 @@ offset = 20
 
 
 def make_annotation(path):
-    image = imread(path)
+    image = imread(path, mode="RGB")
     foreground = np.logical_and(np.logical_and(
         image[:, :, 0] < offset,
         image[:, :, 1] > 255 - offset),
