@@ -45,6 +45,7 @@ class Model_data(object):
         '''
         Handles same border image'''
         bordersize = self.bordersize()
+        print(image.shape)
         picbordered = np.zeros((
             image.shape[0] + bordersize[0] * 2,
             image.shape[1] + bordersize[1] * 2,

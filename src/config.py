@@ -15,7 +15,7 @@ groupname_format = "%s_%s"
 random_state = 1337
 bag_sizes = [5]
 
-kernel_size = [(5, 5, 1), (5, 5, 3)]
+kernel_size = [(5, 5, 1)]
 # clust_kernel_size = [(9, 9, 1), (9, 9, 3), (9, 9, 5)]
 clust_kernel_size = [(5, 5, 1), (5, 5, 3)]
 # bag_sizes = [1, 5, 7]
