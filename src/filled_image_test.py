@@ -21,6 +21,7 @@ def make_annotation(path):
         image[:, :, 0] < offset,
         image[:, :, 1] > 255 - offset),
         image[:, :, 2] > 255 - offset)
+    print(image[0,-1])
     res = np.zeros(image.shape[:2] + (1, 1))
     res[foreground] = 1
     res[background] = -1
@@ -43,8 +44,8 @@ def load_images():
     test_X = imread(data_path + "test.png").reshape(shape)
     test_y = read_image(data_path + "test_anno.png", shape)
     test_y_filled = make_annotation(data_path + "plane_124_18_filled.png")
-    test_y_filled[test_y == -1] = -1
-    test_y_filled[test_y == 1] = 1
+    # test_y_filled[test_y == -1] = -1
+    # test_y_filled[test_y == 1] = 1
     train_y = read_image(data_path + "train_anno.png", shape)
     train_y_filled = make_annotation(data_path + "plane_135_14_filled.png")
     # train_y_filled[train_y == -1] = -1
