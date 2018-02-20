@@ -8,7 +8,7 @@ from scipy.ndimage import imread
 
 score = "f1"
 score = "acc"
-offset = 20
+offset = 35
 
 
 def make_annotation(path):
