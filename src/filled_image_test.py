@@ -31,11 +31,11 @@ def load_images():
     x_shape = (1024, 1024, 1, 1)
     train_X = imread(data_path + "train.png").reshape(x_shape)
     test_X = imread(data_path + "test.png").reshape(x_shape)
-    test_y = imread(data_path + "test_anno.png")
+    test_y = imread(data_path + "test_anno.png").reshape(x_shape)
     test_y_filled = make_annotation(data_path + "plane_124_18_filled.png")
     test_y_filled[test_y == 1] = 1
     test_y_filled[test_y == -1] = -1
-    train_y = imread(data_path + "train_anno.png")
+    train_y = imread(data_path + "train_anno.png").reshape(x_shape)
     train_y_filled = make_annotation(data_path + "plane_135_14_filled.png")
     train_y_filled[train_y == 1] = 1
     train_y_filled[train_y == -1] = -1
