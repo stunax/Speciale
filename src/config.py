@@ -3,7 +3,7 @@ import h5py
 data_path = "/mnt/orico/PANCREAS/"
 save_path = "models/"
 tiff_path = data_path + "tiffs/"
-pred_path = "images/"
+imag_path = "images/"
 rerun_name = "second"
 df_info_path = data_path + "df_info.h5"
 tiff_pivot = 80
@@ -37,19 +37,6 @@ lsm_images = [
 im_paths = [(data_path + p[0], p[1], p[2], p[3]) for p in lsm_images]
 
 h5s = [data_path + str(i) + ".h5" for i in range(1, 6)]
-
-# First run yielded log2 nad 8192, which was max. Rerun with log2, and more
-# estimators
-parameters = {
-    "n_estimators": [2**i for i in range(9, 10)],
-    # "n_estimators": [2**i for i in range(1, 15)],
-    "max_features": ["log2"]
-    # "leaf_size": [1, 50]
-}
-parametersfull = {
-    "n_estimators": [2**i for i in range(10, 11)],
-    "max_features": ["log2"]
-}
 
 
 def get_h5(annotation_name=annotation_groupname):
