@@ -2,7 +2,7 @@ import numpy as np
 import config
 import model_data
 from sklearn.ensemble.forest import RandomForestClassifier
-from sklearn.metrics import f1_score, average_precision_score
+from sklearn.metrics import f1_score, accuracy_score
 from scipy.ndimage import imread
 
 
@@ -23,7 +23,6 @@ def make_annotation(path):
     res = np.zeros(image.shape[:2] + (1, 1))
     res[foreground] = 1
     res[background] = -1
-    print("%i fore %i back" % (np.sum(foreground), np.sum(background)))
     return res
 
 
@@ -71,9 +70,9 @@ def run(median_filter, kernel_size, bag_size):
         print("f1 score test filled is %f" %
               f1_score(ytest_filled, y_pred_filled))
     else:
-        print("f1 score test is %f" % average_precision_score(ytest, y_pred))
+        print("f1 score test is %f" % accuracy_score(ytest, y_pred))
         print("f1 score test filled is %f" %
-              average_precision_score(ytest_filled, y_pred_filled))
+              accuracy_score(ytest_filled, y_pred_filled))
 
 
 for kernel_size in config.kernel_size:
