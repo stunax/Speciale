@@ -13,13 +13,13 @@ score = "acc"
 def make_annotation(path):
     image = imread(path)
     foreground = np.logical_and(np.logical_and(
-        image[:, :, 0] == 0,
-        image[:, :, 1] == 255),
-        image[:, :, 2] == 0)
+        image[:, :, 0] < 10,
+        image[:, :, 1] > 245),
+        image[:, :, 2] < 10)
     background = np.logical_and(np.logical_and(
-        image[:, :, 0] == 0,
-        image[:, :, 1] == 255),
-        image[:, :, 2] == 255)
+        image[:, :, 0] < 10,
+        image[:, :, 1] > 245),
+        image[:, :, 2] > 245)
     res = np.zeros(image.shape[:2] + (1, 1))
     res[foreground] = 1
     res[background] = -1
