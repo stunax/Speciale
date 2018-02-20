@@ -21,10 +21,6 @@ def make_annotation(path):
         image[:, :, 0] < offset,
         image[:, :, 1] > 255 - offset),
         image[:, :, 2] > 255 - offset)
-    print(image[-1, -1])
-    print(image[0, -1])
-    print(image[-1, 0])
-    print(image[0, 0])
     res = np.zeros(image.shape[:2] + (1, 1))
     res[foreground] = 1
     res[background] = -1
