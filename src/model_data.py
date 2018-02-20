@@ -126,7 +126,6 @@ class Model_data(object):
     def concat_images(self, images):
         '''
         concat images into n * features array'''
-        print(images[0].shape)
         images = [
             image.reshape(
                 (image.shape[0] * image.shape[1] * images[0].shape[2],) +

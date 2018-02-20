@@ -2,8 +2,12 @@ import numpy as np
 import config
 import model_data
 from sklearn.ensemble.forest import RandomForestClassifier
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, average_precision_score
 from scipy.ndimage import imread
+
+
+score = "f1"
+score = "acc"
 
 
 def make_annotation(path):
@@ -58,9 +62,15 @@ def run(median_filter, kernel_size, bag_size):
         n_jobs=10, max_depth=None, max_features="log2", n_estimators=2**10)
     model.fit(Xtrain, ytrain)
     y_pred = model.predict(Xtest)
-    print("f1 score test is %f" % f1_score(ytest, y_pred))
-    y_pred = model.predict(Xtest_filled)
-    print("f1 score test filled is %f" % f1_score(ytest_filled, y_pred))
+    y_pred_filled = model.predict(Xtest_filled)
+    if score == "f1":
+        print("f1 score test is %f" % f1_score(ytest, y_pred))
+        print("f1 score test filled is %f" %
+              f1_score(ytest_filled, y_pred_filled))
+    else:
+        print("f1 score test is %f" % average_precision_score(ytest, y_pred))
+        print("f1 score test filled is %f" %
+              average_precision_score(ytest_filled, y_pred_filled))
 
 
 for kernel_size in config.kernel_size:
