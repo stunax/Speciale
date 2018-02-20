@@ -61,8 +61,8 @@ def run(median_filter, kernel_size, bag_size):
     Xtest_filled, ytest_filled = datam.handle_images(test_X, test_y_filled)
 
     print("%i %i" % (ytest.size, ytest_filled.size))
-    print("%f %f" % (ytest.size / np.sum(ytest == 1),
-                     ytest_filled.size / np.sum(ytest_filled == 1)))
+    print("%f %f" % (np.sum(ytest == 1) / ytest.size,
+                     np.sum(ytest_filled == 1) / ytest_filled.size))
 
     model = RandomForestClassifier(
         n_jobs=10, max_depth=None, max_features="log2", n_estimators=2**10)
