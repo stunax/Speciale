@@ -45,7 +45,7 @@ class Model_data(object):
         '''
         Handles same border image'''
         bordersize = self.bordersize()
-        print(image.shape)
+
         picbordered = np.zeros((
             image.shape[0] + bordersize[0] * 2,
             image.shape[1] + bordersize[1] * 2,
@@ -129,8 +129,8 @@ class Model_data(object):
         images = [
             image.reshape(
                 (
-                    image.shape[0] * image.shape[1] * images[0].shape[2],
-                    image.shape[3:]))
+                    image.shape[0] * image.shape[1] * images[0].shape[2]) +
+                image.shape[3:])
             for image in images]
         data = np.concatenate(images, axis=0)
         return data
