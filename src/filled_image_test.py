@@ -28,7 +28,7 @@ def load_images():
     test_X = imread(data_path + "test.png")
     test_y = imread(data_path + "test_anno.png")
     test_y_filled = make_annotation(data_path + "plane_124_18_filled.png")
-    train_y = make_annotation(data_path + "plane_35_14.png")
+    train_y = make_annotation(data_path + "plane_135_14.png")
 
     return train_X, test_X, train_y, test_y, test_y_filled
 
