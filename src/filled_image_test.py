@@ -1,7 +1,6 @@
 import numpy as np
 import config
 import model_data
-import matplotlib.pyplot as plt
 from sklearn.ensemble.forest import RandomForestClassifier
 from sklearn.metrics import f1_score
 from scipy.ndimage import imread
@@ -34,7 +33,7 @@ def load_images():
     return train_X, test_X, train_y, test_y, test_y_filled
 
 
-train_X, test_X, train_y, test_y, test_y_filled = imread()
+train_X, test_X, train_y, test_y, test_y_filled = load_images()
 
 
 def report(bag_size, kernel_size, median_filter):
