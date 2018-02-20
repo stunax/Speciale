@@ -39,6 +39,7 @@ def load_images():
     train_y_filled = make_annotation(data_path + "plane_135_14_filled.png")
     train_y_filled[train_y == 1] = 1
     train_y_filled[train_y == -1] = -1
+    print(np.unique(train_y, return_counts=True))
 
     return ([train_X], [test_X], [train_y],
             [test_y], [test_y_filled], [train_y_filled])
@@ -74,12 +75,12 @@ def run(median_filter, kernel_size, bag_size):
     Xtest_filled, ytest_filled = datam.handle_images(test_X, test_y_filled)
 
     print("%i %i" % (ytest.size, ytest_filled.size))
-    print("%f %f" % (np.sum(ytest == 1) / ytest.size,
-                     np.sum(ytest_filled == 1) / ytest_filled.size))
+    print("%f %f" % (np.sum(ytest.ravel() == 1) / ytest.size,
+                     np.sum(ytest_filled.ravel() == 1) / ytest_filled.size))
 
     print("%i %i" % (ytrain.size, ytrain_filled.size))
-    print("%f %f" % (np.sum(ytrain == 1) / ytrain.size,
-                     np.sum(ytrain_filled == 1) / ytrain_filled.size))
+    print("%f %f" % (np.sum(ytrain.ravel() == 1) / ytrain.size,
+                     np.sum(ytrain_filled.ravel() == 1) / ytrain_filled.size))
 
     model = RandomForestClassifier(
         n_jobs=10, max_depth=None, max_features="log2", n_estimators=2**10)
