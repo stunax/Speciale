@@ -128,8 +128,7 @@ class Model_data(object):
         concat images into n * features array'''
         images = [
             image.reshape(
-                (
-                    image.shape[0] * image.shape[1] * images[0].shape[2]) +
+                (image.shape[0] * image.shape[1] * images[0].shape[2],) +
                 image.shape[3:])
             for image in images]
         data = np.concatenate(images, axis=0)
