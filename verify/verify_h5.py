@@ -36,7 +36,7 @@ for h5f in config.h5s:
         n += threshold
         not_any_n += not_any
         if threshold or not_any:
-            t, z = df.split("_")
+            t, z = df[-6:].split("_")
             ts.append(int(t))
             zs.append(int(z))
     # empties = [is_empty(h5f, df) for df in h5f.keys() if df[:4] != "anno"]
