@@ -4,6 +4,7 @@ import config
 from tqdm import tqdm
 
 threshold = 10000
+keep_anno = True
 
 
 def is_empty(h5, gname):
@@ -28,17 +29,17 @@ for h5f in config.h5s:
     ts = []
     zs = []
     # for df in tqdm(h5f.keys()):
-    tq = tqdm(h5f.keys())
+    tq = tqdm([key for key in h5f.keys() if key[
+              :3] == "sec" or key[:4] == "anno"])
     for df in tq:
         tq.set_postfix(n=n, n2=not_any_n)
-        if not (df[:3] == "sec" or df[:4] == "anno"):
-            threshold, not_any = is_empty(h5f, df)
-            n += threshold
-            not_any_n += not_any
-            if threshold or not_any:
-                t, z = df.split("_")
-                ts.append(int(t))
-                zs.append(int(z))
+        threshold, not_any = is_empty(h5f, df)
+        n += threshold
+        not_any_n += not_any
+        if threshold or not_any:
+            t, z = df.split("_")
+            ts.append(int(t))
+            zs.append(int(z))
     # empties = [is_empty(h5f, df) for df in h5f.keys() if df[:4] != "anno"]
     # n = np.sum(empties)
     print(n, not_any_n)
