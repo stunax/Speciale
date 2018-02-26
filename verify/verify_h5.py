@@ -40,3 +40,5 @@ for h5f in config.h5s:
     # empties = [is_empty(h5f, df) for df in h5f.keys() if df[:4] != "anno"]
     # n = np.sum(empties)
     print(n, not_any_n)
+    print(np.unique(ts, return_counts=True))
+    print(np.unique(zs, return_counts=True))
