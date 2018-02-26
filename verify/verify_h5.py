@@ -28,7 +28,9 @@ for h5f in config.h5s:
     ts = []
     zs = []
     # for df in tqdm(h5f.keys()):
-    for df in tqdm(h5f.keys()):
+    tq = tqdm(h5f.keys())
+    for df in tq:
+        tq.set_postfix(n=n, n2=not_any_n)
         if not (df[:3] == "sec" or df[:4] == "anno"):
             threshold, not_any = is_empty(h5f, df)
             n += threshold
