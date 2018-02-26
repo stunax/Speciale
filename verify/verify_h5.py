@@ -25,12 +25,18 @@ for h5f in config.h5s:
     h5f = h5py.File(h5f, 'r+')
     n = 0
     not_any_n = 0
+    ts = []
+    zs = []
     # for df in tqdm(h5f.keys()):
     for df in tqdm(h5f.keys()):
         if not (df[:3] == "sec" or df[:4] == "anno"):
             threshold, not_any = is_empty(h5f, df)
             n += threshold
             not_any_n = not_any
+            if threshold or not_any:
+                t, z = df.split("_")
+                ts.append(int(t))
+                zs.append(int(z))
     # empties = [is_empty(h5f, df) for df in h5f.keys() if df[:4] != "anno"]
     # n = np.sum(empties)
     print(n, not_any_n)
