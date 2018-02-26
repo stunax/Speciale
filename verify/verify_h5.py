@@ -7,7 +7,7 @@ threshold = 10000
 
 
 def is_empty(h5, gname):
-    data = h5[gname]
+    data = np.array(h5[gname])
 
     n = np.sum(data)
     res = n < threshold
