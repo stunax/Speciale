@@ -20,6 +20,6 @@ images = sum(images, [])
 
 sums = []
 for h5f, gname in tqdm(images):
-    sums.append(np.sum(h5f, gname))
+    sums.append(np.sum(h5f[gname]))
 with open('verify/sum_plot.pkl', 'wb') as f:
     pickle.dump(sums, f)
