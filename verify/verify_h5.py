@@ -32,7 +32,7 @@ for h5f in config.h5s:
         if not (df[:3] == "sec" or df[:4] == "anno"):
             threshold, not_any = is_empty(h5f, df)
             n += threshold
-            not_any_n = not_any
+            not_any_n += not_any
             if threshold or not_any:
                 t, z = df.split("_")
                 ts.append(int(t))
