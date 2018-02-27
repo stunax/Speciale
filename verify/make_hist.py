@@ -17,7 +17,7 @@ data = list(zip(*data))
 df = pd.DataFrame()
 df['sums'] = data[0]
 df['fname'] = data[1]
-if add_sec:
+if rem_sec:
     print(df.shape)
     df.filter(axis=0, regex='^sec')
     print(df.shape)
