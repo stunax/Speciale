@@ -19,7 +19,7 @@ for h5fn in config.h5s:
 images = sum(images, [])
 
 sums = []
-for h5f, gname in tqdm(images):
-    sums.append((np.sum(h5f[gname]), gname))
+for h5f, gname, fn in tqdm(images):
+    sums.append((np.sum(h5f[gname]), gname, fn))
 with open('verify/sum_plot.pkl', 'wb') as f:
     pickle.dump(sums, f)
