@@ -21,6 +21,7 @@ df['dataset'] = data[2]
 df['dataset'] = [x.split('/')[-1] for x in df['dataset']]
 df['z'] = [int(x.split('_')[1]) for x in df.fname]
 print(df.fname[0].split('_'))
+print(df.fname[-1].split('_'))
 df['t'] = [int(x.split('_')[0]) for x in df.fname]
 print(df.shape)
 print(df.columns.values)
