@@ -5,7 +5,7 @@ import config
 from tqdm import tqdm
 
 threshold = 10000
-keep_anno = True
+keep_anno = False
 
 
 images = []
@@ -20,6 +20,6 @@ images = sum(images, [])
 
 sums = []
 for h5f, gname in tqdm(images):
-    sums.append(np.sum(h5f[gname]))
+    sums.append((np.sum(h5f[gname]), gname))
 with open('verify/sum_plot.pkl', 'wb') as f:
     pickle.dump(sums, f)
