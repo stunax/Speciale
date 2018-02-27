@@ -1,4 +1,5 @@
-%matplotlib inline
+import matplotlib as mpl
+mpl.use('Agg')
 import pandas as pd
 import pickle
 from ggplot import *
