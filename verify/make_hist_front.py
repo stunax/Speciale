@@ -9,7 +9,7 @@ path = "verify/"
 only_annot = True
 rem_sec = True
 fname = path + ('sum_plot_annot.pkl' if only_annot else 'sum_plot.pkl')
-out_extra = 'annot' if only_annot else ''
+out_extra = 'front_annot_'
 
 with open(fname, 'rb') as f:
     data = pickle.load(f)
