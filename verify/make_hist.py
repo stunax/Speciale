@@ -14,7 +14,7 @@ df['sums'] = data[0]
 df['fname'] = data[1]
 df['dataset'] = data[2]
 df['dataset'] = [x.split('/')[-1] for x in df['dataset']]
-df['z'] = [int(x.split('_')[0]) for x in df.fname]
+df['z'] = [int(x.split('_')[1]) for x in df.fname]
 print(df.shape)
 print(df.columns.values)
 path = "verify/"
