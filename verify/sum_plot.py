@@ -4,15 +4,15 @@ import numpy as np
 import config
 from tqdm import tqdm
 
-keep_anno = False
-only_annot = True
+annotations = True
+add_annot = True
 add_sec = False
-fname = 'verify/sum_plot_annot.pkl' if only_annot else 'verify/sum_plot.pkl'
+fname = 'verify/sum_plot_annot.pkl' if annotations else 'verify/sum_plot.pkl'
 
 
 def keep(key):
-    return keep_anno or (add_sec == (key[:3] == "sec" and
-                                     only_annot == (key[:4] == "anno")))
+    return annotations == (add_sec == (key[:3] == "sec") and
+                           add_annot == (key[:4] == "anno"))
 
 
 images = []
