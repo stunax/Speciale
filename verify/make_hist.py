@@ -15,7 +15,7 @@ df['z'] = [int(x.split('_')[0]) for x in df.fname]
 print(df.shape)
 print(df.columns.values)
 path = "verify/"
-p = ggplot(aes(x='z', y='sums', colour=df.dataset), data=df)
+p = ggplot(aes(x='z', y='sums', colour='dataset'), data=df)
 
 fn = 'sum_density.png'
 ggsave(p + geom_point(), filename=fn, path=path)
