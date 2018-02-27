@@ -16,7 +16,7 @@ data = list(zip(*data))
 df = pd.DataFrame()
 df['sums'] = data[0]
 df['fname'] = data[1]
-df['fname'] = [re.sub('[^0-9_]', '', x) for x in df.fname]
+df['fname'] = [re.sub('^[a-z_]', '', x) for x in df.fname]
 df['dataset'] = data[2]
 df['dataset'] = [x.split('/')[-1] for x in df['dataset']]
 
