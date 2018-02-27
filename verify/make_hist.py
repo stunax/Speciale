@@ -7,6 +7,7 @@ from ggplot import *
 
 path = "verify/"
 only_annot = True
+rem_sec = True
 fname = path + ('sum_plot_annot.pkl' if only_annot else 'sum_plot.pkl')
 out_extra = 'annot' if only_annot else ''
 
@@ -16,6 +17,8 @@ data = list(zip(*data))
 df = pd.DataFrame()
 df['sums'] = data[0]
 df['fname'] = data[1]
+if add_sec:
+    df.filter(axis=0, regex='^sec')
 df['fname'] = [re.sub('^[a-z_]+', '', x) for x in df.fname]
 df['dataset'] = data[2]
 df['dataset'] = [x.split('/')[-1] for x in df['dataset']]
