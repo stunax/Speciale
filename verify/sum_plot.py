@@ -11,8 +11,8 @@ fname = 'verify/sum_plot_annot.pkl' if only_annot else 'verify/sum_plot.pkl'
 
 
 def keep(key):
-    return keep_anno or (only_annot == (key[:3] == "sec") and (
-        add_sec == (key[:4] == "anno")))
+    return keep_anno or (only_annot == (key[:3] == "sec" and
+                                        add_sec == (key[:4] == "anno")))
 
 
 images = []
