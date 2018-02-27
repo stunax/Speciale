@@ -2,6 +2,7 @@ import matplotlib as mpl
 mpl.use('Agg')
 import pandas as pd
 import pickle
+import re
 from ggplot import *
 
 path = "verify/"
@@ -15,10 +16,11 @@ data = list(zip(*data))
 df = pd.DataFrame()
 df['sums'] = data[0]
 df['fname'] = data[1]
+df['fname'] = [re.sub('[^0-9_]', '', x) for x in df.fname]
 df['dataset'] = data[2]
 df['dataset'] = [x.split('/')[-1] for x in df['dataset']]
-df['z'] = [int(x.split('_')[1][-3:]) for x in df.fname]
-df['t'] = [int(x.split('_')[0][-3:]) for x in df.fname]
+df['z'] = [int(x.split('_')[1]) for x in df.fname]
+df['t'] = [int(x.split('_')[0]) for x in df.fname]
 print(df.shape)
 print(df.columns.values)
 
