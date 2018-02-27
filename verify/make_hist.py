@@ -19,16 +19,9 @@ df['sums'] = data[0]
 df['fname'] = data[1]
 df['dataset'] = data[2]
 if rem_sec:
-    print(df.fname)
-    print(df.shape)
     df.filter(axis=0, like='sec')
-    print(df.shape)
 df['fname'] = [re.sub('^[a-z_]+', '', x) for x in df.fname]
 df['dataset'] = [x.split('/')[-1] for x in df['dataset']]
-
-for x in df.fname:
-    if len(x.split('_')) != 2:
-        print(x)
 df['z'] = [int(x.split('_')[1]) for x in df.fname]
 df['t'] = [int(x.split('_')[0]) for x in df.fname]
 
