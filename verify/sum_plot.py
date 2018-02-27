@@ -21,7 +21,6 @@ for h5fn in config.h5s:
     images.append(
         [(h5f, key, h5fn) for key in h5f.keys(
         ) if keep(key)])
-print(images[0])
 
 images = sum(images, [])
 
