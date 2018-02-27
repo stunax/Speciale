@@ -22,12 +22,12 @@ path = "verify/"
 
 fn = 'sum_density_z.png'
 p = ggplot(aes(x='z', y='sums', colour='dataset'), data=df)
-p_dens = p + geom_point() + facet_wrap('dataset', ncol=3)
+p_dens = p + geom_point() + facet_wrap('dataset', ncol=3) + xlab("z")
 p_dens.save(path + fn)
 
 fn = 'sum_density_t.png'
 p = ggplot(aes(x='t', y='sums', colour='dataset'), data=df)
-p_dens2 = p + geom_point() + facet_wrap('dataset', ncol=3)
+p_dens2 = p + geom_point() + facet_wrap('dataset', ncol=3) + xlab("time")
 p_dens2.save(path + fn)
 
 fn = 'sum_hist.png'
