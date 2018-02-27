@@ -19,9 +19,11 @@ df['fname'] = data[1]
 df['fname'] = [re.sub('[^0-9_]', '', x) for x in df.fname]
 df['dataset'] = data[2]
 df['dataset'] = [x.split('/')[-1] for x in df['dataset']]
+
+for x in df.fname:
+    if len(x.split('_')) != 2:
+        print(x)
 df['z'] = [int(x.split('_')[1]) for x in df.fname]
-print(df.fname[0].split('_'))
-print(df.fname.values[-1].split('_'))
 df['t'] = [int(x.split('_')[0]) for x in df.fname]
 print(df.shape)
 print(df.columns.values)
