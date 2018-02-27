@@ -6,7 +6,11 @@ with open('verify/sum_plot.pkl', 'rb') as f:
     data = pickle.load(f)
 # data = zip(*data)
 # df = pd.DataFrame(data={'sums': data[0], 'fname': data[1], 'dataset': data[2]})
-df = pd.DataFrame.from_records(data, columns=['sums', 'fname', 'dataset'])
+# df = pd.DataFrame.from_records(data, columns=['sums', 'fname', 'dataset'])
+df = pd.DataFrame()
+df['sums'] = data[0]
+df['fname'] = data[1]
+df['dataset'] = data[2]
 df['z'] = [int(x.split('_')[0]) for x in data.fname]
 
 path = "verify/"
