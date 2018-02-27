@@ -1,3 +1,4 @@
+%matplotlib inline
 import pandas as pd
 import pickle
 from ggplot import *
