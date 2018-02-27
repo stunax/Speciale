@@ -20,10 +20,9 @@ df['fname'] = data[1]
 df['dataset'] = data[2]
 if rem_sec:
     print(df.shape)
-    df.filter(axis=0, regex='sec')
+    df.filter(axis=0, like='sec')
     print(df.shape)
 df['fname'] = [re.sub('^[a-z_]+', '', x) for x in df.fname]
-
 df['dataset'] = [x.split('/')[-1] for x in df['dataset']]
 
 for x in df.fname:
