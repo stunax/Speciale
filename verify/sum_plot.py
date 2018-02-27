@@ -6,6 +6,8 @@ from tqdm import tqdm
 
 threshold = 10000
 keep_anno = False
+only_annot = True
+fname = 'verify/sum_plot_annot.pkl' if only_annot else 'verify/sum_plot.pkl'
 
 
 images = []
@@ -23,5 +25,5 @@ images = sum(images, [])
 sums = []
 for h5f, gname, fn in tqdm(images):
     sums.append((np.sum(h5f[gname]), gname, fn))
-with open('verify/sum_plot.pkl', 'wb') as f:
+with open(fname, 'wb') as f:
     pickle.dump(sums, f)
