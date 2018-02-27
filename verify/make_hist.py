@@ -18,7 +18,9 @@ path = "verify/"
 p = ggplot(aes(x='z', y='sums', colour='dataset'), data=df)
 
 fn = 'sum_density.png'
-ggsave(p + geom_point(), filename=fn, path=path)
+p_dens = p + geom_point()
+p_dens.save(path + fn)
 
 fn = 'sum_hist.png'
-ggsave(p + geom_histogram(), filename=fn, path=path)
+p_hist = p + geom_histogram()
+p_hist.save(path + fn)
