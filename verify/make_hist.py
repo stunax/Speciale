@@ -12,7 +12,7 @@ df['sums'] = data[0]
 df['fname'] = data[1]
 df['dataset'] = data[2]
 df['z'] = [int(x.split('_')[0]) for x in df.fname]
-
+print(df.shape)
 path = "verify/"
 p = ggplot(aes(x='z', y='sums', colour=df.dataset), data=df)
 
