@@ -8,7 +8,7 @@ from ggplot import *
 path = "verify/"
 only_annot = True
 rem_sec = True
-fname = path + ('sum_plot_annot.pkl' if only_annot else 'sum_plot.pkl')
+fname = path + 'sum_plot_annot_front.pkl'
 out_extra = 'front_annot_'
 
 with open(fname, 'rb') as f:
