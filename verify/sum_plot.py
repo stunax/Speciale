@@ -4,10 +4,13 @@ import numpy as np
 import config
 from tqdm import tqdm
 
-threshold = 10000
 keep_anno = False
 only_annot = True
 fname = 'verify/sum_plot_annot.pkl' if only_annot else 'verify/sum_plot.pkl'
+
+
+def keep(key):
+    return keep_anno or (only_annot == (key[:3] == "sec" or key[:4] == "anno"))
 
 
 images = []
@@ -17,8 +20,8 @@ for h5fn in config.h5s:
     h5f = h5py.File(h5fn, 'r+')
     images.append(
         [(h5f, key, h5fn) for key in h5f.keys(
-        ) if keep_anno or not (key[
-            :3] == "sec" or key[:4] == "anno")])
+        ) if keep(key)])
+print(images[0])
 
 images = sum(images, [])
 
