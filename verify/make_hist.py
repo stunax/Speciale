@@ -6,7 +6,7 @@ with open('verify/sum_plot.pkl', 'rb') as f:
     data = pickle.load(f)
 data = zip(*data)
 df = pd.DataFrame(data={'sums': data[0], 'fname': data[1], 'dataset': data[2]})
-df['z'] = [int(x.split('_')[0]) for x in data[1]]
+df['z'] = [int(x.split('_')[0]) for x in list(data[1])]
 
 path = "verify/"
 p = ggplot(aes(x='z', y='sums', colour=df.dataset), data=df)

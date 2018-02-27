@@ -18,7 +18,7 @@ class Model_data(object):
             flat_features=False, one_hot=True,
             from_h5=False, remove_unlabeled=True, median_time=0,
             annotation_groupname=config.annotation_groupname,
-            histogram=0):
+            histogram=0, normalize_wieghtshare=False):
         self.debug = debug
         self.kernelsize = kernel_size
         self.step = step
@@ -33,6 +33,7 @@ class Model_data(object):
         self.annotation_groupname = annotation_groupname
         self.histogram = histogram
         self.one_hot = one_hot
+        self.normalize_wieghtshare = normalize_wieghtshare
 
     def bordersize(self):
         return (
@@ -193,6 +194,20 @@ class Model_data(object):
     def as_iter(self, data):
         return model_data_iter(self, data)
 
+    def do_normalize_wieghtshare(images, annotations):
+        counts = np.unique(annotations, return_counts=True)
+        min_n = min(counts[1])
+        image_list = []
+        annotation_list = []
+        for i in counts[0]:
+            mask = annotations == i
+            idx = np.random.choice(np.sum(mask), min_n, replace=False)
+            image_list.append(images[mask][idx])
+            annotation_list.append(annotations[mask][idx])
+        images = np.concatenate(image_list)
+        annotations = np.concatenate(annotation_list)
+        return images, annotations
+
     def handle_images(self, images, annotations=None):
 
         if self.from_h5:
@@ -218,9 +233,12 @@ class Model_data(object):
                 mask = (annotations != 0)
                 images = images[mask]
                 annotations = annotations[mask]
+                if self.normalize_wieghtshare:
+                    images, annotations = self.do_normalize_wieghtshare(
+                        images, annotations)
             if self.one_hot:
-                annotations[annotations == -1] = 0
-                annotations = tf.one_hot(annotations, depth=2)
+                annotations[annotations == -1] = 2
+                annotations = tf.one_hot(annotations, depth=3)
 
         return images, annotations
 
