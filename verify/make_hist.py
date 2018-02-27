@@ -25,6 +25,6 @@ p_dens = p + geom_point()
 p_dens.save(path + fn)
 
 fn = 'sum_hist.png'
-p = ggplot(aes(x='sums', colour='dataset'), data=df)
-p_hist = p + geom_histogram()
+p = ggplot(aes(x='sums'), data=df)
+p_hist = p + geom_histogram() + facet_wrap('dataset', ncol=3)
 p_hist.save(path + fn)
