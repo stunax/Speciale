@@ -4,9 +4,10 @@ from ggplot import *
 
 with open('verify/sum_plot.pkl', 'rb') as f:
     data = pickle.load(f)
-data = zip(*data)
-df = pd.DataFrame(data={'sums': data[0], 'fname': data[1], 'dataset': data[2]})
-df['z'] = [int(x.split('_')[0]) for x in list(data[1])]
+# data = zip(*data)
+# df = pd.DataFrame(data={'sums': data[0], 'fname': data[1], 'dataset': data[2]})
+df = pd.DataFrame.from_records(data, columns=['sums', 'fname', 'dataset'])
+df['z'] = [int(x.split('_')[0]) for x in data.fname]
 
 path = "verify/"
 p = ggplot(aes(x='z', y='sums', colour=df.dataset), data=df)
