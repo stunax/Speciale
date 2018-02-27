@@ -28,7 +28,7 @@ images = sum(images, [])
 
 sums = []
 for h5f, gname, fn in tqdm(images):
-    front = np.sum(h5f[gname] == 1)
+    front = np.sum(np.array(h5f[gname]) == 1)
     sums.append((front, gname, fn))
 with open(fname, 'wb') as f:
     pickle.dump(sums, f)
