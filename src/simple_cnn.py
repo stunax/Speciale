@@ -53,7 +53,7 @@ def conv_net(X, n_classes, dropout, reuse, is_training):
 def model_fn():
 
     features = tf.placeholder(tf.float32, shape=(None,) + patch_size, name="X")
-    labels = tf.placeholder(tf.float32, shape=(None, num_classes), name="y")
+    labels = tf.placeholder(tf.int32, shape=(None, num_classes), name="y")
     # Build the neural network
     # Because Dropout have different behavior at training and prediction time,
     # we need to create 2 distinct computation graphs that still share the same
@@ -71,7 +71,7 @@ def model_fn():
     with tf.name_scope("loss"):
         loss_op = tf.reduce_mean(
             tf.nn.sparse_softmax_cross_entropy_with_logits(
-                logits=logits_train, labels=tf.cast(labels, dtype=tf.int32)))
+                logits=logits_train, labels=labels))
     optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
     train_op = optimizer.minimize(loss_op,
                                   global_step=tf.train.get_global_step())
