@@ -116,7 +116,8 @@ if __name__ == '__main__':
                     X_batch.shape = (X_batch.shape[0],) + X_batch.shape[2:-1]
                     for j in range(int(len(X_batch) / batch_size)):
                         j2 = j + batch_size
-                        feed_dict = {X: X_batch[j:j2], y: y_batch[j:j2]}
+                        feed_dict = {"X:0": X_batch[
+                            j:j2], "y:0": y_batch[j:j2]}
                         loss, _, acc = sess.run(
                             [loss_op, train_op, acc_op], feed_dict)
                         accs_epoch.append(acc)
