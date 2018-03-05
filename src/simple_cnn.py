@@ -128,8 +128,15 @@ if __name__ == '__main__':
 
             accs_epoch = []
             for X_batch, y_batch in data_model.as_iter(X_test):
-                feed_dict = {"X": X_batch, "y": y_batch}
-                pred_classes, acc = sess.run([pred_classes, acc_op], feed_dict)
-                accs_epoch.append(acc)
-                pbar.update(1)
+                for k in range(1):
+                    X_batch.shape = (X_batch.shape[0],) + X_batch.shape[2:-1]
+                    for j in range(int(len(X_batch) / batch_size)):
+                        j2 = j + batch_size
+                        feed_dict = {"X:0": X_batch[
+                            j:j2], "y:0": y_batch[j:j2]}
+                # feed_dict = {"X": X_batch, "y": y_batch}
+                        pred_classes, acc = sess.run(
+                            [pred_classes, acc_op], feed_dict)
+                        accs_epoch.append(acc)
+                    pbar.update(1)
         print("Training Accuracy: %f" % np.mean(accs_epoch))
