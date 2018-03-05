@@ -317,7 +317,7 @@ class model_data_batcher:
         self.data = self.iter.__next__()
 
     def _next_batch(self):
-        if self.batchStopIndex == self.noData:
+        if self.batchStopIndex == self.n:
             self.data = self.iter.__next__()
             self.batchStartIndex = 0
             self.batchStopIndex = 0

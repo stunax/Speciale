@@ -13,7 +13,7 @@ batch_size = 32
 
 # Network Parameters
 num_classes = 3
-epochs = 20
+epochs = 30000
 dropout = 0.25  # Dropout, probability to drop a unit
 patch_size = (17, 17, 5)
 median_time = 2
