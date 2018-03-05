@@ -325,7 +325,7 @@ class model_data_batcher:
 
         self.batchStartIndex = self.batchStopIndex % self.noData
         self.batchStopIndex = min(
-            self.batchStartIndex + self.batchSize, self.noData)
+            self.batchStartIndex + self.batchSize, self.n)
         X = self.data[0][self.batchStartIndex:self.batchStopIndex]
         y = self.data[1][self.batchStartIndex:self.batchStopIndex]
         return X, y

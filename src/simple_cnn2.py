@@ -139,3 +139,4 @@ if __name__ == '__main__':
                 _, summa = sess.run(
                     [loss_op, summary_op], feed_dict)
                 train_writer.add_summary(summa, i)
+        t.close()
