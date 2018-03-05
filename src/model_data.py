@@ -222,7 +222,7 @@ class Model_data(object):
     def augment_images(self, images, annotations):
         new_images = []
         new_annots = []
-
+        print(images.shape)
         for i in range(len(images)):
             new_images += self.get_rotations_2d(
                 images[i].reshape(images.shape[2:-1]))
@@ -231,6 +231,7 @@ class Model_data(object):
         shuffle(new_annots)
         new_images = np.concatenate(new_images, axis=0)
         new_annots = np.concatenate(new_annots, axis=0)
+        print(new_images.shape)
 
         return new_images, new_annots
 
