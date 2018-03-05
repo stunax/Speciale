@@ -258,7 +258,7 @@ class Model_data(object):
             if self.one_hot:
                 annotations[annotations == -1] = 2
                 annotations = self.one_hot_encoder.transform(
-                    annotations, depth=3)
+                    annotations)
 
         if self.augment:
             images, annotations = self.augment_images(images, annotations)
