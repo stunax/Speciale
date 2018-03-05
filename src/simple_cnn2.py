@@ -124,7 +124,7 @@ if __name__ == '__main__':
             logs_path + run_name + "test", graph=tf.get_default_graph())
         # * 4 because 4 times because of rotations
 
-        t = tqdm(xrange(epochs))
+        t = tqdm(range(epochs))
         for i in t:
 
             X_batch, y_batch = X_train_batcher.next_batch()
