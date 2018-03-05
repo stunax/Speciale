@@ -307,7 +307,7 @@ class model_data_batcher:
         self.n = self.data.shape[0]
 
     def reset_iter(self):
-        self.iter = self.data_model.as_iter(self.data)
+        self.iter = self.data_model.as_iter(self.h5data)
         self.data = self.iter.__next__()
 
     def _next_batch(self):
