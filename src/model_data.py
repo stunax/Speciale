@@ -97,7 +97,7 @@ class Model_data(object):
         view = view_as_windows(
             image,
             window_shape=self.kernelsize + (image.shape[-1],),
-            step=self.step + (image.shape[-1],))
+            step=self.step )
         # Flatten view
         if self.flat_features:
             view = view.reshape(
@@ -218,7 +218,10 @@ class Model_data(object):
 
         for i in range(len(images)):
             new_images += self.get_rotations_2d(images[i])
-            new_annots += self.get_rotations_2d(annotations[i])
+            new_annots += [annotations[i]] * 4
+
+        new_images = self.concat_images(new_images)
+        new_annots = self.concat_images(new_annots)
 
         return new_images, new_annots
 
@@ -226,9 +229,6 @@ class Model_data(object):
 
         if self.from_h5:
             images, annotations = self.load_h5(images)
-
-        if self.augment:
-            images, annotations = self.augment_images(images, annotations)
 
         if self.preprocess:
             images = [self.preprocess_image(image) for image in images]
@@ -241,10 +241,9 @@ class Model_data(object):
         if self.histogram and self.reshape:
             images = self.histogram_features(images)
 
-        if annotations is not None:
+        if annotations is not None and annotations:
             annotations = self.concat_images(
                 annotations).ravel().astype(np.int)
-            # images = np.c_[images, annotations]
             # # Remove entries, with 0 class
             if self.remove_unlabeled:
                 mask = (annotations != 0)
@@ -256,6 +255,9 @@ class Model_data(object):
             if self.one_hot:
                 annotations[annotations == -1] = 2
                 annotations = tf.one_hot(annotations, depth=3)
+
+        if self.augment:
+            images, annotations = self.augment_images(images, annotations)
 
         return images, annotations
 
