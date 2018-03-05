@@ -107,6 +107,9 @@ if __name__ == '__main__':
     X_train, X_test = train_test_split(
         h5s, test_size=0.33, random_state=config.random_state)
 
+    X_train_batcher = data_model.as_batcher(X_train, batch_size)
+    X_test_batcher = data_model.as_batcher(X_test, batch_size)
+
     # Build the Estimator
     loss_op, train_op, acc_op, pred_classes, X, y, summary_op = model_fn()
 
@@ -115,39 +118,23 @@ if __name__ == '__main__':
     with tf.Session(config=tf.ConfigProto(
             intra_op_parallelism_threads=8)) as sess:
         tf.global_variables_initializer().run()
+        train_writer = tf.summary.FileWriter(
+            logs_path + run_name + "train", graph=tf.get_default_graph())
+        test_writer = tf.summary.FileWriter(
+            logs_path + run_name + "test", graph=tf.get_default_graph())
         # * 4 because 4 times because of rotations
-        for i in range(epochs):
-            pbar = tqdm(
-                # total=int(epochs * (len(X_train) * 4 + len(X_test)) /
-                # bag_size))
-                total=int((len(X_train) + len(X_test)) / bag_size))
-            accs_epoch = []
-            for k in range(1):
-                for X_batch, y_batch in data_model.as_iter(X_train):
-                    X_batch.shape = (X_batch.shape[0],) + X_batch.shape[2:-1]
-                    for j in range(int(len(X_batch) / batch_size)):
-                        j2 = j + batch_size
-                        feed_dict = {"X:0": X_batch[
-                            j:j2], "y:0": y_batch[j:j2]}
-                        loss, _ = sess.run(
-                            [loss_op, train_op], feed_dict)
-                        accs_epoch.append(loss)
-                    pbar.update(1)
-            accs.append(np.mean(accs_epoch))
 
-            print("Training Accuracy: %f" % accs[-1])
+        t = tqdm.trange(epochs)
+        for i in t:
 
-            accs_epoch = []
-            for X_batch, y_batch in data_model.as_iter(X_test):
-                for k in range(1):
-                    X_batch.shape = (X_batch.shape[0],) + X_batch.shape[2:-1]
-                    for j in range(int(len(X_batch) / batch_size)):
-                        j2 = j + batch_size
-                        feed_dict = {"X:0": X_batch[
-                            j:j2], "y:0": y_batch[j:j2]}
-                # feed_dict = {"X": X_batch, "y": y_batch}
-                        pred_classes, acc = sess.run(
-                            [pred_classes, acc_op], feed_dict)
-                        accs_epoch.append(acc)
-                    pbar.update(1)
-            print("Training Accuracy: %f" % np.mean(accs_epoch))
+            X_batch, y_batch = X_train_batcher.next_batch()
+            feed_dict = {"X:0": X_batch, "y:0": y_batch}
+            _, summa = sess.run(
+                [train_op, summary_op], feed_dict)
+            train_writer.add_summary(summa, i)
+
+            X_batch, y_batch = X_test_batcher.next_batch()
+            feed_dict = {"X:0": X_batch, "y:0": y_batch}
+            _, summa = sess.run(
+                [loss_op, summary_op], feed_dict)
+            train_writer.add_summary(summa, i)

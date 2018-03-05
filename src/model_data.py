@@ -198,6 +198,9 @@ class Model_data(object):
     def as_iter(self, data):
         return model_data_iter(self, data)
 
+    def as_batcher(self, data, batchSize):
+        return model_data_batcher(data, batchSize, self)
+
     def do_normalize_wieghtshare(self, images, annotations):
         counts = np.unique(annotations, return_counts=True)
         min_n = min(counts[1])
@@ -289,6 +292,44 @@ class model_data_iter(object):
 
     def next(self):
         return self.__next__()
+
+
+class model_data_batcher:
+    'Splits data into mini-batches'
+
+    def __init__(self, data, batchSize, data_model):
+        self.h5data = data
+        self.batchSize = batchSize
+        self.data_model = data_model
+        self.reset_iter()
+        self.batchStartIndex = 0
+        self.batchStopIndex = 0
+        self.n = self.data.shape[0]
+
+    def reset_iter(self):
+        self.iter = self.data_model.as_iter(self.data)
+        self.data = self.iter.__next__()
+
+    def _next_batch(self):
+        if self.batchStopIndex > self.n:
+            self.data = self.iter.__next__()
+            self.batchStartIndex = 0
+            self.batchStopIndex = 0
+            self.n = self.data.shape[0]
+
+        self.batchStartIndex = self.batchStopIndex % self.noData
+        self.batchStopIndex = min(
+            self.batchStartIndex + self.batchSize, self.noData)
+        return self.data_model.handle_images(
+            self.data.data[self.batchStartIndex:self.batchStopIndex],
+            self.data.target[self.batchStartIndex:self.batchStopIndex])
+
+    def next_batch(self):
+        try:
+            return self._next_batch()
+        except StopIteration:
+            self.reset_iter()
+            return self._next_batch()
 
 
 if __name__ == "__main__":
