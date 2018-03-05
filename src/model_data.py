@@ -218,7 +218,7 @@ class Model_data(object):
 
     def get_rotations_2d(self, img):
         return [np.rot90(img, i, (0, 1)).reshape(
-            (1,) + self.kernel_size) for i in range(4)]
+            (1,) + self.kernelsize) for i in range(4)]
 
     def augment_images(self, images, annotations):
         new_images = []
