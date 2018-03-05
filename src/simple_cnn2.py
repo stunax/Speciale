@@ -112,8 +112,7 @@ if __name__ == '__main__':
 
     accs = []
 
-    with tf.Session(config=tf.ConfigProto(
-            intra_op_parallelism_threads=8)) as sess:
+    with tf.Session() as sess:
 
         # Build the Estimator
         loss_op, train_op, acc_op, pred_classes, X, y, summary_op = model_fn()
