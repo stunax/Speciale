@@ -23,7 +23,8 @@ median_time = 2
 def conv_net(X, n_classes, dropout, reuse, is_training):
     # Define a scope for reusing the variables
     with tf.variable_scope('ConvNet', reuse=reuse):
-        x = tf.reshape(X, shape=(-1,) + patch_size)
+        # x = tf.reshape(X, shape=(None,) + patch_size)
+        x = X
 
         # Convolution Layer with 32 filters and a kernel size of 5
         conv1 = tf.layers.conv2d(x, 32, 5, activation=tf.nn.relu)
@@ -70,7 +71,7 @@ def model_fn():
     # Define loss and optimizer
     with tf.variable_scope("loss"):
         loss_op = tf.reduce_mean(
-            tf.nn.softmax_cross_entropy_with_logits(
+            tf.nn.softmax_cross_entropy_with_logits_v2(
                 logits=logits_train, labels=labels))
     optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
     train_op = optimizer.minimize(loss_op,
@@ -88,10 +89,6 @@ if __name__ == '__main__':
                             from_h5=True, median_time=median_time)
     h5s = config.get_h5()
 
-    y = np.random.choice(2, size=len(
-        h5s), p=[1 - config.true_percentage, config.true_percentage])
-    # y[:int(y.shape[0] *)] = 1  # Percentage that is foreground
-
     X_train, X_test = train_test_split(
         h5s, test_size=0.33, random_state=config.random_state)
 
@@ -102,7 +99,7 @@ if __name__ == '__main__':
 
     with tf.Session() as sess:
         tf.global_variables_initializer().run()
-        pbar = tqdm(total=int(epochs * len(X_train) / bag_size))
+        pbar = tqdm(total=int(epochs * len(X_train) / bag_size) * 2)
         for i in range(epochs):
             accs_epoch = []
             for X_batch, y_batch in data_model.as_iter(X_train):
@@ -114,9 +111,10 @@ if __name__ == '__main__':
 
             print("Training Accuracy: %f" % accs[-1])
 
-        accs_epoch = []
-        for X_batch, y_batch in data_model.as_iter(X_test):
-            feed_dict = {"X": X_batch, "y": y_batch}
-            pred_classes, acc = sess.run([pred_classes, acc_op], feed_dict)
-            accs_epoch.append(acc)
+            accs_epoch = []
+            for X_batch, y_batch in data_model.as_iter(X_test):
+                feed_dict = {"X": X_batch, "y": y_batch}
+                pred_classes, acc = sess.run([pred_classes, acc_op], feed_dict)
+                accs_epoch.append(acc)
+                pbar.update(1)
         print("Training Accuracy: %f" % np.mean(accs_epoch))
