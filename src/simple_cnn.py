@@ -52,8 +52,8 @@ def conv_net(X, n_classes, dropout, reuse, is_training):
 # Define the model function (following TF Estimator Template)
 def model_fn():
 
-    features = tf.placeholder(tf.float32, shape=(-1,) + patch_size, name="X")
-    labels = tf.placeholder(tf.float32, shape=(-1, num_classes), name="y")
+    features = tf.placeholder(tf.float32, shape=(None,) + patch_size, name="X")
+    labels = tf.placeholder(tf.float32, shape=(None, num_classes), name="y")
     # Build the neural network
     # Because Dropout have different behavior at training and prediction time,
     # we need to create 2 distinct computation graphs that still share the same
