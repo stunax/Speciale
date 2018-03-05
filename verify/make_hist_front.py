@@ -27,7 +27,7 @@ df['t'] = [int(x.split('_')[0]) for x in df.fname]
 
 fn = out_extra + 'sum_density_z.png'
 p = ggplot(aes(x='z', y='sums', colour='dataset'), data=df)
-p_dens = p + geom_point() + xlab("z")
+p_dens = p + geom_point() + xlab("z") + stat_smooth(colour='blue', span=0.2)
 p_dens.save(path + fn)
 
 fn = out_extra + 'sum_density_t.png'
