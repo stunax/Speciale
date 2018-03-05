@@ -6,7 +6,7 @@ from model_data import Model_data
 from sklearn.model_selection import train_test_split, KFold
 
 # Training Parameters
-learning_rate = 0.001
+learning_rate = 0.00001
 num_steps = 2000
 bag_size = 3
 
@@ -110,7 +110,7 @@ if __name__ == '__main__':
             total=int(epochs * (len(X_train) + len(X_test)) / bag_size))
         for i in range(epochs):
             accs_epoch = []
-            for k in range(4):
+            for k in range(1):
                 for X_batch, y_batch in data_model.as_iter(X_train):
                     feed_dict = {"X": X_batch, "y": y_batch, "k": k}
                     loss, _, acc = sess.run(
