@@ -1,7 +1,7 @@
 import config
 import tensorflow as tf
 import numpy as np
-import tqdm
+from tqdm import tqdm
 from model_data import Model_data
 from sklearn.model_selection import train_test_split, KFold
 
