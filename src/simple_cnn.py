@@ -82,7 +82,7 @@ def model_fn():
     acc_op = tf.metrics.accuracy(
         labels=tf.argmax(labels), predictions=pred_classes)
 
-    return loss_op, train_op, acc_op, pred_classes
+    return loss_op, train_op, acc_op, pred_classes, features, labels
 
 
 if __name__ == '__main__':
@@ -97,7 +97,7 @@ if __name__ == '__main__':
         h5s, test_size=0.33, random_state=config.random_state)
 
     # Build the Estimator
-    loss_op, train_op, acc_op, pred_classes = model_fn()
+    loss_op, train_op, acc_op, pred_classes, X, y = model_fn()
 
     accs = []
 
@@ -113,7 +113,7 @@ if __name__ == '__main__':
             for k in range(1):
                 for X_batch, y_batch in data_model.as_iter(X_train):
                     # feed_dict = {"X": X_batch, "y": y_batch, "k": k}
-                    feed_dict = {"X": X_batch, "y": y_batch}
+                    feed_dict = {X: X_batch, y: y_batch}
                     loss, _, acc = sess.run(
                         [loss_op, train_op, acc_op], feed_dict)
                     accs_epoch.append(acc)
