@@ -217,7 +217,8 @@ class Model_data(object):
         return images, annotations
 
     def get_rotations_2d(self, img):
-        return [np.rot90(img, i, (0, 1)) for i in range(4)]
+        return [np.rot90(img, i, (0, 1)).reshape(
+            (1,) + self.shape) for i in range(4)]
 
     def augment_images(self, images, annotations):
         new_images = []
@@ -226,7 +227,7 @@ class Model_data(object):
         for i in range(len(images)):
             new_images += self.get_rotations_2d(
                 images[i].reshape(
-                    images.shape[2:-1])).reshape((1,) + self.shape)
+                    images.shape[2:-1]))
             new_annots += [annotations[i]] * 4
         shuffle(new_images)
         shuffle(new_annots)
