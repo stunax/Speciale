@@ -97,7 +97,8 @@ class Model_data(object):
         view = view_as_windows(
             image,
             window_shape=self.kernelsize + (image.shape[-1],),
-            step=self.step )
+            # step=self.step + (image.shape[-1],)
+        )
         # Flatten view
         if self.flat_features:
             view = view.reshape(
