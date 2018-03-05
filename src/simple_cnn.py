@@ -80,7 +80,8 @@ def model_fn():
     # Evaluate the accuracy of the model
     print(labels.get_shape())
     print(pred_classes.get_shape())
-    acc_op = tf.metrics.accuracy(labels=labels, predictions=pred_classes)
+    acc_op = tf.metrics.accuracy(
+        labels=tf.argmax(labels), predictions=pred_classes)
 
     return loss_op, train_op, acc_op, pred_classes
 
