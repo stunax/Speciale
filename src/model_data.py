@@ -33,7 +33,8 @@ class Model_data(object):
         self.annotation_groupname = annotation_groupname
         self.histogram = histogram
         self.one_hot = one_hot
-        self.one_hot_encoder = OneHotEncoder([3], sparse=False).fit([0, 1, 2])
+        self.one_hot_encoder = OneHotEncoder(
+            [3], sparse=False).fit(np.array[[0], [1], [2]])
         self.normalize_wieghtshare = normalize_wieghtshare
         self.augment = augment
 
