@@ -21,7 +21,8 @@ median_time = 2
 
 
 def conv_net(X, n_classes, dropout, reuse, is_training, k):
-    x = tf.image.rot90(X, k=k)
+    # x = tf.image.rot90(X, k=k)
+    x = X
     # Define a scope for reusing the variables
     with tf.variable_scope('ConvNet', reuse=reuse):
 
@@ -103,7 +104,9 @@ if __name__ == '__main__':
     with tf.Session(config=tf.ConfigProto(
             intra_op_parallelism_threads=8)) as sess:
         tf.global_variables_initializer().run()
-        pbar = tqdm(total=int(epochs * len(X_train) / bag_size) * 5)
+        # * 4 because 4 times because of rotations
+        pbar = tqdm(
+            total=int(epochs * (len(X_train) * 4 + len(X_test)) / bag_size))
         for i in range(epochs):
             accs_epoch = []
             for k in range(4):
