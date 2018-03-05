@@ -110,13 +110,13 @@ if __name__ == '__main__':
     X_train_batcher = data_model.as_batcher(X_train, batch_size)
     X_test_batcher = data_model.as_batcher(X_test, batch_size)
 
-    # Build the Estimator
-    loss_op, train_op, acc_op, pred_classes, X, y, summary_op = model_fn()
-
     accs = []
 
     with tf.Session(config=tf.ConfigProto(
             intra_op_parallelism_threads=8)) as sess:
+
+        # Build the Estimator
+        loss_op, train_op, acc_op, pred_classes, X, y, summary_op = model_fn()
         tf.global_variables_initializer().run()
         train_writer = tf.summary.FileWriter(
             logs_path + run_name + "train", graph=tf.get_default_graph())
