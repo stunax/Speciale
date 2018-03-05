@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split, KFold
 # Training Parameters
 learning_rate = 0.001
 num_steps = 2000
-bag_size = 10
+bag_size = 3
 
 # Network Parameters
 num_classes = 2
@@ -106,7 +106,8 @@ if __name__ == '__main__':
         tf.global_variables_initializer().run()
         # * 4 because 4 times because of rotations
         pbar = tqdm(
-            total=int(epochs * (len(X_train) * 4 + len(X_test)) / bag_size))
+            # total=int(epochs * (len(X_train) * 4 + len(X_test)) / bag_size))
+            total=int(epochs * (len(X_train) + len(X_test)) / bag_size))
         for i in range(epochs):
             accs_epoch = []
             for k in range(4):
