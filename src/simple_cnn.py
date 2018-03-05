@@ -68,9 +68,9 @@ def model_fn():
     # pred_probas = tf.nn.softmax(logits_test)
 
     # Define loss and optimizer
-    with tf.name_scope("loss"):
+    with tf.variable_scope("loss"):
         loss_op = tf.reduce_mean(
-            tf.nn.sparse_softmax_cross_entropy_with_logits(
+            tf.nn.softmax_cross_entropy_with_logits(
                 logits=logits_train, labels=labels))
     optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
     train_op = optimizer.minimize(loss_op,
