@@ -34,7 +34,7 @@ class Model_data(object):
         self.histogram = histogram
         self.one_hot = one_hot
         self.one_hot_encoder = OneHotEncoder(
-            [3], sparse=False).fit(np.array[[0], [1], [2]])
+            [3], sparse=False).fit(np.arange(3).reshape((3, 1)))
         self.normalize_wieghtshare = normalize_wieghtshare
         self.augment = augment
 
