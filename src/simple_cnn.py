@@ -20,11 +20,10 @@ median_time = 2
 # Create the neural network
 
 
-def conv_net(X, n_classes, dropout, reuse, is_training):
+def conv_net(X, n_classes, dropout, reuse, is_training, k):
+    x = tf.image.rot90(X, k=k)
     # Define a scope for reusing the variables
     with tf.variable_scope('ConvNet', reuse=reuse):
-        # x = tf.reshape(X, shape=(None,) + patch_size)
-        x = X
 
         # Convolution Layer with 32 filters and a kernel size of 5
         conv1 = tf.layers.conv2d(x, 32, 5, activation=tf.nn.relu)
@@ -55,14 +54,15 @@ def model_fn():
 
     features = tf.placeholder(tf.float32, shape=(None,) + patch_size, name="X")
     labels = tf.placeholder(tf.int32, shape=(None, num_classes), name="y")
+    k = tf.placeholder(tf.int32, name="k")
     # Build the neural network
     # Because Dropout have different behavior at training and prediction time,
     # we need to create 2 distinct computation graphs that still share the same
     # weights.
     logits_train = conv_net(features, num_classes, dropout, reuse=False,
-                            is_training=True)
+                            is_training=True, k=k)
     logits_test = conv_net(features, num_classes, dropout, reuse=True,
-                           is_training=False)
+                           is_training=False, k=k)
 
     # Predictions
     pred_classes = tf.argmax(logits_test, axis=1)
@@ -78,8 +78,6 @@ def model_fn():
                                   global_step=tf.train.get_global_step())
 
     # Evaluate the accuracy of the model
-    print(labels.get_shape())
-    print(pred_classes.get_shape())
     acc_op = tf.metrics.accuracy(
         labels=tf.argmax(labels), predictions=pred_classes)
 
@@ -91,7 +89,7 @@ if __name__ == '__main__':
     data_model = Model_data(
         patch_size, bag_size=bag_size,
         from_h5=True, median_time=median_time,
-        normalize_wieghtshare=True, augment=True)
+        normalize_wieghtshare=True)
     h5s = config.get_h5()
 
     X_train, X_test = train_test_split(
@@ -105,14 +103,16 @@ if __name__ == '__main__':
     with tf.Session(config=tf.ConfigProto(
             intra_op_parallelism_threads=8)) as sess:
         tf.global_variables_initializer().run()
-        pbar = tqdm(total=int(epochs * len(X_train) / bag_size) * 2)
+        pbar = tqdm(total=int(epochs * len(X_train) / bag_size) * 5)
         for i in range(epochs):
             accs_epoch = []
-            for X_batch, y_batch in data_model.as_iter(X_train):
-                feed_dict = {"X": X_batch, "y": y_batch}
-                loss, _, acc = sess.run([loss_op, train_op, acc_op], feed_dict)
-                accs_epoch.append(acc)
-                pbar.update(1)
+            for k in range(4):
+                for X_batch, y_batch in data_model.as_iter(X_train):
+                    feed_dict = {"X": X_batch, "y": y_batch, "k": k}
+                    loss, _, acc = sess.run(
+                        [loss_op, train_op, acc_op], feed_dict)
+                    accs_epoch.append(acc)
+                    pbar.update(1)
             accs.append(np.mean(accs_epoch))
 
             print("Training Accuracy: %f" % accs[-1])
