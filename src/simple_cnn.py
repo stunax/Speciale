@@ -14,7 +14,7 @@ bag_size = 1
 num_classes = 2
 epochs = 20
 dropout = 0.25  # Dropout, probability to drop a unit
-patch_size = (17, 17, 1)
+patch_size = (17, 17, 5)
 median_time = 2
 
 # Create the neural network
@@ -112,7 +112,7 @@ if __name__ == '__main__':
             accs_epoch = []
             for k in range(1):
                 for X_batch, y_batch in data_model.as_iter(X_train):
-                    # feed_dict = {"X": X_batch, "y": y_batch, "k": k}
+
                     feed_dict = {X: X_batch, y: y_batch}
                     loss, _, acc = sess.run(
                         [loss_op, train_op, acc_op], feed_dict)
