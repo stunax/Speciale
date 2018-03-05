@@ -113,6 +113,7 @@ if __name__ == '__main__':
             accs_epoch = []
             for k in range(1):
                 for X_batch, y_batch in data_model.as_iter(X_train):
+                    X_batch.shape = (X_batch.shape[0],) + X_batch.shape[2:-1]
                     for j in range(int(len(X_batch) / batch_size)):
                         j2 = j + batch_size
                         feed_dict = {X: X_batch[j:j2], y: y_batch[j:j2]}
