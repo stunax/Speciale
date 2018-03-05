@@ -3,6 +3,7 @@ import numpy as np
 import config
 import re
 import random
+from random import shuffle
 from skimage.util.shape import view_as_windows
 from sklearn.preprocessing import OneHotEncoder
 from scipy import misc
@@ -225,7 +226,9 @@ class Model_data(object):
         for i in range(len(images)):
             new_images += self.get_rotations_2d(images[i])
             new_annots += [annotations[i]] * 4
-
+        print(images.shape)
+        shuffle(new_images)
+        shuffle(new_annots)
         new_images = np.concatenate(new_images, axis=0)
         new_annots = np.concatenate(new_annots, axis=0)
 
