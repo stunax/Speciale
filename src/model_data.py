@@ -323,7 +323,7 @@ class model_data_batcher:
             self.batchStopIndex = 0
             self.reset_n()
 
-        self.batchStartIndex = self.batchStopIndex % self.noData
+        self.batchStartIndex = self.batchStopIndex % self.n
         self.batchStopIndex = min(
             self.batchStartIndex + self.batchSize, self.n)
         # X = self.data[0][self.batchStartIndex:self.batchStopIndex]
