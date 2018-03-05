@@ -100,7 +100,7 @@ if __name__ == '__main__':
 
     data_model = Model_data(
         patch_size, bag_size=bag_size,
-        from_h5=True, median_time=median_time,
+        from_h5=True, median_time=median_time, one_hot=True,
         normalize_wieghtshare=True, augment=True)
     h5s = config.get_h5()
 
