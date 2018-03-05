@@ -38,9 +38,9 @@ class Model_data(object):
 
     def bordersize(self):
         return (
-            int(self.kernelsize[0] / 2 + 1),
-            int(self.kernelsize[1] / 2 + 1),
-            int(self.kernelsize[2] / 2 + 1),
+            int((self.kernelsize[0] + 1) / 2 ),
+            int((self.kernelsize[1] + 1) / 2 ),
+            int((self.kernelsize[2] + 1) / 2 ),
         )
 
     def same_border_image(self, image):
