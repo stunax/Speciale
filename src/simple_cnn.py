@@ -118,6 +118,7 @@ if __name__ == '__main__':
                         j2 = j + batch_size
                         feed_dict = {"X:0": X_batch[
                             j:j2], "y:0": y_batch[j:j2]}
+                        print(feed_dict)
                         loss, _, acc = sess.run(
                             [loss_op, train_op, acc_op], feed_dict)
                         accs_epoch.append(acc)
