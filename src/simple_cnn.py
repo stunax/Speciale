@@ -14,7 +14,7 @@ bag_size = 3
 num_classes = 2
 epochs = 20
 dropout = 0.25  # Dropout, probability to drop a unit
-patch_size = (18, 18, 5)
+patch_size = (8, 8, 5)
 median_time = 2
 
 # Create the neural network
