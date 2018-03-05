@@ -112,7 +112,8 @@ if __name__ == '__main__':
             accs_epoch = []
             for k in range(1):
                 for X_batch, y_batch in data_model.as_iter(X_train):
-                    feed_dict = {"X": X_batch, "y": y_batch, "k": k}
+                    # feed_dict = {"X": X_batch, "y": y_batch, "k": k}
+                    feed_dict = {"X": X_batch, "y": y_batch}
                     loss, _, acc = sess.run(
                         [loss_op, train_op, acc_op], feed_dict)
                     accs_epoch.append(acc)
