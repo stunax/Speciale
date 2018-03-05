@@ -3,12 +3,13 @@ import tensorflow as tf
 import numpy as np
 from tqdm import tqdm
 from model_data import Model_data
-from sklearn.model_selection import train_test_split, KFold
+from sklearn.model_selection import train_test_split
 
 # Training Parameters
 learning_rate = 0.00001
 num_steps = 2000
 bag_size = 1
+batch_size = 32
 
 # Network Parameters
 num_classes = 2
@@ -112,11 +113,12 @@ if __name__ == '__main__':
             accs_epoch = []
             for k in range(1):
                 for X_batch, y_batch in data_model.as_iter(X_train):
-
-                    feed_dict = {X: X_batch, y: y_batch}
-                    loss, _, acc = sess.run(
-                        [loss_op, train_op, acc_op], feed_dict)
-                    accs_epoch.append(acc)
+                    for j in range(int(len(X_batch) / batch_size)):
+                        j2 = j + batch_size
+                        feed_dict = {X: X_batch[j:j2], y: y_batch[j:j2]}
+                        loss, _, acc = sess.run(
+                            [loss_op, train_op, acc_op], feed_dict)
+                        accs_epoch.append(acc)
                     pbar.update(1)
             accs.append(np.mean(accs_epoch))
 
