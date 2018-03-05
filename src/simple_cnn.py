@@ -8,13 +8,13 @@ from sklearn.model_selection import train_test_split, KFold
 # Training Parameters
 learning_rate = 0.00001
 num_steps = 2000
-bag_size = 3
+bag_size = 1
 
 # Network Parameters
 num_classes = 2
 epochs = 20
 dropout = 0.25  # Dropout, probability to drop a unit
-patch_size = (10, 10, 5)
+patch_size = (1, 18, 5)
 median_time = 2
 
 # Create the neural network
