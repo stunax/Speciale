@@ -119,4 +119,4 @@ if __name__ == '__main__':
             feed_dict = {"X": X_batch, "y": y_batch}
             pred_classes, acc = sess.run([pred_classes, acc_op], feed_dict)
             accs_epoch.append(acc)
-        print("Training Accuracy: %f" % np.mean(accs_epoch)
+        print("Training Accuracy: %f" % np.mean(accs_epoch))
