@@ -18,7 +18,7 @@ class Model_data(object):
             flat_features=False, one_hot=True,
             from_h5=False, remove_unlabeled=True, median_time=0,
             annotation_groupname=config.annotation_groupname,
-            histogram=0, normalize_wieghtshare=False):
+            histogram=0, normalize_wieghtshare=False, augment=False):
         self.debug = debug
         self.kernelsize = kernel_size
         self.step = step
@@ -34,6 +34,7 @@ class Model_data(object):
         self.histogram = histogram
         self.one_hot = one_hot
         self.normalize_wieghtshare = normalize_wieghtshare
+        self.augment = augment
 
     def bordersize(self):
         return (
@@ -208,10 +209,26 @@ class Model_data(object):
         annotations = np.concatenate(annotation_list)
         return images, annotations
 
+    def get_rotations_2d(self, img):
+        return [np.rot90(img, i, (0, 1)) for i in range(4)]
+
+    def augment_images(self, images, annotations):
+        new_images = []
+        new_annots = []
+
+        for i in range(len(images)):
+            new_images += self.get_rotations_2d(images[i])
+            new_annots += self.get_rotations_2d(annotations[i])
+
+        return new_images, new_annots
+
     def handle_images(self, images, annotations=None):
 
         if self.from_h5:
             images, annotations = self.load_h5(images)
+
+        if self.augment:
+            images, annotations = self.augment_images(images, annotations)
 
         if self.preprocess:
             images = [self.preprocess_image(image) for image in images]

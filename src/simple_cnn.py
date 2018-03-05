@@ -68,8 +68,10 @@ def model_fn():
     # pred_probas = tf.nn.softmax(logits_test)
 
     # Define loss and optimizer
-    loss_op = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
-        logits=logits_train, labels=tf.cast(labels, dtype=tf.int32)))
+    with tf.name_scope("loss"):
+        loss_op = tf.reduce_mean(
+            tf.nn.sparse_softmax_cross_entropy_with_logits(
+                logits=logits_train, labels=tf.cast(labels, dtype=tf.int32)))
     optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
     train_op = optimizer.minimize(loss_op,
                                   global_step=tf.train.get_global_step())
@@ -90,8 +92,8 @@ if __name__ == '__main__':
         h5s), p=[1 - config.true_percentage, config.true_percentage])
     # y[:int(y.shape[0] *)] = 1  # Percentage that is foreground
 
-    X_train, X_test, _, _ = train_test_split(
-        h5s, y, test_size=0.33, random_state=config.random_state)
+    X_train, X_test = train_test_split(
+        h5s, test_size=0.33, random_state=config.random_state)
 
     # Build the Estimator
     loss_op, train_op, acc_op, pred_classes = model_fn()
