@@ -88,8 +88,10 @@ def model_fn():
 
 if __name__ == '__main__':
 
-    data_model = Model_data(patch_size, bag_size=bag_size,
-                            from_h5=True, median_time=median_time)
+    data_model = Model_data(
+        patch_size, bag_size=bag_size,
+        from_h5=True, median_time=median_time,
+        normalize_wieghtshare=True, augment=True)
     h5s = config.get_h5()
 
     X_train, X_test = train_test_split(
@@ -101,7 +103,7 @@ if __name__ == '__main__':
     accs = []
 
     with tf.Session(config=tf.ConfigProto(
-    intra_op_parallelism_threads=8)) as sess:
+            intra_op_parallelism_threads=8)) as sess:
         tf.global_variables_initializer().run()
         pbar = tqdm(total=int(epochs * len(X_train) / bag_size) * 2)
         for i in range(epochs):
