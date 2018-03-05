@@ -275,7 +275,7 @@ class model_data_iter(object):
     def __next__(self):
         if self.num < len(self.data):
             res = self.data_model.handle_images(
-                self.data[self.num:(self.num + self.Model_data.bag_size)])
+                self.data[self.num:(self.num + self.data_model.bag_size)])
             self.num += self.data_model.bag_size
             return res
         else:
