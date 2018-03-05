@@ -118,9 +118,9 @@ if __name__ == '__main__':
                         j2 = j + batch_size
                         feed_dict = {"X:0": X_batch[
                             j:j2], "y:0": y_batch[j:j2]}
-                        loss, _, acc = sess.run(
-                            [loss_op, train_op, acc_op], feed_dict)
-                        accs_epoch.append(acc)
+                        loss, _ = sess.run(
+                            [loss_op, train_op], feed_dict)
+                        accs_epoch.append(loss)
                     pbar.update(1)
             accs.append(np.mean(accs_epoch))
 
@@ -139,4 +139,4 @@ if __name__ == '__main__':
                             [pred_classes, acc_op], feed_dict)
                         accs_epoch.append(acc)
                     pbar.update(1)
-        print("Training Accuracy: %f" % np.mean(accs_epoch))
+            print("Training Accuracy: %f" % np.mean(accs_epoch))
