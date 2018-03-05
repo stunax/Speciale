@@ -100,7 +100,8 @@ if __name__ == '__main__':
 
     accs = []
 
-    with tf.Session() as sess:
+    with tf.Session(config=tf.ConfigProto(
+    intra_op_parallelism_threads=8)) as sess:
         tf.global_variables_initializer().run()
         pbar = tqdm(total=int(epochs * len(X_train) / bag_size) * 2)
         for i in range(epochs):
