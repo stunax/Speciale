@@ -311,7 +311,7 @@ class model_data_batcher:
         self.data = self.iter.__next__()
 
     def _next_batch(self):
-        if self.batchStopIndex > self.n:
+        if self.batchStopIndex == self.noData:
             self.data = self.iter.__next__()
             self.batchStartIndex = 0
             self.batchStopIndex = 0
@@ -320,9 +320,8 @@ class model_data_batcher:
         self.batchStartIndex = self.batchStopIndex % self.noData
         self.batchStopIndex = min(
             self.batchStartIndex + self.batchSize, self.noData)
-        return self.data_model.handle_images(
-            self.data.data[self.batchStartIndex:self.batchStopIndex],
-            self.data.target[self.batchStartIndex:self.batchStopIndex])
+        target = self.data[self.batchStartIndex:self.batchStopIndex]
+        return self.data_model.handle_images(target)
 
     def next_batch(self):
         try:

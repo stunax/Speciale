@@ -133,8 +133,9 @@ if __name__ == '__main__':
                 [train_op, summary_op], feed_dict)
             train_writer.add_summary(summa, i)
 
-            X_batch, y_batch = X_test_batcher.next_batch()
-            feed_dict = {"X:0": X_batch, "y:0": y_batch}
-            _, summa = sess.run(
-                [loss_op, summary_op], feed_dict)
-            train_writer.add_summary(summa, i)
+            if i % 10 == 0 and i:
+                X_batch, y_batch = X_test_batcher.next_batch()
+                feed_dict = {"X:0": X_batch, "y:0": y_batch}
+                _, summa = sess.run(
+                    [loss_op, summary_op], feed_dict)
+                train_writer.add_summary(summa, i)
