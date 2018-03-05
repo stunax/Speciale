@@ -38,9 +38,9 @@ class Model_data(object):
 
     def bordersize(self):
         return (
-            int(self.kernelsize[0] / 2),
-            int(self.kernelsize[1] / 2),
-            int(self.kernelsize[2] / 2),
+            int(self.kernelsize[0] / 2 + 1),
+            int(self.kernelsize[1] / 2 + 1),
+            int(self.kernelsize[2] / 2 + 1),
         )
 
     def same_border_image(self, image):
@@ -196,7 +196,7 @@ class Model_data(object):
     def as_iter(self, data):
         return model_data_iter(self, data)
 
-    def do_normalize_wieghtshare(images, annotations):
+    def do_normalize_wieghtshare(self, images, annotations):
         counts = np.unique(annotations, return_counts=True)
         min_n = min(counts[1])
         image_list = []
