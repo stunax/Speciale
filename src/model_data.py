@@ -226,8 +226,8 @@ class Model_data(object):
             new_images += self.get_rotations_2d(images[i])
             new_annots += [annotations[i]] * 4
 
-        new_images = self.concat_images(new_images)
-        new_annots = self.concat_images(new_annots)
+        new_images = np.concatenate(new_images, axis=0)
+        new_annots = np.concatenate(new_annots, axis=0)
 
         return new_images, new_annots
 
