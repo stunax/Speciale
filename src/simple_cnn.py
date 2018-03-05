@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 # Training Parameters
 learning_rate = 0.00001
 num_steps = 2000
-bag_size = 1
+bag_size = 3
 batch_size = 32
 
 # Network Parameters
@@ -91,7 +91,7 @@ if __name__ == '__main__':
     data_model = Model_data(
         patch_size, bag_size=bag_size,
         from_h5=True, median_time=median_time,
-        normalize_wieghtshare=True)
+        normalize_wieghtshare=True, augment=True)
     h5s = config.get_h5()
 
     X_train, X_test = train_test_split(
@@ -106,10 +106,11 @@ if __name__ == '__main__':
             intra_op_parallelism_threads=8)) as sess:
         tf.global_variables_initializer().run()
         # * 4 because 4 times because of rotations
-        pbar = tqdm(
-            # total=int(epochs * (len(X_train) * 4 + len(X_test)) / bag_size))
-            total=int(epochs * (len(X_train) + len(X_test)) / bag_size))
         for i in range(epochs):
+            pbar = tqdm(
+                # total=int(epochs * (len(X_train) * 4 + len(X_test)) /
+                # bag_size))
+                total=int((len(X_train) + len(X_test)) / bag_size))
             accs_epoch = []
             for k in range(1):
                 for X_batch, y_batch in data_model.as_iter(X_train):
