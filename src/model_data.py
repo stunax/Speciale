@@ -225,7 +225,8 @@ class Model_data(object):
         print(images.shape)
         for i in range(len(images)):
             new_images += self.get_rotations_2d(
-                images[i].reshape(images.shape[2:-1]))
+                images[i].reshape(
+                    images.shape[2:-1])).reshape((1,) + self.shape)
             new_annots += [annotations[i]] * 4
         shuffle(new_images)
         shuffle(new_annots)
