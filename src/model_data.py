@@ -225,10 +225,11 @@ class Model_data(object):
         print(images.shape)
         for i in range(len(images)):
             new_images += self.get_rotations_2d(
-                images[i].reshape(images.shape[1:-1]))
+                images[i].reshape(images.shape[2:-1]))
             new_annots += [annotations[i]] * 4
         shuffle(new_images)
         shuffle(new_annots)
+        print(new_images[0].shape)
         new_images = np.concatenate(new_images, axis=0)
         new_annots = np.concatenate(new_annots, axis=0)
         print(new_images.shape)
