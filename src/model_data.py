@@ -308,7 +308,10 @@ class model_data_batcher:
         self.reset_iter()
         self.batchStartIndex = 0
         self.batchStopIndex = 0
-        self.n = self.data.shape[0]
+        self.reset_n()
+
+    def reset_n(self):
+        self.n = self.data[0].shape[0]
 
     def reset_iter(self):
         self.iter = self.data_model.as_iter(self.h5data)
@@ -319,14 +322,14 @@ class model_data_batcher:
             self.data = self.iter.__next__()
             self.batchStartIndex = 0
             self.batchStopIndex = 0
-            self.n = self.data.shape[0]
+            self.reset_n()
 
         self.batchStartIndex = self.batchStopIndex % self.noData
         self.batchStopIndex = min(
             self.batchStartIndex + self.batchSize, self.noData)
-        target = self.data[self.batchStartIndex:self.batchStopIndex]
-        print(target[0])
-        return self.data_model.handle_images(target)
+        X = self.data[0][self.batchStartIndex:self.batchStopIndex]
+        y = self.data[1][self.batchStartIndex:self.batchStopIndex]
+        return X, y
 
     def next_batch(self):
         try:
