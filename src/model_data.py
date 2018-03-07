@@ -20,7 +20,7 @@ class Model_data(object):
             from_h5=False, remove_unlabeled=True, median_time=0,
             annotation_groupname=config.annotation_groupname,
             histogram=0, normalize_wieghtshare=False,
-            augment=False, augment_sample=0):
+            augment=False):
         self.debug = debug
         self.kernelsize = kernel_size
         self.step = step
@@ -39,7 +39,6 @@ class Model_data(object):
             [3], sparse=False).fit(np.arange(3).reshape((3, 1)))
         self.normalize_wieghtshare = normalize_wieghtshare
         self.augment = augment
-        self.augment_sample = augment_sample
 
     def bordersize(self):
         return (
@@ -232,9 +231,6 @@ class Model_data(object):
             new_annots += [annotations[i].reshape((1, 3))] * 4
         shuffle(new_images)
         shuffle(new_annots)
-        if self.augment_sample:
-            new_images = new_images[:self.augment_sample]
-            new_annots = new_annots[:self.augment_sample]
         new_images = np.concatenate(new_images, axis=0)
         new_annots = np.concatenate(new_annots, axis=0)
 
@@ -306,17 +302,18 @@ class model_data_iter(object):
 class model_data_batcher:
     'Splits data into mini-batches'
 
-    def __init__(self, data, batchSize, data_model):
+    def __init__(self, data, batchSize, data_model, max_n=99999999999999999):
         self.h5data = data
         self.batchSize = batchSize
         self.data_model = data_model
         self.reset_iter()
         self.batchStartIndex = 0
         self.batchStopIndex = 0
+        self.max_n = max_n
         self.reset_n()
 
     def reset_n(self):
-        self.n = self.data[0].shape[0]
+        self.n = min(self.max_n, self.data[0].shape[0])
 
     def reset_iter(self):
         self.iter = self.data_model.as_iter(self.h5data)
