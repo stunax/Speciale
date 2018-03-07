@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 # Training Parameters
 learning_rate = 0.00001
 num_steps = 2000
-bag_size = 3
+bag_size = 1
 batch_size = 32
 
 # Network Parameters
@@ -135,7 +135,9 @@ if __name__ == '__main__':
             if i % 10 == 0 and i:
                 X_batch, y_batch = X_test_batcher.next_batch()
                 feed_dict = {"X:0": X_batch, "y:0": y_batch}
-                _, summa = sess.run(
+                val_loss, summa = sess.run(
                     [loss_op, summary_op], feed_dict)
                 train_writer.add_summary(summa, i)
+                t.set_postfix(loss=val_loss)
+
         t.close()
