@@ -1,6 +1,6 @@
 import config
 import tensorflow as tf
-import numpy as np
+# import numpy as np
 from tqdm import tqdm
 from model_data import Model_data
 from sklearn.model_selection import train_test_split
@@ -116,12 +116,12 @@ if __name__ == '__main__':
 
         # Build the Estimator
         loss_op, train_op, acc_op, pred_classes, X, y, summary_op = model_fn()
-        tf.global_variables_initializer().run()
         train_writer = tf.summary.FileWriter(
             logs_path + run_name + "train", graph=tf.get_default_graph())
         test_writer = tf.summary.FileWriter(
             logs_path + run_name + "test", graph=tf.get_default_graph())
         # * 4 because 4 times because of rotations
+        tf.global_variables_initializer().run()
 
         t = tqdm(range(epochs))
         for i in t:
