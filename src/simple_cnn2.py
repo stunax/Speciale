@@ -93,6 +93,7 @@ def model_fn():
     summary_train = tf.summary.scalar("loss", loss_op)
     # Create a summary to monitor accuracy tensor
     summary_test = tf.summary.scalar("accuracy", acc_op)
+    print(acc_op.get_shape())
 
     return (loss_op, train_op, acc_op,
             pred_classes, features, labels, summary_train, summary_test)
