@@ -70,7 +70,7 @@ def model_fn():
                            is_training=False, k=k)
 
     # Predictions
-    pred_classes = tf.argmax(logits_test, axis=0)
+    pred_classes = tf.argmax(logits_test, axis=1)
     print(pred_classes.get_shape())
     # pred_probas = tf.nn.softmax(logits_test)
 
@@ -85,7 +85,7 @@ def model_fn():
 
     # Evaluate the accuracy of the model
     with tf.variable_scope("Accuracy"):
-        labels_1d = tf.argmax(labels, axis=0)
+        labels_1d = tf.argmax(labels, axis=1)
         print(labels_1d.get_shape())
         acc_op = tf.metrics.accuracy(labels_1d, pred_classes)
 
