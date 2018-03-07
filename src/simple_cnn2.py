@@ -121,7 +121,8 @@ if __name__ == '__main__':
         test_writer = tf.summary.FileWriter(
             logs_path + run_name + "test")
         # * 4 because 4 times because of rotations
-        tf.global_variables_initializer().run()
+        init_op = tf.global_variables_initializer()
+        sess.run(init_op)
 
         t = tqdm(range(epochs))
         for i in t:
