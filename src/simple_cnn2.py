@@ -70,7 +70,7 @@ def model_fn():
                            is_training=False, k=k)
 
     # Predictions
-    pred_classes = tf.argmax(logits_test, axis=1)
+    pred_classes = tf.argmax(logits_test, axis=0)
     # pred_probas = tf.nn.softmax(logits_test)
 
     # Define loss and optimizer
@@ -84,7 +84,7 @@ def model_fn():
 
     # Evaluate the accuracy of the model
     with tf.variable_scope("Accuracy"):
-        labels_1d = tf.argmax(labels, axis=1)
+        labels_1d = tf.argmax(labels, axis=0)
         acc_op = tf.metrics.accuracy(labels_1d, pred_classes)
 
     # Create a summary to monitor cost tensor
