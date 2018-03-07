@@ -87,13 +87,12 @@ def model_fn():
         labels=tf.argmax(labels), predictions=pred_classes)
 
     # Create a summary to monitor cost tensor
-    tf.summary.scalar("loss", loss_op)
+    summary_loss = tf.summary.scalar("loss", loss_op)
     # Create a summary to monitor accuracy tensor
-    tf.summary.scalar("accuracy", acc_op)
-    merged_summary_op = tf.summary.merge_all()
+    summary_acc = tf.summary.scalar("accuracy", acc_op)
 
     return (loss_op, train_op, acc_op,
-            pred_classes, features, labels, merged_summary_op)
+            pred_classes, features, labels, summary_loss, summary_acc)
 
 
 if __name__ == '__main__':
@@ -115,14 +114,14 @@ if __name__ == '__main__':
     with tf.Session() as sess:
 
         # Build the Estimator
-        loss_op, train_op, acc_op, pred_classes, X, y, summary_op = model_fn()
+        loss_op, train_op, acc_op, pred_classes, X, y,\
+            summary_loss, summary_acc = model_fn()
         train_writer = tf.summary.FileWriter(
             logs_path + run_name + "train", graph=tf.get_default_graph())
         test_writer = tf.summary.FileWriter(
             logs_path + run_name + "test")
         # * 4 because 4 times because of rotations
-        init_op = tf.global_variables_initializer()
-        sess.run(init_op)
+        sess.run(tf.global_variables_initializer())
 
         t = tqdm(range(epochs))
         for i in t:
@@ -130,14 +129,14 @@ if __name__ == '__main__':
             X_batch, y_batch = X_train_batcher.next_batch()
             feed_dict = {X: X_batch, y: y_batch}
             _, summa = sess.run(
-                [train_op, summary_op], feed_dict)
+                [train_op, summary_loss], feed_dict)
             train_writer.add_summary(summa, i)
 
             if i % 10 == 0 and i:
                 X_batch, y_batch = X_test_batcher.next_batch()
                 feed_dict = {X: X_batch, y: y_batch}
                 val_loss, summa = sess.run(
-                    [loss_op, summary_op], feed_dict)
+                    [loss_op, summary_acc], feed_dict)
                 train_writer.add_summary(summa, i)
                 t.set_postfix(loss=val_loss)
 
