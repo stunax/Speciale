@@ -102,14 +102,15 @@ if __name__ == '__main__':
     data_model = Model_data(
         patch_size, bag_size=bag_size,
         from_h5=True, one_hot=True, median_time=median_time,
-        normalize_wieghtshare=True, augment=True, augment_sample=10000)
+        normalize_wieghtshare=True, augment=True)
     h5s = config.get_h5()
 
     X_train, X_test = train_test_split(
         h5s, test_size=0.33, random_state=config.random_state)
 
-    X_train_batcher = data_model.as_batcher(X_train, batch_size)
-    X_test_batcher = data_model.as_batcher(X_test, batch_size)
+    X_train_batcher = data_model.as_batcher(
+        X_train, batch_size, batch_size * 111)
+    X_test_batcher = data_model.as_batcher(X_test, batch_size, batch_size * 64)
 
     accs = []
 
