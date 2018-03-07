@@ -123,6 +123,7 @@ if __name__ == '__main__':
             logs_path + run_name + "test")
         # * 4 because 4 times because of rotations
         sess.run(tf.global_variables_initializer())
+        sess.run(tf.local_variables_initializer())
 
         t = tqdm(range(epochs))
         for epoch in t:
