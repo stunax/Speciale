@@ -1,6 +1,6 @@
 import config
 import tensorflow as tf
-# import numpy as np
+import numpy as np
 from tqdm import tqdm
 from model_data import Model_data
 from sklearn.model_selection import train_test_split
@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 # Training Parameters
 learning_rate = 0.00001
 num_steps = 2000
-bag_size = 1
+bag_size = 3
 batch_size = 32
 
 # Network Parameters
@@ -133,6 +133,7 @@ if __name__ == '__main__':
 
             X_batch, y_batch = X_train_batcher.next_batch()
             feed_dict = {X: X_batch, y: y_batch}
+            print(np.unique(y_batch))
             _, summa = sess.run(
                 [train_op, summary_train], feed_dict)
 
