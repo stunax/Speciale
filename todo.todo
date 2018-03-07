@@ -1,4 +1,6 @@
-
+bugs:
+  ☐ Unitialized accuracy? @critical
+  
 python:
   ☐ Lav billeder af filled test
   simple_cnn:

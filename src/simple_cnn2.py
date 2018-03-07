@@ -119,7 +119,7 @@ if __name__ == '__main__':
         train_writer = tf.summary.FileWriter(
             logs_path + run_name + "train", graph=tf.get_default_graph())
         test_writer = tf.summary.FileWriter(
-            logs_path + run_name + "test", graph=tf.get_default_graph())
+            logs_path + run_name + "test")
         # * 4 because 4 times because of rotations
         tf.global_variables_initializer().run()
 
@@ -127,14 +127,14 @@ if __name__ == '__main__':
         for i in t:
 
             X_batch, y_batch = X_train_batcher.next_batch()
-            feed_dict = {"X:0": X_batch, "y:0": y_batch}
+            feed_dict = {X: X_batch, y: y_batch}
             _, summa = sess.run(
                 [train_op, summary_op], feed_dict)
             train_writer.add_summary(summa, i)
 
             if i % 10 == 0 and i:
                 X_batch, y_batch = X_test_batcher.next_batch()
-                feed_dict = {"X:0": X_batch, "y:0": y_batch}
+                feed_dict = {X: X_batch, y: y_batch}
                 val_loss, summa = sess.run(
                     [loss_op, summary_op], feed_dict)
                 train_writer.add_summary(summa, i)
