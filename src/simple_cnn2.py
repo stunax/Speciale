@@ -77,15 +77,15 @@ def model_fn():
     with tf.variable_scope("loss"):
         loss_op = tf.reduce_mean(
             tf.nn.softmax_cross_entropy_with_logits_v2(
-                predictions=logits_train, labels=labels))
+                logits=logits_train, labels=labels))
     optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
     train_op = optimizer.minimize(loss_op,
                                   global_step=tf.train.get_global_step())
 
     # Evaluate the accuracy of the model
     with tf.variable_scope("Accuracy"):
-        acc_op = tf.metrics.accuracy(
-            labels=tf.argmax(labels), predictions=pred_classes)
+        labels_1d = tf.argmax(labels)
+        acc_op = tf.metrics.accuracy(labels_1d, pred_classes)
 
     # Create a summary to monitor cost tensor
     summary_train = tf.summary.scalar("loss", loss_op)
