@@ -84,7 +84,7 @@ def model_fn():
 
     # Evaluate the accuracy of the model
     with tf.variable_scope("Accuracy"):
-        labels_1d = tf.argmax(labels)
+        labels_1d = tf.argmax(labels, axis=1)
         acc_op = tf.metrics.accuracy(labels_1d, pred_classes)
 
     # Create a summary to monitor cost tensor
