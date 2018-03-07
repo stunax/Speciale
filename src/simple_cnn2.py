@@ -77,22 +77,23 @@ def model_fn():
     with tf.variable_scope("loss"):
         loss_op = tf.reduce_mean(
             tf.nn.softmax_cross_entropy_with_logits_v2(
-                logits=logits_train, labels=labels))
+                predictions=logits_train, labels=labels))
     optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
     train_op = optimizer.minimize(loss_op,
                                   global_step=tf.train.get_global_step())
 
     # Evaluate the accuracy of the model
-    acc_op = tf.metrics.accuracy(
-        labels=tf.argmax(labels), predictions=pred_classes)
+    with tf.variable_scope("Accuracy"):
+        acc_op = tf.metrics.accuracy(
+            labels=tf.argmax(labels), predictions=pred_classes)
 
     # Create a summary to monitor cost tensor
-    summary_loss = tf.summary.scalar("loss", loss_op)
+    summary_train = tf.summary.scalar("loss", loss_op)
     # Create a summary to monitor accuracy tensor
-    summary_acc = tf.summary.scalar("accuracy", acc_op)
+    summary_test = tf.summary.scalar("accuracy", acc_op)
 
     return (loss_op, train_op, acc_op,
-            pred_classes, features, labels, summary_loss, summary_acc)
+            pred_classes, features, labels, summary_train, summary_test)
 
 
 if __name__ == '__main__':
@@ -115,7 +116,7 @@ if __name__ == '__main__':
 
         # Build the Estimator
         loss_op, train_op, acc_op, pred_classes, X, y,\
-            summary_loss, summary_acc = model_fn()
+            summary_train, summary_test = model_fn()
         train_writer = tf.summary.FileWriter(
             logs_path + run_name + "train", graph=tf.get_default_graph())
         test_writer = tf.summary.FileWriter(
@@ -124,20 +125,20 @@ if __name__ == '__main__':
         sess.run(tf.global_variables_initializer())
 
         t = tqdm(range(epochs))
-        for i in t:
+        for epoch in t:
 
             X_batch, y_batch = X_train_batcher.next_batch()
             feed_dict = {X: X_batch, y: y_batch}
             _, summa = sess.run(
-                [train_op, summary_loss], feed_dict)
-            train_writer.add_summary(summa, i)
+                [train_op, summary_train], feed_dict)
 
-            if i % 10 == 0 and i:
+            if epoch % 10 == 0 and epoch:
+                train_writer.add_summary(summa, epoch)
                 X_batch, y_batch = X_test_batcher.next_batch()
                 feed_dict = {X: X_batch, y: y_batch}
                 val_acc, summa = sess.run(
-                    [acc_op, summary_acc], feed_dict)
-                train_writer.add_summary(summa, i)
+                    [acc_op, summary_test], feed_dict)
+                train_writer.add_summary(summa, epoch)
                 t.set_postfix(loss=val_acc)
 
         t.close()
