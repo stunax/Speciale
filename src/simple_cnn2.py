@@ -1,26 +1,27 @@
 import config
 import tensorflow as tf
-import numpy as np
 from tqdm import tqdm
 from model_data import Model_data
 from sklearn.model_selection import train_test_split
+from time import gmtime, strftime
+
 
 # Training Parameters
-learning_rate = 0.00001
+learning_rate = 0.00000001
 num_steps = 2000
-bag_size = 3
-batch_size = 32
+bag_size = 2
+batch_size = 128
 
 # Network Parameters
 num_classes = 3
-epochs = 30000
-dropout = 0.25  # Dropout, probability to drop a unit
+epochs = 300000
+dropout = 0.50  # Dropout, probability to drop a unit
 patch_size = (17, 17, 5)
 median_time = 2
 
 # Log parameters
 logs_path = '/tmp/tensorflow_logs/simple_cnn/'
-run_name = "test"
+run_name = strftime("%Y-%m-%d_%H-%M-%S", gmtime())
 # Create the neural network
 
 
@@ -71,7 +72,6 @@ def model_fn():
 
     # Predictions
     pred_classes = tf.argmax(logits_test, axis=1)
-    print(pred_classes.get_shape())
     # pred_probas = tf.nn.softmax(logits_test)
 
     # Define loss and optimizer
@@ -86,14 +86,12 @@ def model_fn():
     # Evaluate the accuracy of the model
     with tf.variable_scope("Accuracy"):
         labels_1d = tf.argmax(labels, axis=1)
-        print(labels_1d.get_shape())
         acc_op, _ = tf.metrics.accuracy(labels_1d, pred_classes)
 
     # Create a summary to monitor cost tensor
     summary_train = tf.summary.scalar("loss", loss_op)
     # Create a summary to monitor accuracy tensor
     summary_test = tf.summary.scalar("accuracy", acc_op)
-    print(acc_op.get_shape())
 
     return (loss_op, train_op, acc_op,
             pred_classes, features, labels, summary_train, summary_test)
@@ -103,8 +101,8 @@ if __name__ == '__main__':
 
     data_model = Model_data(
         patch_size, bag_size=bag_size,
-        from_h5=True, median_time=median_time, one_hot=True,
-        normalize_wieghtshare=True, augment=True)
+        from_h5=True, one_hot=True, median_time=median_time,
+        normalize_wieghtshare=True, augment=True, augment_sample=10000)
     h5s = config.get_h5()
 
     X_train, X_test = train_test_split(
@@ -133,17 +131,16 @@ if __name__ == '__main__':
 
             X_batch, y_batch = X_train_batcher.next_batch()
             feed_dict = {X: X_batch, y: y_batch}
-            print(np.unique(y_batch))
             _, summa = sess.run(
                 [train_op, summary_train], feed_dict)
 
-            if epoch % 10 == 0 and epoch:
+            if epoch % 10 == 0:
                 train_writer.add_summary(summa, epoch)
                 X_batch, y_batch = X_test_batcher.next_batch()
                 feed_dict = {X: X_batch, y: y_batch}
                 val_acc, summa = sess.run(
-                    [acc_op, summary_test], feed_dict)
-                train_writer.add_summary(summa, epoch)
+                    [loss_op, summary_train], feed_dict)
+                test_writer.add_summary(summa, epoch)
                 t.set_postfix(loss=val_acc)
 
         t.close()
