@@ -135,9 +135,9 @@ if __name__ == '__main__':
             if i % 10 == 0 and i:
                 X_batch, y_batch = X_test_batcher.next_batch()
                 feed_dict = {X: X_batch, y: y_batch}
-                val_loss, summa = sess.run(
-                    [loss_op, summary_acc], feed_dict)
+                val_acc, summa = sess.run(
+                    [acc_op, summary_acc], feed_dict)
                 train_writer.add_summary(summa, i)
-                t.set_postfix(loss=val_loss)
+                t.set_postfix(loss=val_acc)
 
         t.close()
