@@ -1,0 +1,10 @@
+
+python:
+  ☐ Lav billeder af filled test
+  simple_cnn:
+    ☐ Test det
+      ☐ Mnist
+    ☐ Accuracy på test sæt
+  capsule:
+    ☐ Test på meget lidt data
+    ☐ Test at det virker på mnist
