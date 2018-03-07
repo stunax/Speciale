@@ -87,7 +87,7 @@ def model_fn():
     with tf.variable_scope("Accuracy"):
         labels_1d = tf.argmax(labels, axis=1)
         print(labels_1d.get_shape())
-        acc_op = tf.metrics.accuracy(labels_1d, pred_classes)
+        acc_op, _ = tf.metrics.accuracy(labels_1d, pred_classes)
 
     # Create a summary to monitor cost tensor
     summary_train = tf.summary.scalar("loss", loss_op)
