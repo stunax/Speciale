@@ -24,7 +24,7 @@ for i, h5fn in enumerate(config.h5s):
 for h5f, df, h5fn in X:
     image = np.array(h5f[df]).reshape((1024, 1024))
     image = to_rgb2(image)
-    annotation = np.array(h5f["anno" + df])
+    annotation = np.array(h5f["anno" + df]).reshape((1024, 1024))
     imsave(path + h5fn + df + ".png", image)
 
     image[annotation == 1] = np.array([[0, 255, 0]])
