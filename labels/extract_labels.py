@@ -22,7 +22,7 @@ for i, h5fn in enumerate(config.h5s):
               for df in h5f.keys() if df in config.labels[i]])
 
 for h5f, df, h5fn in X:
-    image = np.array(h5f[df])
+    image = np.array(h5f[df]).reshape((1024, 1024))
     image = to_rgb2(image)
     annotation = np.array(h5f["anno" + df])
     imsave(path + h5fn + df + ".png", image)
