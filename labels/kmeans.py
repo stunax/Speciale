@@ -25,7 +25,7 @@ sub_Xtrain = Xtrain[np.random.choice(Xtrain.shape[0], 1000000, False)]
 print(Xtrain.shape)
 print(n)
 
-model = KMeans(n_clusters=16, n_jobs=1, verbose=1)
+model = KMeans(n_clusters=16, n_jobs=1, verbose=0)
 model.fit(sub_Xtrain)
 pred = model.transform(Xtrain).reshape((n, 1024**2))
 for i in range(pred.shape[0]):
