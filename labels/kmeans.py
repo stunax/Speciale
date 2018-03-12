@@ -25,5 +25,5 @@ Xtrain, ytrain = datam.handle_images(images)
 model = KMeans(n_clusters=16)
 pred = model.fit_transform(Xtrain).reshape((n, 1024**2))
 for i in range(pred.shape[0]):
-    fname = "%s.anno_%i.png" % (im_paths[i], i)
-    imwrite(pred[i])
+    fname = "%s_kmeans.png" % (im_paths[i])
+    imwrite(fname, pred[i])
