@@ -3,6 +3,7 @@ import config
 import h5py
 import pandas as pd
 import pickle
+from tqdm import tqdm
 
 out_extra = ''
 path = "verify/"
@@ -63,12 +64,11 @@ for h5fn in config.h5s:
     placement = list(zip(*placement))
     df['z'] = pd.to_numeric(placement[1], errors='coerce')
     df['t'] = pd.to_numeric(placement[0], errors='coerce')
-    df['intensity_sum'] = [np.sum(h5f[x[1]]) for x in images]
 
-    df['front_sum'] = [match_sum(h5f, x[1], 1) for x in images]
-    df['back_sum'] = [match_sum(h5f, x[1], -1) for x in images]
+    df['front_sum'] = [match_sum(h5f, x[1], 1) for x in tqdm(images)]
+    df['back_sum'] = [match_sum(h5f, x[1], -1) for x in tqdm(images)]
+    df['intensity_sum'] = [np.sum(h5f[x[1]]) for x in tqdm(images)]
 
     fname = path + images[0][2] + '.pkl'
     with open(fname, "w") as f:
-        pickle.dump(df, fname)
-
+        pickle.dump(df, f)
