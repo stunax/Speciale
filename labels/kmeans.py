@@ -20,7 +20,7 @@ n = len(images)
 datam = Model_data(kernel_size=(12, 12, 1))
 
 Xtrain, ytrain = datam.handle_images(images)
-print(Xtrain)
+print(Xtrain.shape)
 
 model = KMeans(n_clusters=16)
 pred = model.fit_transform(Xtrain).reshape((n, 1024**2))
