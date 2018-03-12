@@ -1,6 +1,6 @@
 from imageio import imread, imwrite
 from sklearn.cluster import KMeans
-from ..src.Model_data import Model_data
+from model_data import Model_data
 import glob
 
 path = 'labels/'
@@ -11,7 +11,7 @@ im_paths = []
 
 for im in glob.glob(path + im_reg):
     if "anno" not in im:
-        images.append(imread(im))
+        images.append(imread(im).reshape(1024, 1024, 1, 3))
         im_paths.append(im)
 
 
