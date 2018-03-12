@@ -11,8 +11,8 @@ images = []
 im_paths = []
 
 for im in glob.glob(path + im_reg):
-    if len(images) > 1:
-        break
+    # if len(images) > 1:
+    #     break
     if "anno" not in im:
         images.append(imread(im).reshape(1024, 1024, 1, 3))
         im_paths.append(im)
