@@ -9,7 +9,7 @@ path = 'labels/'
 
 def to_rgb2(im):
     # as 1, but we use broadcasting in one line
-    w, h = im.shape
+    w, h = 1024, 1024
     ret = np.empty((w, h, 3), dtype=np.uint8)
     ret[:, :, :] = im[:, :, np.newaxis]
     return ret
