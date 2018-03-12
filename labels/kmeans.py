@@ -34,4 +34,4 @@ pred = pred.reshape((n, 1024, 1024))
 for i in range(pred.shape[0]):
     fname = "%s_kmeans.png" % (im_paths[i])
     print(pred[i].shape)
-    imwrite(fname, pred[i].resha)
+    imwrite(fname, pred[i])

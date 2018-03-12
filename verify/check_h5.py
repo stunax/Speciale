@@ -46,7 +46,7 @@ def match_sum(h5f, key, label):
     res = 0
     if label_name in h5f.keys():
         labels = np.array(h5f[label_name])
-        res = np.sum(labels[labels == label])
+        res = np.sum(labels == label)
     return res
 
 
@@ -62,10 +62,10 @@ for h5fn in config.h5s:
     df = pd.DataFrame()
     df['fname'] = [x[2] for x in images]
     df['image'] = [x[1] for x in images]
-    placement = [key[-6:].split("_") for _, key, _ in images]
-    placement = list(zip(*placement))
-    df['z'] = pd.to_numeric(placement[1], errors='coerce')
-    df['t'] = pd.to_numeric(placement[0], errors='coerce')
+    df['z'] = pd.to_numeric([key[-6:].split("_")[1]
+                             for _, key, _ in images], errors='coerce')
+    df['t'] = pd.to_numeric([key[-6:].split("_")[0]
+                             for _, key, _ in images], errors='coerce')
 
     df['front_sum'] = [match_sum(h5f, x[1], 1) for x in tqdm(images)]
     df['back_sum'] = [match_sum(h5f, x[1], -1) for x in tqdm(images)]
