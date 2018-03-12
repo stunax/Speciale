@@ -10,8 +10,6 @@ fname = path + 'check_h5.pkl'
 with open(fname, "rb") as f:
     df = pickle.load(f)
 
-print(df[:100])
-
 
 def geom_plots(y, ylabel, labs, df):
 
