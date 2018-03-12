@@ -27,7 +27,8 @@ print(n)
 
 model = KMeans(n_clusters=16, n_jobs=6, verbose=0)
 model.fit(sub_Xtrain)
-pred = model.transform(Xtrain).reshape((n, 1024**2))
+pred = model.predict(Xtrain)
+pred = pred.reshape((n, 1024**2))
 for i in range(pred.shape[0]):
     fname = "%s_kmeans.png" % (im_paths[i])
     imwrite(fname, pred[i])
