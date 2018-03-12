@@ -21,11 +21,11 @@ n = len(images)
 datam = Model_data(kernel_size=(9, 9, 1), flat_features=True)
 
 Xtrain, ytrain = datam.handle_images(images)
-sub_Xtrain = Xtrain[np.random.choice(Xtrain.shape[0], 1000000, False)]
+sub_Xtrain = Xtrain[np.random.choice(Xtrain.shape[0], 2000000, False)]
 print(Xtrain.shape)
 print(n)
 
-model = KMeans(n_clusters=16, n_jobs=1, verbose=0)
+model = KMeans(n_clusters=16, n_jobs=6, verbose=0)
 model.fit(sub_Xtrain)
 pred = model.transform(Xtrain).reshape((n, 1024**2))
 for i in range(pred.shape[0]):
