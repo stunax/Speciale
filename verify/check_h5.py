@@ -70,5 +70,5 @@ for h5fn in config.h5s:
     df['intensity_sum'] = [np.sum(h5f[x[1]]) for x in tqdm(images)]
 
     fname = path + images[0][2] + '.pkl'
-    with open(fname, "w") as f:
+    with open(fname, "wb") as f:
         pickle.dump(df, f)
