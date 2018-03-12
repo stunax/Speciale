@@ -29,4 +29,4 @@ for h5f, df, h5fn in X:
 
     image[annotation == 1] = np.array([[0, 255, 0]])
     image[annotation == -1] = np.array([[0, 255, 255]])
-    imsave(path + h5fn + "anno" + df + ".png", image)
+    imsave(path + h5fn + df + "anno" + ".png", image)
