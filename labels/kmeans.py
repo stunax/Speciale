@@ -11,6 +11,8 @@ images = []
 im_paths = []
 
 for im in glob.glob(path + im_reg):
+    if len(images) >1:
+        break
     if "anno" not in im:
         images.append(imread(im).reshape(1024, 1024, 1, 3))
         im_paths.append(im)
@@ -31,4 +33,5 @@ pred = model.predict(Xtrain)
 pred = pred.reshape((n, 1024**2))
 for i in range(pred.shape[0]):
     fname = "%s_kmeans.png" % (im_paths[i])
+    print(pred[i].shape)
     imwrite(fname, pred[i])
