@@ -7,7 +7,7 @@ from time import gmtime, strftime
 
 
 # Training Parameters
-learning_rate = 0.00000001
+learning_rate = 0.0000001
 num_steps = 2000
 bag_size = 2
 batch_size = 128
@@ -108,9 +108,11 @@ if __name__ == '__main__':
     X_train, X_test = train_test_split(
         h5s, test_size=0.33, random_state=config.random_state)
 
+    # Prime numbers used
     X_train_batcher = data_model.as_batcher(
-        X_train, batch_size, batch_size * 111)
-    X_test_batcher = data_model.as_batcher(X_test, batch_size, batch_size * 64)
+        X_train, batch_size, batch_size * 307 * bag_size)
+    X_test_batcher = data_model.as_batcher(
+        X_test, batch_size, batch_size * 179 * bag_size)
 
     accs = []
 
@@ -139,9 +141,9 @@ if __name__ == '__main__':
                 train_writer.add_summary(summa, epoch)
                 X_batch, y_batch = X_test_batcher.next_batch()
                 feed_dict = {X: X_batch, y: y_batch}
-                val_acc, summa = sess.run(
+                loss_val, summa = sess.run(
                     [loss_op, summary_train], feed_dict)
                 test_writer.add_summary(summa, epoch)
-                t.set_postfix(loss=val_acc)
+                t.set_postfix(loss=loss_val)
 
         t.close()

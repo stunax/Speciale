@@ -200,8 +200,8 @@ class Model_data(object):
     def as_iter(self, data):
         return model_data_iter(self, data)
 
-    def as_batcher(self, data, batchSize):
-        return model_data_batcher(data, batchSize, self)
+    def as_batcher(self, data, batchSize, max_n=99999999999999999):
+        return model_data_batcher(data, batchSize, self, max_n)
 
     def do_normalize_wieghtshare(self, images, annotations):
         counts = np.unique(annotations, return_counts=True)
@@ -302,7 +302,7 @@ class model_data_iter(object):
 class model_data_batcher:
     'Splits data into mini-batches'
 
-    def __init__(self, data, batchSize, data_model, max_n=99999999999999999):
+    def __init__(self, data, batchSize, data_model, max_n):
         self.h5data = data
         self.batchSize = batchSize
         self.data_model = data_model
