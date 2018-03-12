@@ -19,7 +19,7 @@ for im in glob.glob(path + im_reg):
 
 n = len(images)
 
-datam = Model_data(kernel_size=(12, 12, 1))
+datam = Model_data(kernel_size=(12, 12, 1), flat_features=True)
 
 Xtrain, ytrain = datam.handle_images(images)
 print(Xtrain.shape)
