@@ -1,6 +1,6 @@
 bugs:
-  ☐ Unitialized accuracy? @critical
-  
+  ✔ Unitialized accuracy? @critical @done (18-03-07 14:01)
+
 python:
   ☐ Lav billeder af filled test
   simple_cnn:
@@ -10,3 +10,6 @@ python:
   capsule:
     ☐ Test på meget lidt data
     ☐ Test at det virker på mnist
+  multi threaded data load:
+    ☐ Lave multithread batcher
+      https://stackoverflow.com/questions/5324718/python-returning-data-from-a-threaded-def
