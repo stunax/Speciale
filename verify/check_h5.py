@@ -50,6 +50,8 @@ def match_sum(h5f, key, label):
     return res
 
 
+dfs = []
+
 for h5fn in config.h5s:
     print(h5fn)
     out = "%s has %%i that is only 0" % h5fn
@@ -69,6 +71,10 @@ for h5fn in config.h5s:
     df['back_sum'] = [match_sum(h5f, x[1], -1) for x in tqdm(images)]
     df['intensity_sum'] = [np.sum(h5f[x[1]]) for x in tqdm(images)]
 
-    fname = path + images[0][2] + '.pkl'
-    with open(fname, "wb") as f:
-        pickle.dump(df, f)
+    dfs.append(df)
+
+df_full = pd.concat(dfs)
+
+fname = path + 'check_h5.pkl'
+with open(fname, "wb") as f:
+    pickle.dump(df_full, f)
