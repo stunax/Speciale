@@ -34,6 +34,13 @@ lsm_images = [
     ("LI2016-03-04_ last timepoint_Subset pos3.lsm", "3", 27, 111)
 ]
 
+labels = [
+    [], [],
+    ['040_15', '028_15', '095_15'],
+    ['039_15', '028_15', '093_15'],
+    ['010_15', '037_15', '091_15'],
+]
+
 im_paths = [(data_path + p[0], p[1], p[2], p[3]) for p in lsm_images]
 
 h5s = [data_path + str(i) + ".h5" for i in range(1, 6)]
