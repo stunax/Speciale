@@ -11,7 +11,7 @@ images = []
 im_paths = []
 
 for im in glob.glob(path + im_reg):
-    if len(images) >1:
+    if len(images) > 1:
         break
     if "anno" not in im:
         images.append(imread(im).reshape(1024, 1024, 1, 3))
@@ -30,8 +30,8 @@ print(n)
 model = KMeans(n_clusters=16, n_jobs=6, verbose=0)
 model.fit(sub_Xtrain)
 pred = model.predict(Xtrain)
-pred = pred.reshape((n, 1024**2))
+pred = pred.reshape((n, 1024, 1024))
 for i in range(pred.shape[0]):
     fname = "%s_kmeans.png" % (im_paths[i])
     print(pred[i].shape)
-    imwrite(fname, pred[i])
+    imwrite(fname, pred[i].resha)
