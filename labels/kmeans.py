@@ -20,7 +20,7 @@ for im in glob.glob(path + im_reg):
 
 n = len(images)
 
-datam = Model_data(kernel_size=(9, 9, 1), flat_features=True)
+datam = Model_data(kernel_size=(11, 11, 1), flat_features=True)
 
 Xtrain, ytrain = datam.handle_images(images)
 sub_Xtrain = Xtrain[np.random.choice(Xtrain.shape[0], 2000000, False)]
@@ -33,5 +33,4 @@ pred = model.predict(Xtrain)
 pred = pred.reshape((n, 1024, 1024))
 for i in range(pred.shape[0]):
     fname = "%s_kmeans.png" % (im_paths[i])
-    print(pred[i].shape)
     imwrite(fname, pred[i])
