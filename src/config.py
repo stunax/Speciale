@@ -46,10 +46,13 @@ im_paths = [(data_path + p[0], p[1], p[2], p[3]) for p in lsm_images]
 h5s = [data_path + str(i) + ".h5" for i in range(1, 6)]
 
 
-def get_h5(annotation_name=annotation_groupname):
+def get_h5(annotation_name=annotation_groupname, ignore_1_2=False):
     X = []
+    h5files = h5s
+    if ignore_1_2:
+        h5files = h5files[2:]
 
-    for h5f in h5s:
+    for h5f in h5files:
         h5f = h5py.File(h5f, 'r+')
         X.extend([(h5f, df)
                   for df in h5f.keys() if annotation_name + df in h5f])
