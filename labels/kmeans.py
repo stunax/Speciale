@@ -23,7 +23,7 @@ n = len(images)
 datam = Model_data(kernel_size=(11, 11, 1), flat_features=True)
 
 Xtrain, ytrain = datam.handle_images(images)
-sub_Xtrain = Xtrain[np.random.choice(Xtrain.shape[0], 2000000, False)]
+sub_Xtrain = Xtrain[np.random.choice(Xtrain.shape[0], 3000000, False)]
 print(Xtrain.shape)
 print(n)
 
