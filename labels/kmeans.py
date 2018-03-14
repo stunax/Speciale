@@ -4,7 +4,7 @@ from sklearn.cluster import KMeans
 from model_data import Model_data
 import glob
 
-path = 'labels/'
+path = 'labels/imgs/'
 im_reg = '*.png'
 
 images = []
