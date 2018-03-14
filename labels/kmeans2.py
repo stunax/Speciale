@@ -26,7 +26,7 @@ for h5fn in config.h5s[2:]:
     for df in h5f.keys():
         if len(df) > 6:
             continue
-        image = datam.handle_images([(h5f, df)])
+        image, _ = datam.handle_images([(h5f, df)])
         print(image.shape)
         pred = model.predict(image)
         fname = "%s/kmeans_labels/%s_%s_kmeans_anno.png" % (
