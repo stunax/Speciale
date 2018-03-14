@@ -12,7 +12,7 @@ datam = Model_data(kernel_size=(9, 9, 1), remove_unlabeled=False,
 
 Xtrain, ytrain = datam.handle_images(h5s)
 datam.annotation_groupname = ""
-datam.from_h5 = False
+# datam.from_h5 = False
 sub_Xtrain = Xtrain[np.random.choice(Xtrain.shape[0], 3000, False)]
 model = KMeans(n_clusters=16, n_jobs=6)
 model.fit(sub_Xtrain)
