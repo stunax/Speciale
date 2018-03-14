@@ -7,8 +7,9 @@ import config
 
 h5s = config.get_h5(ignore_1_2=True)
 
-datam = Model_data(kernel_size=(9, 9, 1), remove_unlabeled=False,
-                   flat_features=True, from_h5=True, bag_size=1)
+datam = Model_data(
+    kernel_size=(9, 9, 1), remove_unlabeled=False, one_hot=False,
+    flat_features=True, from_h5=True, bag_size=1)
 
 Xtrain, ytrain = datam.handle_images(h5s)
 datam.annotation_groupname = ""
