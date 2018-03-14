@@ -28,6 +28,6 @@ for h5fn in config.h5s[2:]:
         image = np.array(h5f[df]).reshape(1024, 1024, 1, 1)
         image = datam.handle_images(image)
         pred = model.predict(image)
-        fname = "%skmeans_labels/%s_%s_kmeans_anno.png" % (
+        fname = "%s/kmeans_labels/%s_%s_kmeans_anno.png" % (
             config.data_path, h5fn[:1], df)
         imwrite(fname, pred)
