@@ -24,10 +24,11 @@ X = []
 for h5fn in config.h5s[2:]:
     h5f = h5py.File(h5fn, 'r+')
     for df in h5f.keys():
-        if len(df) > 6 or random.uniform(0, 1) < 0.9:
+        if len(df) > 6 or random.uniform(0, 1) < 0.8:
             continue
         image, _ = datam.handle_images([(h5f, df)])
         pred = model.predict(image).astype(np.uint8).reshape(1024, 1024)
         fname = "%s/kmeans_labels/%s/%s.png" % (
             config.data_path, h5fn[:1], df)
+        print(fname)
         imwrite(fname, pred)
