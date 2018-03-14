@@ -4,7 +4,7 @@ import numpy as np
 from scipy.misc import imsave
 
 
-path = 'labels/'
+path = 'labels/imgs/'
 
 
 def to_rgb2(im):

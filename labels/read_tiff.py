@@ -1,1 +1,1 @@
-../../projekt/src/read_tiff.py
+../../Project/src/read_tiff.py

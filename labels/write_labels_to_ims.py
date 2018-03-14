@@ -4,11 +4,12 @@ from read_tiff import convert_loaded_annotations
 import glob
 
 
-path = 'labels/'
+path = 'labels/imgs/'
 im_reg = '*_new_anno.png'
 
 for impath in glob.glob(path + im_reg):
-    print(impath)
+    if "with" in impath:
+        continue
     annotations = imread(impath)
     impath = impath[:-(len(im_reg) - 1)]
     print(impath)
