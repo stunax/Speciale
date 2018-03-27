@@ -8,8 +8,11 @@ rerun_name = "second"
 df_info_path = data_path + "df_info.h5"
 tiff_pivot = 80
 annotations_path = data_path + "Annotations from Alex 2017/"
+annotations_path_c = data_path + "new_annotations/"
 annotation_groupname = "anno"
 second_annotaion_groupname = "sec_anno"
+c_anno_groupname = "canno"
+
 groupname_format = "%s_%s"
 
 random_state = 1337

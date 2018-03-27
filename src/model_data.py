@@ -217,17 +217,21 @@ class Model_data(object):
         annotations = np.concatenate(annotation_list)
         return images, annotations
 
-    def get_rotations_2d(self, img):
+    def get_rotations_2d(self, img, kernelsize):
         return [np.rot90(img, i, (0, 1)).reshape(
-            (1,) + self.kernelsize) for i in range(4)]
+            (1,) + kernelsize) for i in range(4)]
 
     def augment_images(self, images, annotations):
+        '''
+            Rotate features.
+            Features are already "flattened" so they do not need to be rotated
+        '''
         new_images = []
         new_annots = []
         for i in range(len(images)):
             new_images += self.get_rotations_2d(
                 images[i].reshape(
-                    images.shape[2:-1]))
+                    images.shape[2:-1]), self.kernelsize)
             new_annots += [annotations[i].reshape((1, 3))] * 4
         shuffle(new_images)
         shuffle(new_annots)
@@ -236,7 +240,7 @@ class Model_data(object):
 
         return new_images, new_annots
 
-    def handle_images(self, images, annotations=None):
+    def _handle_images(self, images, annotations=None):
 
         if self.from_h5:
             images, annotations = self.load_h5(images)
@@ -271,6 +275,19 @@ class Model_data(object):
         if self.augment:
             images, annotations = self.augment_images(images, annotations)
 
+        return images, annotations
+
+    def handle_images(self, images, annotations=None):
+        if self.from_h5:
+            bag_size = self.bag_size
+            self.bag_size = 1
+            images = [self._handle_images(images) for i in range(bag_size)]
+            annotations = np.concatenate([anno for _, anno in images], axis=0)
+            images = np.concatenate([image for image, _ in images], axis=0)
+
+            self.bag_size = bag_size
+        else:
+            images, annotations = self._handle_images(images, annotations)
         return images, annotations
 
 
