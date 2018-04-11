@@ -3,6 +3,7 @@ import numpy as np
 from imageio import imwrite
 from sklearn.cluster import KMeans
 from model_data import Model_data
+import os.path
 import config
 import random
 import multiprocessing
@@ -32,6 +33,8 @@ def func(x):
     pred = model.predict(image).astype(np.uint8).reshape(1024, 1024)
     fname = "%s/kmeans_labels/%s/%s_pred.png" % (
         config.data_path, h5fn[-4], df)
+    if os.path.isfile(fname):
+        return True
     imwrite(fname, pred)
     fname = "%s/kmeans_labels/%s/%s.png" % (
         config.data_path, h5fn[-4], df)
