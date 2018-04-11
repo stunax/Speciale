@@ -30,11 +30,11 @@ def func(x):
     if len(df) > 6 or random.uniform(0, 1) < 0.8:
         return False
     image, _ = datam.handle_images([(h5f, df)])
-    pred = model.predict(image).astype(np.uint8).reshape(1024, 1024)
     fname = "%s/kmeans_labels/%s/%s_pred.png" % (
         config.data_path, h5fn[-4], df)
     if os.path.isfile(fname):
         return True
+    pred = model.predict(image).astype(np.uint8).reshape(1024, 1024)
     imwrite(fname, pred)
     fname = "%s/kmeans_labels/%s/%s.png" % (
         config.data_path, h5fn[-4], df)
