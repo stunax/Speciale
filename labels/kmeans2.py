@@ -6,6 +6,7 @@ from model_data import Model_data
 import config
 import random
 from tqdm import tqdm
+import multiprocessing
 
 h5s = config.get_h5(ignore_1_2=True)
 
