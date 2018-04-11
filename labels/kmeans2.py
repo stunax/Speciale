@@ -5,25 +5,26 @@ from sklearn.cluster import KMeans
 from model_data import Model_data
 import config
 import random
+from tqdm import tqdm
 
 h5s = config.get_h5(ignore_1_2=True)
 
 datam = Model_data(
     kernel_size=(9, 9, 1), remove_unlabeled=False, one_hot=False,
-    flat_features=True, from_h5=True, bag_size=11)
+    flat_features=True, from_h5=True, bag_size=20)
 
-Xtrain, ytrain = datam.handle_images(h5s)
+Xtrain, ytrain = datam._handle_images(h5s)
 datam.annotation_groupname = ""
-sub_Xtrain = Xtrain[np.random.choice(Xtrain.shape[0], 3000000, False)]
-model = KMeans(n_clusters=16, n_jobs=6)
+sub_Xtrain = Xtrain[np.random.choice(Xtrain.shape[0], 8000000, False)]
+model = KMeans(n_clusters=32, n_jobs=26)
 model.fit(sub_Xtrain)
 
-
+datam.bag_size = 1
 X = []
 
 for h5fn in config.h5s[2:]:
     h5f = h5py.File(h5fn, 'r+')
-    for df in h5f.keys():
+    for df in tqdm(h5f.keys()):
         if len(df) > 6 or random.uniform(0, 1) < 0.8:
             continue
         image, _ = datam.handle_images([(h5f, df)])
@@ -33,4 +34,5 @@ for h5fn in config.h5s[2:]:
         imwrite(fname, pred)
         fname = "%s/kmeans_labels/%s/%s.png" % (
             config.data_path, h5fn[-4], df)
-        imwrite(fname, image)
+        imwrite(fname, image.astype(np.uint8))
+

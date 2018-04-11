@@ -281,7 +281,7 @@ class Model_data(object):
         if self.from_h5:
             bag_size = self.bag_size
             self.bag_size = 1
-            images = [self._handle_images(images) for i in range(bag_size)]
+            images = [self._handle_images(images) for i in range(max(len(images), bag_size))]
             annotations = np.concatenate([anno for _, anno in images], axis=0)
             images = np.concatenate([image for image, _ in images], axis=0)
 
@@ -328,6 +328,7 @@ class model_data_batcher:
         self.batchStopIndex = 0
         self.max_n = max_n
         self.reset_n()
+        self.epoch = 0
 
     def reset_n(self):
         self.n = min(self.max_n, self.data[0].shape[0])
@@ -357,6 +358,7 @@ class model_data_batcher:
             return self._next_batch()
         except StopIteration:
             self.reset_iter()
+            self.epoch += 1
             return self._next_batch()
 
 

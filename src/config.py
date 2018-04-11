@@ -1,6 +1,6 @@
 import h5py
 
-data_path = "/mnt/orico/PANCREAS/"
+data_path = "/home/dpj482/data/"
 save_path = "models/"
 tiff_path = data_path + "tiffs/"
 imag_path = "images/"
