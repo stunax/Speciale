@@ -9,6 +9,7 @@ df_info_path = data_path + "df_info.h5"
 tiff_pivot = 80
 annotations_path = data_path + "Annotations from Alex 2017/"
 annotations_path_c = data_path + "new_labels/"
+kmeans_path = data_path + "kmeans_labels/"
 annotation_groupname = "anno"
 second_annotaion_groupname = "sec_anno"
 c_anno_groupname = "canno"
