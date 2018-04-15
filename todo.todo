@@ -1,8 +1,16 @@
+I dag:
+ ☐ loaded allerede lavet data ind.
+ ☐ lav hent n billeder der ikke er annoteret endnu.
+ ☐ start og debug testrun af simple_cnn
+ ☐ annoter billeder!!!!!
+
 bugs:
   ✔ Unitialized accuracy? @critical @done (18-03-07 14:01)
 
 python:
   ✔ Lav billeder af filled test @done (18-03-27 13:30)
+  pretrænet mnist:
+    ☐ Brug pretrænet capsule net.
   simple_cnn:
     ☐ Test det
       ☐ Mnist

@@ -9,9 +9,11 @@ h5s = {str(fn): h5py.File(config.data_path + str(fn) + ".h5", "a")
 
 
 for full_fname in glob.glob(config.annotations_path_c):
-    # fname 4_023_19.png
+    # fname 4.h5023_19*.png
     fname = full_fname.rsplit("/", 1)[1]
-    h5, fname = fname[:-4].split(".", 1)
+    # h5, fname = fname[:-4].split(".", 1)
+    h5 = fname[0]
+    fname = fname[4:10]
     fname = config.c_anno_groupname + fname
     if fname in h5s[h5]:
         continue
