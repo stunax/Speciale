@@ -1,5 +1,5 @@
 I dag:
- ☐ loaded allerede lavet data ind.
+ ✔ loaded allerede lavet data ind. @done (18-04-15 10:59)
  ☐ lav hent n billeder der ikke er annoteret endnu.
  ☐ start og debug testrun af simple_cnn
  ☐ annoter billeder!!!!!
