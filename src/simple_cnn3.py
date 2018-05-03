@@ -5,10 +5,11 @@ from model_data import Model_data
 from sklearn.model_selection import train_test_split
 from time import gmtime, strftime
 from mt_batcher import mt_batcher
+from numpy import mean
 
 
 # Training Parameters
-learning_rate = 0.0000001
+learning_rate = 0.00000001
 num_steps = 2000
 bag_size = 2
 batch_size = 128
@@ -16,10 +17,10 @@ batch_size = 128
 # Network Parameters
 num_classes = 3
 epochs = 300000
-val_freq = 100
+val_freq = 50
 dropout = 0.50  # Dropout, probability to drop a unit
 patch_size = (17, 17, 5)
-median_time = 2
+median_time = 0
 
 # Log parameters
 logs_path = '/tmp/tensorflow_logs/simple_cnn/'
@@ -27,14 +28,17 @@ run_name = strftime("%Y-%m-%d_%H-%M-%S", gmtime())
 # Create the neural network
 
 
-def conv_net(X, n_classes, dropout, reuse, is_training, k):
-    # x = tf.image.rot90(X, k=k)
-    x = X
+def conv_net(X, n_classes, dropout, reuse, is_training):
+
     # Define a scope for reusing the variables
     with tf.variable_scope('ConvNet', reuse=reuse):
 
+        # Normalize batch
+        normalized = tf.contrib.layers.batch_norm(
+            X, center=True, scale=True, is_training=is_training)
+
         # Convolution Layer with 32 filters and a kernel size of 5
-        conv1 = tf.layers.conv2d(x, 32, 5, activation=tf.nn.relu)
+        conv1 = tf.layers.conv2d(normalized, 32, 5, activation=tf.nn.relu)
         # Max Pooling (down-sampling) with strides of 2 and kernel size of 2
         conv1 = tf.layers.max_pooling2d(conv1, 2, 2)
 
@@ -91,7 +95,8 @@ def model_fn(train_features, train_labels, test_features, test_labels):
     # Evaluate the accuracy of the model
     with tf.variable_scope("Accuracy"):
         labels_1d = tf.argmax(test_labels, axis=1)
-        acc_op, _ = tf.metrics.accuracy(labels_1d, pred_classes)
+        acc_op = tf.reduce_mean(
+            tf.cast(tf.equal(labels_1d, pred_classes), tf.float32))
 
     # Create a summary to monitor cost tensor
     summary_train = tf.summary.scalar("loss_train", loss_op_train)
@@ -109,23 +114,25 @@ def end(train_batcher, test_batcher, sess):
     train_batcher.close(sess)
 
 
-def load_data():
+def load_data(sess):
 
     data_model = Model_data(
         patch_size, bag_size=bag_size,
-        from_h5=True, one_hot=True, median_time=median_time,
+        annotation_groupname=config.c_anno_groupname,
+        from_h5=True, one_hot=False, median_time=median_time,
         normalize_wieghtshare=True, augment=True)
     h5s = config.get_h5(
         annotation_name=config.c_anno_groupname, ignore_1_2=True)
 
     X_train, X_test = train_test_split(
         h5s, test_size=0.33, random_state=config.random_state)
+    print(X_train)
+    print(X_test)
 
-    # Prime numbers used
     X_train_batcher = data_model.as_batcher(
-        X_train, batch_size, batch_size * 307 * bag_size)
+        X_train, batch_size, 9999999999)
     X_test_batcher = data_model.as_batcher(
-        X_test, batch_size, batch_size * 179 * bag_size)
+        X_test, batch_size, 9999999999)
 
     train_batcher = mt_batcher(patch_size, X_train_batcher, batch_size)
     test_batcher = mt_batcher(patch_size, X_test_batcher, batch_size)
@@ -133,8 +140,8 @@ def load_data():
     train_X, train_y = train_batcher.make_queue()
     test_X, test_y = test_batcher.make_queue()
 
-    train_batcher.start_queuing()
-    test_batcher.start_queuing()
+    train_batcher.start_queuing(sess)
+    test_batcher.start_queuing(sess)
 
     return train_X, train_y, test_X, test_y, [train_batcher, test_batcher]
 
@@ -145,7 +152,7 @@ if __name__ == '__main__':
 
     with tf.Session() as sess:
 
-        train_X, train_y, test_X, test_y, batchers = load_data()
+        train_X, train_y, test_X, test_y, batchers = load_data(sess)
 
         # Build the Estimator
         loss_op_train, train_op, summary_train, \
@@ -160,18 +167,22 @@ if __name__ == '__main__':
         sess.run(tf.global_variables_initializer())
         sess.run(tf.local_variables_initializer())
 
-        losses = []
+        accuracies = []
         t = tqdm(range(epochs))
         for epoch in t:
+            if batchers[0].get_epoch() > 100:
+                break
             _, _, summa = sess.run(
                 [loss_op_train, train_op, summary_train])
 
             if epoch % val_freq == 0:
                 train_writer.add_summary(summa, epoch)
-                loss_val, _, summa = sess.run(
+                loss_val, acc_val, summa = sess.run(
                     [loss_op_test, acc_op, summary_test])
                 test_writer.add_summary(summa, epoch)
-                t.set_postfix(loss=loss_val)
-        end(*batchers, sess)
+                accuracies.append(acc_val)
+                t.set_postfix(loss=loss_val, accuracy=mean(
+                    accuracies[-10:]), epoch=batchers[0].get_epoch())
+        end(*batchers, sess=sess)
         sess.close()
         t.close()
