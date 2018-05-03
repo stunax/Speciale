@@ -127,7 +127,7 @@ def pred_image(x):
     pred = pred.reshape((1024, 1024))
     pred = cat_image_to_gray(pred)
     if np.sum(pred) == 0:
-        pred = pred.astype(np.unit8)
+        pred = pred.astype(np.uint8)
     imwrite(config.test_imag_path + h5s[1] + "_pred.png", pred)
     data, _ = data_model2.handle_images([h5s])
     data = data.reshape((1024, 1024)).astype(np.uint8)
