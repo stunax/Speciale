@@ -10,7 +10,7 @@ from helpers import cat_image_to_gray
 
 
 # Training Parameters
-learning_rate = 0.00001
+learning_rate = 0.0001
 num_steps = 2000
 bag_size = 4
 batch_size = 128
