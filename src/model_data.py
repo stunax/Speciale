@@ -281,7 +281,8 @@ class Model_data(object):
         if self.from_h5:
             bag_size = self.bag_size
             self.bag_size = 1
-            images = [self._handle_images(images) for i in range(max(len(images), bag_size))]
+            images = [self._handle_images(images)
+                      for i in range(max(len(images), bag_size))]
             annotations = np.concatenate([anno for _, anno in images], axis=0)
             images = np.concatenate([image for image, _ in images], axis=0)
 
@@ -337,19 +338,18 @@ class model_data_batcher:
         self.iter = self.data_model.as_iter(self.h5data)
         self.data = self.iter.__next__()
 
-    def _next_batch(self):
-        if self.batchStopIndex == self.n:
-            self.data = self.iter.__next__()
-            self.batchStartIndex = 0
-            self.batchStopIndex = 0
-            self.reset_n()
+    def next_iter(self):
+        self.data = self.iter.__next__()
+        self.batchStartIndex = 0
+        self.batchStopIndex = 0
+        self.reset_n()
 
-        self.batchStartIndex = self.batchStopIndex % self.n
-        self.batchStopIndex = min(
-            self.batchStartIndex + self.batchSize, self.n)
-        # X = self.data[0][self.batchStartIndex:self.batchStopIndex]
-        # y = self.data[1][self.batchStartIndex:self.batchStopIndex]
-        # return X, y
+    def _next_batch(self):
+        while self.batchStopIndex + self.batchSize >= self.n:
+            self.next_iter()
+
+        self.batchStartIndex = self.batchStopIndex
+        self.batchStopIndex = self.batchStartIndex + self.batchSize
         return [dat[self.batchStartIndex:self.batchStopIndex
                     ] for dat in self.data]
 

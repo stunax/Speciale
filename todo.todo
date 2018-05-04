@@ -1,14 +1,14 @@
 I dag:
- ✔ loaded allerede lavet data ind. @done (18-04-15 10:59)
- ☐ lav hent n billeder der ikke er annoteret endnu.
- ☐ start og debug testrun af simple_cnn
+ ☐ Kig på nærre billeder
+ ☐ Undersøg hvorfor loss aldrigt falder under 0.69?
+ ☐ Prøv endnu simplere netværk
+ ☐ Sæt rapport op.
+   ☐ Overordnede punkter.
  ☐ annoter billeder!!!!!
 
 bugs:
-  ✔ Unitialized accuracy? @critical @done (18-03-07 14:01)
 
 python:
-  ✔ Lav billeder af filled test @done (18-03-27 13:30)
   pretrænet mnist:
     ☐ Brug pretrænet capsule net.
   simple_cnn:
@@ -19,5 +19,19 @@ python:
     ☐ Test på meget lidt data
     ☐ Test at det virker på mnist
   multi threaded data load:
-    ✔ Lave multithread batcher @done (18-03-27 13:30)
-      https://stackoverflow.com/questions/5324718/python-returning-data-from-a-threaded-def
+
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+ ✔ start og debug testrun af simple_cnn3 @done (18-05-01 10:44) @project(I dag)
+ ✔ genkør lav kmeans @done (18-05-01 10:44) @project(I dag)
+ ✔ Start langsom simple_cnn hvis ikke den anden virker @done (18-04-16 13:12) @project(I dag)
+ ✔ Kører @done (18-04-16 10:58) @project(I dag)
+ ✔ kører @done (18-04-15 12:22) @project(I dag)
+ ✔ slet filer i mappen @done (18-04-15 12:21) @project(I dag)
+ ✔ lav hent n billeder der ikke er annoteret endnu. @done (18-04-15 12:21) @project(I dag)
+ ✔ loaded allerede lavet data ind. @done (18-04-15 10:59) @project(I dag)
+ ✔ Lave multithread batcher @done (18-03-27 13:30) @project(python / multi threaded data load)
+  https://stackoverflow.com/questions/5324718/python-returning-data-from-a-threaded-def
+ ✔ Lav billeder af filled test @done (18-03-27 13:30) @project(python)
+ ✔ Unitialized accuracy? @critical @done (18-03-07 14:01) @project(bugs)
+  
