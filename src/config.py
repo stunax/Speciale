@@ -1,9 +1,10 @@
 import h5py
 
 data_path = "/home/dpj482/data/"
-save_path = "models/"
+save_path = data_path + "models/"
 tiff_path = data_path + "tiffs/"
-imag_path = "images/"
+imag_path = data_path + "images/"
+test_imag_path = data_path + "test_images/"
 rerun_name = "second"
 df_info_path = data_path + "df_info.h5"
 tiff_pivot = 80
@@ -61,6 +62,8 @@ def get_h5(annotation_name=annotation_groupname, ignore_1_2=False):
 
     for h5f in h5files:
         h5f = h5py.File(h5f, 'r+')
-        X.extend([(h5f, df)
-                  for df in h5f.keys() if annotation_name + df in h5f])
+        X.extend(
+            [(h5f, df)
+             for df in h5f.keys() if annotation_name + df in h5f and
+             len(df) == 6])
     return X

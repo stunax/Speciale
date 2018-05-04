@@ -17,8 +17,7 @@ for full_fname in glob.glob(config.annotations_path_c + "*.png"):
     fname = config.c_anno_groupname + fname
     if fname in h5:
         h5.__delitem__(fname)
-    else:
-        print (fname, h5)
-        image = imread(full_fname)
-        annotation = read_tiff.get_mask(image)
-        h5.create_dataset(fname, data=annotation)
+    print (fname, h5)
+    image = imread(full_fname)
+    annotation = read_tiff.get_mask(image)
+    h5.create_dataset(fname, data=annotation)

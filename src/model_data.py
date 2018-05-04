@@ -16,11 +16,11 @@ class Model_data(object):
     def __init__(
         self, kernel_size, step=(1, 1, 1), border="same",
             debug=False, reshape=True, preprocess=False, bag_size=4,
-            flat_features=False, one_hot=True,
+            flat_features=False, one_hot=False,
             from_h5=False, remove_unlabeled=True, median_time=0,
             annotation_groupname=config.annotation_groupname,
             histogram=0, normalize_wieghtshare=False,
-            augment=False):
+            augment=False, negative=-1):
         self.debug = debug
         self.kernelsize = kernel_size
         self.step = step
@@ -39,6 +39,7 @@ class Model_data(object):
             [3], sparse=False).fit(np.arange(3).reshape((3, 1)))
         self.normalize_wieghtshare = normalize_wieghtshare
         self.augment = augment
+        self.negative = negative
 
     def bordersize(self):
         return (
@@ -71,8 +72,8 @@ class Model_data(object):
         Handles preprocessing of individual images
         Images are still 3d at this point'''
         # Return image, if no std
-        # if np.any(np.isclose(image.std(axis=axis), 0)):
-        #     return image
+        if np.any(np.isclose(image.std(), 0)):
+            return image
 
         # Always normalize image around 0 with 1 std
         image = image.astype(np.float)
@@ -232,7 +233,8 @@ class Model_data(object):
             new_images += self.get_rotations_2d(
                 images[i].reshape(
                     images.shape[2:-1]), self.kernelsize)
-            new_annots += [annotations[i].reshape((1, 3))] * 4
+            new_annots += [annotations[i].reshape(
+                (1,) + annotations[i].shape)] * 4
         shuffle(new_images)
         shuffle(new_annots)
         new_images = np.concatenate(new_images, axis=0)
@@ -257,8 +259,8 @@ class Model_data(object):
             images = self.histogram_features(images)
 
         if annotations is not None and annotations:
-            annotations = self.concat_images(
-                annotations).ravel().astype(np.int)
+            annotations = self.concat_images(annotations)
+            annotations = annotations.ravel().astype(np.int)
             # # Remove entries, with 0 class
             if self.remove_unlabeled:
                 mask = (annotations != 0)
@@ -267,8 +269,13 @@ class Model_data(object):
                 if self.normalize_wieghtshare:
                     images, annotations = self.do_normalize_wieghtshare(
                         images, annotations)
+            if self.negative != -1:
+                annotations[annotations == -1] = self.negative
+
             if self.one_hot:
-                annotations[annotations == -1] = 2
+                # Make this change in case it's not done
+                if self.negative == -1:
+                    annotations[annotations == -1] = 2
                 annotations = self.one_hot_encoder.transform(
                     annotations.reshape(annotations.shape + (1,)))
 
@@ -359,7 +366,7 @@ class model_data_batcher:
         except StopIteration:
             self.reset_iter()
             self.epoch += 1
-            return self._next_batch()
+            return self.next_batch()
 
 
 if __name__ == "__main__":
