@@ -17,8 +17,10 @@ c_anno_groupname = "canno"
 
 groupname_format = "%s_%s"
 
+batch_size = 128
 random_state = 1337
 bag_sizes = [5]
+patch_size = (17, 17, 5)
 
 kernel_size = [(5, 5, 1)]
 # clust_kernel_size = [(9, 9, 1), (9, 9, 3), (9, 9, 5)]
