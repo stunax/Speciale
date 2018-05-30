@@ -1,4 +1,5 @@
 import h5py
+from time import gmtime, strftime
 
 data_path = "/home/dpj482/data/"
 save_path = data_path + "models/"
@@ -18,18 +19,40 @@ c_anno_groupname = "canno"
 
 groupname_format = "%s_%s"
 
+# normalize weightshare config
+find_close_group = 5
+
+# Experimental setup
+learning_rate = 0.001
+num_steps = 2000
+max_epochs = 100
 batch_size = 128
 random_state = 1337
-bag_sizes = [5]
-patch_size = (17, 17, 5)
+bag_size = 1
+patch_size = (11, 11, 3)
+num_classes = 2
+dropout = 0.3  # Dropout, probability to drop a unit
+
+# keras generator options
+len_settings = 5000 * bag_size
+max_queue_size = len_settings * 3
+
+# tensorboard options
+histogram_freq = 0
+
+# Log parameters
+logs_path = '/tmp/tensorflow_logs/'
+run_name = strftime("%Y-%m-%d_%H-%M-%S", gmtime())
+
+# Preprocessing parameters
+normalize_input = True
+median_time = 0
 
 kernel_size = [(5, 5, 1)]
 # clust_kernel_size = [(9, 9, 1), (9, 9, 3), (9, 9, 5)]
 clust_kernel_size = [(5, 5, 1), (5, 5, 3)]
 # bag_sizes = [1, 5, 7]
 
-# kernel_size = [(1, 1, 1), (5, 5, 1), (3, 3, 1), (7, 7, 1), (5, 5, 3)]
-median_filter = range(0, 3)
 image_size = (1024, 1024)  # Image size and channel amount.
 nchannels = 1
 true_percentage = .20650622591164353
