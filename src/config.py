@@ -6,6 +6,8 @@ save_path = data_path + "models/"
 tiff_path = data_path + "tiffs/"
 imag_path = data_path + "images/"
 test_imag_path = data_path + "test_images/"
+weights_path = data_path + 'model_weights/%s_%i_%i_%i_weights.h5'
+results_path = data_path + "result.csv"
 rerun_name = "second"
 df_info_path = data_path + "df_info.h5"
 tiff_pivot = 80
@@ -23,18 +25,19 @@ groupname_format = "%s_%s"
 find_close_group = 5
 
 # Experimental setup
-learning_rate = 0.001
+learning_rate = 0.0001
 num_steps = 2000
 max_epochs = 100
 batch_size = 128
 random_state = 1337
-bag_size = 1
-patch_size = (11, 11, 3)
+bag_size = 2
+patch_size = (16, 16, 5)
 num_classes = 2
 dropout = 0.3  # Dropout, probability to drop a unit
 
 # keras generator options
-len_settings = 5000 * bag_size
+use_saved_weights = False
+len_settings = int(30000 / batch_size) + 1
 max_queue_size = len_settings * 3
 
 # tensorboard options
@@ -90,3 +93,10 @@ def get_h5(annotation_name=annotation_groupname, ignore_1_2=False):
              for df in h5f.keys() if annotation_name + df in h5f and
              len(df) == 6])
     return X
+
+
+def print_to_result(Semisupervised, normalized, median_filter, loss, accuracy):
+    string = "%s,%s,%i,%f,%f\n" % (
+        Semisupervised, normalized, median_filter, loss, accuracy)
+    with open(results_path, "a") as f:
+        f.write(string)
