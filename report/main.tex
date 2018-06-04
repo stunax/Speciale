@@ -1,0 +1,99 @@
+% ===== IMPORTANT FLAG(S) =====
+% Do you want to mark that this is a draft paper?
+%\newif\ifpaperdraft\paperdraftfalse % FALSE
+\newif\ifpaperdraft\paperdrafttrue  % TRUE
+
+% Do you want the KU english front page
+%\newif\ifpaperku\paperkufalse % FALSE
+\newif\ifpaperku\paperkutrue  % TRUE
+
+% =============================
+
+% The document class
+\documentclass{gen-report} % Uses the gen-report custom super awesome class (see gen-report.cls for content)
+
+% The title content
+\title{
+    \vspace{3cm} % To move the titel closer to the center of the front page
+    \huge{Segmenting tubular structures in the pancreas using deep learning}
+}
+\author{
+  Møllgaard, Christian Edsberg\\
+  \texttt{dpj482@alumni.ku.dk}
+}
+\date{\monthname[\month] \the\year }
+
+% =============================
+\begin{document}
+\pagenumbering{gobble} % Remove pagenumbering for front page and table of contents
+
+% ===== FRONT PAGE =====
+% Use the KU front page or not
+% For DTU, use your own official report XD (KU does not have one FeelsBadMan...)
+% http://www.cee.elektro.dtu.dk/education/report_publishing
+\ifpaperku
+  \AddToShipoutPicture*{\put(0,602){\includegraphics*[viewport=0 600 700 1600]{resources/ku-farve}}} % Graphics
+  \AddToShipoutPicture*{\put(0,0){\includegraphics*{resources/ku-en}}} % Upper left hand corner name
+\else
+  % Nothing - just plain front page
+\fi
+
+\maketitle
+
+\thispagestyle{plain} % Remove footers and other things, but keep header warning if draft
+% (you change this in gen-report.cls, line 29)
+
+% ===== SECOND PAGE =====
+% Second page is table of contents
+\clearpage
+
+\tableofcontents 
+
+\thispagestyle{plain} % Remove footers and other things, but keep header warning if draft
+% (you change this in gen-report.cls, line 29)
+
+% -----------------------------------------------------------------------------
+
+% ===== ACTUAL REPORT STARTS HERE =====
+% For every section, create a dedicated file and import it with \input
+\clearpage
+
+
+\input{contract}
+
+\newpage
+\pagenumbering{arabic} % Restart pagenumbering
+\input{abstract}
+
+\input{Introduction}
+
+\input{methods}
+
+\input{implementation}
+
+\input{data}
+
+\input{experiments}
+
+\input{results}
+
+\input{discussion}
+
+
+% -----------------------------------------------------------------------------
+\clearpage
+
+% ===== REFERENCES/BIBLIOGRAPHY =====
+\bibliographystyle{unsrt} % Formats like plain but orders them by reference and not author name
+% for more styles see: https://en.wikibooks.org/wiki/LaTeX/Bibliography_Management#Bibliography_styles
+\bibliography{references}
+
+% -----------------------------------------------------------------------------
+\clearpage
+
+% ===== APPENDICIES =====
+\appendix
+\section{test1}
+\section{test2}
+
+\end{document}

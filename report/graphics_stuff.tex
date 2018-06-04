@@ -1,0 +1,38 @@
+\clearpage
+\section{Graphics Stuff}
+So... Here are some graphics things which are... nifty, some you know and some you dont.
+
+\subsection{figure import}
+so your basic figure thingy
+\begin{figure}[H]
+	\includegraphics[scale=1]{img/swrh.jpg}
+	\centering
+	\caption{Fanfucking-tastic anime, haters can eat shit...}
+	\label{figure:snow_white_with_red_hair}
+\end{figure}
+In the text afterwards, you can reference the figure by the set label. REMEMBER, to start the label with the type of thing that
+is attatched to it, so for figure write something like \text{label{figure:snow\_white\_with\_red\_hair}} then if you had a table
+with the same topic you can call them the same! Also, now when you are referencing, for example my super fantastic
+\autoref{figure:snow_white_with_red_hair}. Use "autoref" and not just "ref", it will include the object type also, which also works with
+other labels like sections, go read \autoref{section:introduction}, I dare you.
+
+\subsection{ANIMATIONS!!!!}
+OH BOY! YAYAYAYYYAYAYAYAYAYYY RAAAAAUUUULLLLL.\\
+I love this shit... so we can acturally make animations in this bitch XD
+
+You will need some gif you want to become embedded in the pdf, then, use some method or software to split
+that gif into individual frames and put it in a folder. All images must have the same name but with a forth running number afterwards.
+I have a unix based system, so I used "convert -coalesce name.gif name.png", and now, in the folder of the gif it will but the images
+named in this case "name-x.png".
+\begin{figure}[H]
+	\animategraphics[loop,autoplay,width=1\linewidth,poster=7]{12}{img/gif1/emanga-}{0}{23}
+	\centering
+	\caption{Eromanga sensei was a masterpiece, no joke... I luved it. Everyone else are BAKAS! especially senpais...}
+	\label{gif:eromanga_sensei}
+\end{figure}
+So, its technically a "figure", and you have a lot of different options for the "animatedgraphics" instead of "includegraphics".
+Most importantly, set "loop" so that it always loops, "autoplay" so that it starts when the pdf is opened, and "poster=x" which
+set the image which is displayed if the pdf is open in a program which cannot play the gif. (in this case I set it to 7)
+
+ONE PROBLEM, only in supported pdf viewers can you see the glory which is animated image... so, at least Adope Reader.
+My point is, if it enhanced the experience, just put in the gif, even if it takes up more space XD
