@@ -1,24 +1,55 @@
 I dag:
- ☐ Kig på nærre billeder
- ☐ Undersøg hvorfor loss aldrigt falder under 0.69?
- ☐ Prøv endnu simplere netværk
- ☐ Sæt rapport op.
-   ☐ Overordnede punkter.
- ☐ annoter billeder!!!!!
+
+
+Rapport:
+  ☐ Introduction
+    ☐ ??
+  ✔ Data @due(18-06-07 12:06) @done (18-06-11 14:02)
+   ✔ Overblik @due(18-06-07 12:05) @done (18-06-07 16:48)
+   ✔ data udeladt @due(18-06-07 12:05) @done (18-06-07 16:54)
+   ✔ Originale labels passer ikke? @due(18-06-07 12:05) @done (18-06-07 16:54)
+   ✔ Nære labels @due(18-06-07 12:05) @done (18-06-13 10:01)
+  ☐ Methods
+    ☐ NN
+      ✔ generelt @due(18-06-08 12:57) @done (18-06-08 12:19)
+      ☐ convolution @due(18-06-13 12:19)
+      ✔ Mini batching @due(18-06-08 13:19) @done (18-06-08 12:20)
+      ✔ dropout @done (18-06-09 09:45)
+      ✔ RELU @done (18-06-09 09:45)
+      ✔ softmax @done (18-06-09 09:47)
+      ✔ Autoencoder @due(18-06-10 09:47) @done (18-06-09 10:26)
+      ✔ Loss functions @due(18-06-10 09:47) @done (18-06-09 10:26)
+      ✔ ADAM @due(18-06-12 11:51) @done (18-06-11 13:45)
+      ✔ Early stopping @due(18-06-12 11:33) @done (18-06-11 13:45)
+      ✔ Learning rate decay @due(18-06-12 11:33) @done (18-06-11 13:45)
+    ✔ Preprocessing @done (18-06-09 11:09)
+     ✔ Normalization @done (18-06-09 11:09)
+     ✔ Median time filter @done (18-06-09 11:09)
+  ✔ Implementation @done (18-06-11 14:01)
+   ✔ Data pipeline @done (18-06-11 11:34)
+   ✔ Simple network @done (18-06-11 12:25)
+   ✔ Autoencoder @done (18-06-11 12:25)
+  ✔ Experiments @done (18-06-11 15:39)
+    ✔ Før efter nærhed @done (18-06-11 15:39)
+    ✔ supervised @done (18-06-11 15:39)
+    ✔ Semi supervised @done (18-06-11 15:39)
+    ✔ Preprocesserings experimenter @done (18-06-11 15:39)
+  ☐ results
+   ☐ Nærheds resultater
+   ☐ Supervised vs semi supervised
+   ☐ Preprocessing
+  ☐ discussion
+    ☐ What can be done better
+    ☐ future work
+      ☐ More data
+      ☐ New data pipeline
 
 bugs:
+ ✘ Autoencoder konvergerer ikke @cancelled (18-06-08 09:38)
+
 
 python:
-  pretrænet mnist:
-    ☐ Brug pretrænet capsule net.
-  simple_cnn:
-    ☐ Test det
-      ☐ Mnist
-    ☐ Accuracy på test sæt
-  capsule:
-    ☐ Test på meget lidt data
-    ☐ Test at det virker på mnist
-  multi threaded data load:
+
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:

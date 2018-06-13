@@ -7,11 +7,8 @@ from skimage.util.shape import view_as_windows
 from sklearn.preprocessing import OneHotEncoder
 from scipy import ndimage
 from scipy import misc
-from multiprocessing.dummy import Pool as ThreadPool
-from concurrent.futures import ThreadPoolExecutor
 import time
 import gc
-import psutil
 
 axis = (0, 1, 2)
 
