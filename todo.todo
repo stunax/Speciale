@@ -1,9 +1,17 @@
 I dag:
+ ✔ buy stuff @done (18-06-21 10:07)
+ ☐ Skriv trainable parameters ind
+ ✔ Fix referencer @done (18-06-21 12:01)
+ ☐ Lav billeder af model struktur
+ ☐ rewrite Introduction
+ ☐ Near sampling results
+ ☐ Lav billeder for rapport
 
 
 Rapport:
-  ☐ Introduction
-    ☐ ??
+  ☐ Introduction 
+    ☐ Biologi @due(18-06-22 09:34)
+    ☐ Deep learning for vision @due(18-06-22 09:34)
   ✔ Data @due(18-06-07 12:06) @done (18-06-11 14:02)
    ✔ Overblik @due(18-06-07 12:05) @done (18-06-07 16:48)
    ✔ data udeladt @due(18-06-07 12:05) @done (18-06-07 16:54)
@@ -12,7 +20,7 @@ Rapport:
   ☐ Methods
     ☐ NN
       ✔ generelt @due(18-06-08 12:57) @done (18-06-08 12:19)
-      ☐ convolution @due(18-06-13 12:19)
+      ☐ convolution @due(18-06-17 12:19)
       ✔ Mini batching @due(18-06-08 13:19) @done (18-06-08 12:20)
       ✔ dropout @done (18-06-09 09:45)
       ✔ RELU @done (18-06-09 09:45)
@@ -28,16 +36,18 @@ Rapport:
   ✔ Implementation @done (18-06-11 14:01)
    ✔ Data pipeline @done (18-06-11 11:34)
    ✔ Simple network @done (18-06-11 12:25)
+     ☐ visualiser parametre @due(18-06-22 09:40)
    ✔ Autoencoder @done (18-06-11 12:25)
+     ☐ visualiser parametre @due(18-06-22 09:40)
   ✔ Experiments @done (18-06-11 15:39)
     ✔ Før efter nærhed @done (18-06-11 15:39)
     ✔ supervised @done (18-06-11 15:39)
     ✔ Semi supervised @done (18-06-11 15:39)
     ✔ Preprocesserings experimenter @done (18-06-11 15:39)
   ☐ results
-   ☐ Nærheds resultater
-   ☐ Supervised vs semi supervised
+   ☐ Nærheds resultater @due(18-06-22 00:33)
    ☐ Preprocessing
+   ☐ Supervised vs semi supervised
   ☐ discussion
     ☐ What can be done better
     ☐ future work

@@ -22,6 +22,7 @@
 \typeout{Available at... well... I guess you got it somehow to read this?}
 \typeout{}
 
+
 % -----------------------------------------------------------------------------
 % GENERAL FOR THE DOCUMENT/VARIABLES WHICH CAN BE CHANGED
 
