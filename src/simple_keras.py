@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten, LeakyReLU
+from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Convolution2D, MaxPooling2D
 from keras import regularizers
 from keras.optimizers import Adam
@@ -17,22 +17,19 @@ augment = True
 def make_model(args):
 
     model = Sequential()
-    model.add(Convolution2D(32, (3, 3),  # activation='relu',
-                            input_shape=config.patch_size,
+    model.add(Convolution2D(32, (3, 3), activation='relu',
+                            input_shape=config.patch_size_simple,
                             kernel_regularizer=regularizers.l2(0.01)))
-    model.add(LeakyReLU(alpha=leaky_alpha))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(args.dropout))
-    model.add(Convolution2D(64, (3, 3),
+    model.add(Convolution2D(64, (3, 3), activation='relu',
                             kernel_regularizer=regularizers.l2(0.01)))
-    model.add(LeakyReLU(alpha=leaky_alpha))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(args.dropout))
 
     model.add(Flatten())
-    # , activation='relu'))
-    model.add(Dense(128, kernel_regularizer=regularizers.l2(0.01)))
-    model.add(LeakyReLU(alpha=leaky_alpha))
+    model.add(Dense(128, kernel_regularizer=regularizers.l2(
+        0.01), activation='relu',))
     model.add(Dropout(args.dropout))
     model.add(Dense(config.num_classes, activation='softmax',
                     kernel_regularizer=regularizers.l2(0.01)))
@@ -53,11 +50,13 @@ if __name__ == '__main__':
                         help="Save weights by TensorBoard")
     parser.add_argument(
         '--run_name', default='simple_keras/' + config.run_name)
-    parser.add_argument('--learning_rate', default=config.learning_rate,
+    parser.add_argument('--learning_rate', default=config.learning_rate * 10,
                         type=float, help="Initial learning rate")
     parser.add_argument('--normalize', default=config.normalize_input,
                         type=bool, help="normalize images?")
     parser.add_argument('--median_time', default=config.median_time, type=int,
+                        help="Median time filter the data?")
+    parser.add_argument('--close_size', default=config.close_size, type=int,
                         help="Median time filter the data?")
     parser.add_argument('--dropout', default=config.dropout, type=int,
                         help="Dropout")
@@ -65,6 +64,9 @@ if __name__ == '__main__':
     # print(args)
 
     model = make_model(args)
+
+    weights_path = config.weights_path % (
+        "simple", args.normalize, args.median_time, augment, args.close_size)
 
     tb = callbacks.TensorBoard(
         log_dir=config.logs_path + args.run_name,
@@ -74,16 +76,16 @@ if __name__ == '__main__':
     earlyStopping = callbacks.EarlyStopping(
         monitor='val_loss', patience=5, verbose=0, mode='auto')
     checkpoint = callbacks.ModelCheckpoint(
-        '/home/dpj482/data/model_weights/simple_%i_%i_weights.h5' % (
-            args.normalize, args.median_time),
+        weights_path,
         monitor='val_loss', verbose=1, save_best_only=True, mode='min')
 
     data_model = Model_data(
-        config.patch_size, bag_size=config.bag_size,
+        config.patch_size_simple, bag_size=config.bag_size,
         preprocess=args.normalize,
         annotation_groupname=config.c_anno_groupname,
         from_h5=True, one_hot=True, median_time=args.median_time,
-        normalize_wieghtshare=True, augment=augment, negative=0)
+        normalize_wieghtshare=True, augment=augment, negative=0,
+        prioritize_close_background=args.close_size)
     data_model2 = Model_data(
         (1, 1, 1), bag_size=1,
         annotation_groupname="",
@@ -97,14 +99,13 @@ if __name__ == '__main__':
     X_train, X_val = train_test_split(
         X_train, test_size=0.2, random_state=config.random_state)
 
-    weights_path = config.weights_path % (
-        "simple", args.normalize, args.median_time, augment)
+    model.summary()
 
     if config.use_saved_weights and os.path.isfile(weights_path):
         print("loading weights")
         model.load_weights(weights_path)
-    else:
 
+    if config.train:
         X_train_batcher = data_model.as_batcher(
             X_train, config.batch_size, 9999999)  # config.len_settings)
         X_val_batcher = data_model.as_batcher(
@@ -140,9 +141,10 @@ if __name__ == '__main__':
     config.print_to_result("False", str(args.normalize),
                            args.median_time, test_res[0], test_res[1])
 
+    debug.test_model(model, data_model, args, "simple")
+
     # data_model3 = data_model.get_pred_version()
 
     # nears = debug.get_near2(X_val, model, data_model3, data_model2)
     # for x in nears:
-    #     debug.pred_image2(x)
-    # map(debug.pred_image2, nears)
+    #     debug.pred_image2(x, args)

@@ -7,11 +7,8 @@ from skimage.util.shape import view_as_windows
 from sklearn.preprocessing import OneHotEncoder
 from scipy import ndimage
 from scipy import misc
-from multiprocessing.dummy import Pool as ThreadPool
-from concurrent.futures import ThreadPoolExecutor
 import time
 import gc
-import psutil
 
 axis = (0, 1, 2)
 
@@ -409,7 +406,7 @@ class Model_data(object):
         res = []
         for i in range(len(annotations)):
             annotation = annotations[i]
-            annotation[annotation == -1] = self.negative
+            annotation[annotation < 0] = self.negative
             res.append(annotation)
         return res
 
@@ -452,12 +449,12 @@ class Model_data(object):
             # annotations = annotations.ravel().astype(np.int)
 
             if self.negative != -1:
-                annotations[annotations == -1] = self.negative
+                annotations[annotations < 0] = self.negative
 
             if self.one_hot:
                 # Make this change in case it's not done
                 if self.negative == -1:
-                    annotations[annotations == -1] = 0
+                    annotations[annotations < 0] = 0
                 annotations = self.one_hot_encoder.transform(annotations)
 
         if self.histogram and self.reshape and self.flat_features:
@@ -496,6 +493,7 @@ class Model_data(object):
         res.remove_unlabeled = False
         res.bag_size = 1
         res.one_hot = False
+        res.samples = 0
         return res
 
 

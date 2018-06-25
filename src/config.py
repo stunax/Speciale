@@ -6,7 +6,7 @@ save_path = data_path + "models/"
 tiff_path = data_path + "tiffs/"
 imag_path = data_path + "images/"
 test_imag_path = data_path + "test_images/"
-weights_path = data_path + 'model_weights/%s_%i_%i_%i_weights.h5'
+weights_path = data_path + 'model_weights/%s_%i_%i_%i_%i_weights.h5'
 results_path = data_path + "result.csv"
 rerun_name = "second"
 df_info_path = data_path + "df_info.h5"
@@ -25,20 +25,23 @@ groupname_format = "%s_%s"
 find_close_group = 5
 
 # Experimental setup
-learning_rate = 0.0001
+learning_rate = 0.0000005
+close_size = 20
 num_steps = 2000
 max_epochs = 100
 batch_size = 128
 random_state = 1337
-bag_size = 2
-patch_size = (16, 16, 5)
+bag_size = 6
+patch_size = (32, 32, 5)
+patch_size_simple = (12, 12, 5)
 num_classes = 2
 dropout = 0.3  # Dropout, probability to drop a unit
 
 # keras generator options
-use_saved_weights = False
+use_saved_weights = True
+train = True
 len_settings = int(30000 / batch_size) + 1
-max_queue_size = len_settings * 3
+max_queue_size = len_settings * 6
 
 # tensorboard options
 histogram_freq = 0
@@ -48,7 +51,7 @@ logs_path = '/tmp/tensorflow_logs/'
 run_name = strftime("%Y-%m-%d_%H-%M-%S", gmtime())
 
 # Preprocessing parameters
-normalize_input = True
+normalize_input = False
 median_time = 0
 
 kernel_size = [(5, 5, 1)]
@@ -59,6 +62,9 @@ clust_kernel_size = [(5, 5, 1), (5, 5, 3)]
 image_size = (1024, 1024)  # Image size and channel amount.
 nchannels = 1
 true_percentage = .20650622591164353
+
+test_image = '057_12'
+
 
 lsm_images = [
     ("LI 2015-07-12 MIPGFP_Muc1_40x_2015_07_14__pos1.ims", "1", 40, 159),

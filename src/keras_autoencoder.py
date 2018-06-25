@@ -11,19 +11,20 @@ import config
 from model_data import Model_data
 import os.path
 import gc
+import debug
 
 encoded_size = 128
-patch_size = (32, 32, 5)
-image_samples = 300000
+# patch_size = (32, 32, 5)
+image_samples = 30000
 onehot = True
-augment = False
+augment = True
 
 weights_path = config.weights_path
 
 
 def make_autoencoder_model(args):
 
-    input_img = Input(shape=patch_size)
+    input_img = Input(shape=config.patch_size)
     # encoder
     # input = 28 x 28 x 1 (wide and thin)
     drop1 = Dropout(args.dropout)(input_img)
@@ -37,28 +38,36 @@ def make_autoencoder_model(args):
     drop3 = Dropout(args.dropout)(pool2)
     conv3 = Conv2D(128, (3, 3), activation='relu', padding='same',
                    kernel_regularizer=regularizers.l2(0.01))(drop3)
+
     dense0 = Flatten()(conv3)
     drop4 = Dropout(args.dropout)(dense0)
     dense1 = Dense(1024, activation='relu',
                    kernel_regularizer=regularizers.l2(0.01))(drop4)
+    drop40 = Dropout(args.dropout)(dense1)
     encoded = Dense(encoded_size, activation='relu',
-                    kernel_regularizer=regularizers.l2(0.01))(dense1)
+                    kernel_regularizer=regularizers.l2(0.01))(drop40)
+    drop41 = Dropout(args.dropout)(encoded)
+
     # decoder
     dense2 = Dense(1024,
-                   kernel_regularizer=regularizers.l2(0.01))(encoded)
+                   kernel_regularizer=regularizers.l2(0.01))(drop41)
     reshape1 = Reshape((4, 4, 64))(dense2)
+    drop5 = Dropout(args.dropout)(reshape1)
     conv4 = Conv2D(128, (3, 3), activation='relu', padding='same',
-                   kernel_regularizer=regularizers.l2(0.01))(reshape1)
+                   kernel_regularizer=regularizers.l2(0.01))(drop5)
     up1 = UpSampling2D((2, 2))(conv4)
+    drop6 = Dropout(args.dropout)(up1)
     conv5 = Conv2D(64, (5, 5), activation='relu', padding='same',
-                   kernel_regularizer=regularizers.l2(0.01))(up1)
+                   kernel_regularizer=regularizers.l2(0.01))(drop6)
     up2 = UpSampling2D((2, 2))(conv5)
+    drop7 = Dropout(args.dropout)(up2)
     conv6 = Conv2D(32, (5, 5), activation='relu', padding='same',
-                   kernel_regularizer=regularizers.l2(0.01))(up2)
+                   kernel_regularizer=regularizers.l2(0.01))(drop7)
     up3 = UpSampling2D((2, 2))(conv6)
-    decoded = Conv2D(patch_size[-1], (5, 5),
+    drop8 = Dropout(args.dropout)(up3)
+    decoded = Conv2D(config.patch_size[-1], (5, 5),
                      activation=None, padding='same',
-                     kernel_regularizer=regularizers.l2(0.01))(up3)
+                     kernel_regularizer=regularizers.l2(0.01))(drop8)
 
     autoencoder = Model(input_img, decoded)
 
@@ -73,12 +82,15 @@ def make_predictor(args, ae):
     from_ae = ae.get_layer('dense_2').output
 
     drop4 = Dropout(args.dropout)(from_ae)
-    dense3 = Dense(64, activation='relu')(drop4)
+    dense3 = Dense(128, activation='relu',
+                   kernel_regularizer=regularizers.l2(0.01))(drop4)
     drop5 = Dropout(args.dropout)(dense3)
-    dense4 = Dense(32, activation='relu')(drop5)
+    dense4 = Dense(64, activation='relu',
+                   kernel_regularizer=regularizers.l2(0.01))(drop5)
     drop6 = Dropout(args.dropout)(dense4)
     output = Dense(config.num_classes**onehot,
-                   activation='softmax' if onehot else'sigmoid')(drop6)
+                   activation='softmax' if onehot else'sigmoid',
+                   kernel_regularizer=regularizers.l2(0.01))(drop6)
 
     predictor = Model(inputs=ae.input, outputs=output)
 
@@ -92,29 +104,36 @@ def make_predictor(args, ae):
     return predictor
 
 
-def train(model, data_model, h5s, args, n, callbacks, input_target):
+def train(model, data_model, h5s, args, n,
+          callbacks, input_target, weights_path):
     X_train, X_test = train_test_split(
         h5s, test_size=0.2, random_state=config.random_state)
     X_train, X_val = train_test_split(
         X_train, test_size=0.2, random_state=config.random_state)
 
-    X_train_batcher = data_model.as_batcher(
-        X_train, config.batch_size, 9999999, input_target=input_target,
-        wait_for_load=True)
-    X_val_batcher = data_model.as_batcher(
-        X_val, config.batch_size, 9999999, input_target=input_target,
-        wait_for_load=True)
+    if config.use_saved_weights and os.path.isfile(weights_path):
+        print("loading weights")
+        model.load_weights(weights_path)
 
-    model.fit_generator(
-        X_train_batcher, steps_per_epoch=n * len(X_train) / args.batch_size,
-        epochs=config.max_epochs, verbose=1,
-        callbacks=callbacks,
-        validation_data=X_val_batcher,
-        validation_steps=n * len(X_val) / args.batch_size,
-        class_weight=None,
-        max_queue_size=n / args.batch_size, workers=1,
-        use_multiprocessing=True, initial_epoch=0
-    )
+    if config.train:
+        X_train_batcher = data_model.as_batcher(
+            X_train, config.batch_size, 9999999, input_target=input_target,
+            wait_for_load=True)
+        X_val_batcher = data_model.as_batcher(
+            X_val, config.batch_size, 9999999, input_target=input_target,
+            wait_for_load=True)
+
+        model.fit_generator(
+            X_train_batcher,
+            steps_per_epoch=n * len(X_train) / args.batch_size,
+            epochs=config.max_epochs, verbose=1,
+            callbacks=callbacks,
+            validation_data=X_val_batcher,
+            validation_steps=n * len(X_val) / args.batch_size,
+            class_weight=None,
+            max_queue_size=n / args.batch_size, workers=1,
+            use_multiprocessing=False, initial_epoch=0
+        )
 
     X_test_batcher = data_model.as_batcher(
         X_test, config.batch_size, 9999999, input_target=input_target)
@@ -130,12 +149,7 @@ def train(model, data_model, h5s, args, n, callbacks, input_target):
 
 def train_encoder(model, args):
     ae_weights_path = weights_path % (
-        "ae", args.normalize, args.median_time, augment)
-
-    if config.use_saved_weights and os.path.isfile(ae_weights_path):
-        print("loading weights")
-        model.load_weights(ae_weights_path)
-        return
+        "ae", args.normalize, args.median_time, augment, args.close_size)
 
     checkpoint = callbacks.ModelCheckpoint(
         ae_weights_path,
@@ -147,27 +161,23 @@ def train_encoder(model, args):
     callbacks_list = [tb, lr_decay, earlyStopping, checkpoint]
 
     data_model = Model_data(
-        patch_size, bag_size=1,
+        config.patch_size, bag_size=config.bag_size,
         preprocess=args.normalize,
         annotation_groupname="", remove_unlabeled=False,
         from_h5=True, one_hot=False, median_time=args.median_time,
         normalize_wieghtshare=False, augment=False, negative=0,
-        samples=image_samples, ignore_annotations=True)
+        samples=image_samples, ignore_annotations=True,
+        prioritize_close_background=args.close_size)
     h5s = config.get_h5(
         annotation_name=config.c_anno_groupname, ignore_1_2=True)
 
-    train(model, data_model, h5s, args, image_samples, callbacks_list, True)
+    train(model, data_model, h5s, args, image_samples,
+          callbacks_list, True, ae_weights_path)
 
 
 def train_predictor(model, args):
     pred_weights_path = weights_path % (
-        "pred", args.normalize, args.median_time, augment)
-
-    # if False:  # use_saved_weights and os.path.isfile(pred_weights_path):
-    if config.use_saved_weights and os.path.isfile(pred_weights_path):
-        print("loading weights")
-        model.load_weights(pred_weights_path)
-        return
+        "pred", args.normalize, args.median_time, augment, args.close_size)
 
     checkpoint = callbacks.ModelCheckpoint(
         pred_weights_path,
@@ -178,25 +188,29 @@ def train_predictor(model, args):
         batch_size=args.batch_size, histogram_freq=config.histogram_freq)
     callbacks_list = [tb, lr_decay, earlyStopping, checkpoint]
 
-    n = 30000 * 4 ** augment
+    n = int(image_samples / 2 * 4 ** augment)
 
     data_model = Model_data(
-        patch_size, bag_size=config.bag_size,
+        config.patch_size, bag_size=config.bag_size,
         preprocess=args.normalize,
         annotation_groupname=config.c_anno_groupname,
-        prioritize_close_background=20,
         from_h5=True, one_hot=onehot, median_time=args.median_time,
-        normalize_wieghtshare=True, augment=augment, negative=0)
+        normalize_wieghtshare=True, augment=augment, negative=0,
+        samples=int(image_samples / 4),
+        prioritize_close_background=args.close_size)
     h5s = config.get_h5(
         annotation_name=config.c_anno_groupname, ignore_1_2=True)
 
     test_res = train(
-        model, data_model, h5s, args, n, callbacks_list, False)
+        model, data_model, h5s, args, n, callbacks_list,
+        False, pred_weights_path)
     # Semisupervised, normalized, median filter, loss, accuracy
     # print("True,%s,%i %%,%f,%f" % (
     #     str(args.normalized), args.median_time, test_res[0], test_res[1]))
     config.print_to_result("True", str(args.normalize),
                            args.median_time, test_res[0], test_res[1])
+
+    return data_model
 
 
 if __name__ == '__main__':
@@ -217,24 +231,28 @@ if __name__ == '__main__':
                         help="Median time filter the data?")
     parser.add_argument('--dropout', default=config.dropout, type=int,
                         help="Dropout")
+    parser.add_argument('--close_size', default=config.close_size, type=int,
+                        help="Median time filter the data?")
     args = parser.parse_args()
     # print(args)
 
     lr_decay = callbacks.LearningRateScheduler(
         schedule=lambda epoch: args.learning_rate * (0.8 ** epoch))
     earlyStopping = callbacks.EarlyStopping(
-        monitor='val_loss', patience=10, verbose=0, mode='auto')
+        monitor='val_loss', patience=5, verbose=0, mode='auto')
 
     autoencoder = make_autoencoder_model(args)
 
-    # autoencoder.summary()
+    autoencoder.summary()
 
     train_encoder(autoencoder, args)
     gc.collect()
 
     predictor = make_predictor(args, autoencoder)
 
-    # predictor.summary()
+    predictor.summary()
 
-    args.learning_rate = args.learning_rate * 100
-    train_predictor(predictor, args)
+    args.learning_rate = args.learning_rate * 1000
+    data_model = train_predictor(predictor, args)
+
+    debug.test_model(predictor, data_model, args, "semi")
