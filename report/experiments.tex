@@ -1,0 +1,47 @@
+\section{Experiments}\label{section:experiments}
+\todoyellow{Lav en intro?}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|} \todored{Get correct numbers}
+        Type & Trained parameters & Pretrained parameters \\ \hline
+        Simple network & mange & 0 \\ \hline
+        autoencoder & 4.594.949 & 0 \\ \hline
+        Semi supervised & \~10.000 & \~4 mil \\ \hline
+    \end{tabular}
+    \caption{Amount trainable weights for each estimator}
+    \label{fig:weight_matrix}
+\end{table}
+\subsection{Better sampling} % (fold)
+\label{sub:better_sampling}
+After early neural network structure testing, it was discovered that while loss looked great, the visual result did not look as good as the numbers showed.
+It was decided to see if we could sample better than random, to improve the visual results of the model.
+
+The areas that were hardest to improve was the difficult area around the tubular structure.
+The experiment consists of visiually comparing images before and after sampling data, prioritizing data around the tubular structure.
+As this data will be harder to predict, it is expected that the accuracy and loss will increase.
+% subsection better_sampling (end)
+
+\subsection{Simple convolution} % (fold)
+\label{sub:simple_convolution}
+This experiment is just to show that it is possible to achieve a result close to what is expected.
+It will not have to generalize to all the data, but merely work as a start for more elaborate experiments to come.
+% subsection simple_convolution (end)
+
+\subsection{Semi supervised convolution} % (fold)
+\label{sub:semi_supervised_convolution}
+
+Because of all the trouble with the data labels, an experiment to test the gain from utilizing the unlabeled data.
+It is expected that the model will generalize to unseen data, and to improve performance overall.
+
+The idea is to pretrain a big part of the neural network using an autoencoder, and then only train the last few layers using the labels provided.
+
+Both a visual result and a quantitive result is expected.
+% subsection semi_supervised_convolution (end)
+
+\subsection{Preprocessing} % (fold)
+\label{sub:preprocessing}
+The data originally have both a 3d image structure and a time axis.
+The time axis will not be directly used, so an experiment utilizing the time axis for preprocessing purposes will be needed.
+In addition an experiment to check if normalization will benefit prediction, is also desired.
+The results are to be compared quantitively.
+% subsection preprocessing (end)

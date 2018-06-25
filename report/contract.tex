@@ -1,0 +1,45 @@
+
+\section*{Contract} % (fold)
+\label{sec:contract}
+\subsection{description} % (fold)
+\label{sub:description}
+There is a biological hypotheses that during pancreatic differentiation, the
+structure of the tubular lumen network (in which the cells are situated)
+dictates which sorrounding cells are turning into beta cells.
+Finding these structures so they can be studied, is the first step in proving
+this hypothesis.
+For this analysis, five 3d films of the pancreas development have been recorded on
+mice, and have been annotated with some labels in preperation for this study.
+
+The purpose of this MSc project is to segment the tubular lumen network from
+the film using the deep learning library tensorflow.
+% section title (end)
+
+\subsection*{Project objectives and timeline} % (fold)
+\label{sec:project_goal}
+\begin{itemize}
+    \item Explore the data, and fix errors in the dataset\\
+    Deadline 15.3
+    \item Segment the images using a CNN with the given set of annotated labels.\\
+    Deadline 30.4
+    \item Try different preprocessing methods (Normalization, filtering) and record the impact.\\
+    Deadline 30.6
+    \item Try different semisupervised learning techniques to include unlabeled
+    data in analasys.\\
+    Deadline 15.5
+\end{itemize}
+% section project_goal (end)
+
+\subsection*{Learning goals}
+\begin{itemize}
+    \item Implement a CNN classifier for image segmentation using tensorflow
+    \item Implement Augmented CNN in a semisupervised fashion using the unlabeled data
+    \item Test improvements of segmentation when preprocessing
+\end{itemize}
+
+\subsection*{Risk} % (fold)
+\label{sec:risk}
+The data have already been shown to include some errors, so these have to be
+fixed or removed before segmentation.
+There is also a possibility, that more images needs annotations.
+% section risk (end)

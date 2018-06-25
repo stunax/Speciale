@@ -1,0 +1,83 @@
+\section{Implementation} % (fold)
+\label{sec:implementation}
+Everything was implemented using Python\cite{python} and packages for it.
+Manipulating images were done using scikit image \cite{scikit-image}.
+General handling of data after being imported from images were done using numpy \cite{numpy}.
+Some data preprocessing and dataset splits were done using scikit-learn\cite{scikit-learn}.
+The neural networks were done using keras\cite{keras}.
+To extract data from original formats to a single format, the bioformats\cite{bioformats} was used, and the data was saved in the h5 format\cite{hdf5}\todoyellow{Syntes kun det skal siges at de ligger i hdf5 format? Den anden del var en del af forrige projekt}
+
+\subsection{Data pipeline} % (fold)
+\label{sub:data_pipeline}
+The data pipeline is a Python class that handles all data loading and preprocessing, so the output can be fed directly into whatever model you want to use, as long as it predicts it's output pixel by pixel.
+It loads a the needed slices as simple two dimensional images.
+At this point it does time median filtering and slice normalization if needed.
+slices are then concatenates into the desired three dimensional blocks.
+The features are then turned into the patches that are fed into other models.
+
+It has a variety om other features, such as sampling, loading several images blocks etc.
+These are implemented to make sure that model creation is as simple as possible, as all data handling is done using this module.
+
+As a standard it samples data so annotations are balanced.
+In addition to this, it can prioritize background that is close to the tubular structures.
+The reason for this feature can be seen in the \textit{Labeling difficulties} section\ref{ssub:labeling_difficulties}.
+This is done by making a binary dilation using a binary mask of the annotated foreground.
+This is logicly anded together with a binary mask of annotated background.
+This mask of close background is then used to fill up to fifty percent of the background labels.
+
+Data augmentation is also done by this data model in the form of rotations.
+Due to technical difficulties, this is done in a really naive way.
+It is only able to provide ninety degree rotations.
+
+Per default it drops patches, where the label is zero as these are the unlabeled pixels.
+% subsection data_pipeline (end)
+
+\subsection{Neural network Models} % (fold)
+\label{sub:models}
+All neural network models are regularized with early stopping.
+It has a patience of 5 epochs to decrease validation loss, before being stopped prematurely.
+
+All models are also run with learning rate decay.
+There can be benefits to doing so, but here it is merely so the learning rate can be set too high in the begining, and then have a high decay, which means it after af few epochs will have a decent learning rate.
+
+They are all trained using the adam optimizer.
+All hidden layers use the RELU activation function.
+\subsubsection{Simple network} % (fold)
+\label{sub:simple_network}
+The simple network is very limited by a limited amount of training data.
+It has two convolutional layers, followed by two dense layers.
+The first one has 32 filters, and the second has 64 filters, and a kernel size of three times three.
+After each convolution, there is a maxpool layer with pool size two times two.
+The first dense layer has 128 neurons, and the second have two neurons.
+The last layer has the softmax activation function.
+
+Due to the lack of training data, the input patch size is rather small.
+it only uses a 9x9x5 patch size.
+Categorical crossentropy is used as the loss function.
+
+\todored{Trainable parameter report, and maybe visuals?}
+% subsection simple_network (end)
+
+\subsubsection{Semi supervised network} % (fold)
+\label{sub:semi_supervised_network}
+The semi supervised consists of two parts.
+The encoder and the decoder parts are almost the inverse of eachother, so I will just explain the encoder.
+Instead of max pooling there is upsampling.
+
+The encoder have three convolutional layers.
+The first one has 32 filters and a patch size of 5x5.
+The second has 64 filters and a patch size of 5x5.
+The third has 128 filters and a patch size of 3x3.
+Then the data is flattened and followed by two dense layers.
+First with 1024 neurons, and then with 128 neurons.
+
+The autoencoder is trained using mean squared error, as we can both get unnormalized data and normalized data.
+
+The classification part takes the output from the 128 neuron layer as input.
+It then appends three additional dense layers, with 64 neurons, 32 neurons and 2 neurons.
+The last layer has the softmax activation function.
+
+\todored{Trainable parameter report, and maybe visuals?}
+% subsection semi_supervised_network (end)
+% subsection models (end)
+% section implementation (end)
