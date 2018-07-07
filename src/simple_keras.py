@@ -41,26 +41,7 @@ def make_model(args):
 
 
 if __name__ == '__main__':
-
-    import argparse
-    parser = argparse.ArgumentParser(description="Capsule Network on MNIST.")
-    parser.add_argument('--epochs', default=config.max_epochs, type=int)
-    parser.add_argument('--batch_size', default=config.batch_size, type=int)
-    parser.add_argument('--debug', default=0, type=int,
-                        help="Save weights by TensorBoard")
-    parser.add_argument(
-        '--run_name', default='simple_keras/' + config.run_name)
-    parser.add_argument('--learning_rate', default=config.learning_rate * 10,
-                        type=float, help="Initial learning rate")
-    parser.add_argument('--normalize', default=config.normalize_input,
-                        type=bool, help="normalize images?")
-    parser.add_argument('--median_time', default=config.median_time, type=int,
-                        help="Median time filter the data?")
-    parser.add_argument('--close_size', default=config.close_size, type=int,
-                        help="Median time filter the data?")
-    parser.add_argument('--dropout', default=config.dropout, type=int,
-                        help="Dropout")
-    args = parser.parse_args()
+    args = config.get_args()
     # print(args)
 
     model = make_model(args)
@@ -139,7 +120,8 @@ if __name__ == '__main__':
     #     str(args.normalized), args.median_time, test_res[0], test_res[1]))
 
     config.print_to_result("False", str(args.normalize),
-                           args.median_time, test_res[0], test_res[1])
+                           args.median_time, test_res[0], test_res[1],
+                           args.close_size)
 
     debug.test_model(model, data_model, args, "simple")
 

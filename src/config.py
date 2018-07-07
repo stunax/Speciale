@@ -30,7 +30,7 @@ close_size = 20
 num_steps = 2000
 max_epochs = 100
 batch_size = 128
-random_state = 1337
+random_state = None
 bag_size = 6
 patch_size = (32, 32, 5)
 patch_size_simple = (12, 12, 5)
@@ -101,8 +101,41 @@ def get_h5(annotation_name=annotation_groupname, ignore_1_2=False):
     return X
 
 
-def print_to_result(Semisupervised, normalized, median_filter, loss, accuracy):
-    string = "%s,%s,%i,%f,%f\n" % (
-        Semisupervised, normalized, median_filter, loss, accuracy)
+def print_to_result(
+        Semisupervised, normalized, median_filter,
+        loss, accuracy, close_size=20):
+    string = "%s,%s,%i,%f,%f,%i\n" % (
+        Semisupervised, normalized, median_filter, loss, accuracy, close_size)
     with open(results_path, "a") as f:
         f.write(string)
+
+
+def get_args(run_type):
+
+    import argparse
+    parser = argparse.ArgumentParser(description="Capsule Network on MNIST.")
+    parser.add_argument('--epochs', default=max_epochs, type=int)
+    parser.add_argument('--batch_size', default=batch_size, type=int)
+    parser.add_argument('--debug', default=0, type=int,
+                        help="Save weights by TensorBoard")
+    parser.add_argument(
+        '--run_name', default=run_type + '/' + run_name)
+    parser.add_argument('--learning_rate', default=learning_rate,
+                        type=float, help="Initial learning rate")
+    parser.add_argument('--normalize', default=normalize_input,
+                        type=int, help="normalize images?")
+    parser.add_argument('--median_time', default=median_time, type=int,
+                        help="Median time filter the data?")
+    parser.add_argument('--close_size', default=close_size, type=int,
+                        help="Median time filter the data?")
+    parser.add_argument('--dropout', default=dropout, type=int,
+                        help="Dropout")
+    parser.add_argument('--skip_pred', default=0, type=int,
+                        help="Skip prediction part")
+    parser.add_argument('--use_saved_weights', default=use_saved_weights,
+                        type=int, help="Load weights if avaiable")
+    parser.add_argument('--train', default=train, type=int,
+                        help="Train or just test")
+    args = parser.parse_args()
+
+    return args
