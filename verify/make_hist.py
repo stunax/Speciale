@@ -25,16 +25,18 @@ df['dataset'] = [x.split('/')[-1] for x in df['dataset']]
 df['z'] = [int(x.split('_')[1]) for x in df.fname]
 df['t'] = [int(x.split('_')[0]) for x in df.fname]
 
+ylabel = ylab("                   Sum of slice intensity")
+
 fn = out_extra + 'sum_density_z.png'
 p = ggplot(aes(x='z', y='sums', colour='dataset'), data=df)
 p_dens = p + geom_point() + facet_wrap('dataset', ncol=3) + xlab("z axis") + \
-    ylab("Sum of slice intensity")
+    ylabel
 p_dens.save(path + fn, width=5, height=4)
 
 fn = out_extra + 'sum_density_t.png'
 p = ggplot(aes(x='t', y='sums', colour='dataset'), data=df)
 p_dens2 = p + geom_point() + facet_wrap('dataset', ncol=3) + xlab("Frames") + \
-    ylab("Sum of slice intensity")
+    ylabel
 p_dens2.save(path + fn, width=5, height=4)
 
 fn = out_extra + 'sum_hist.png'
