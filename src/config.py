@@ -30,7 +30,7 @@ close_size = 20
 num_steps = 2000
 max_epochs = 100
 batch_size = 128
-random_state = None
+random_state = 1337
 bag_size = 6
 patch_size = (32, 32, 5)
 patch_size_simple = (12, 12, 5)
@@ -135,6 +135,8 @@ def get_args(run_type):
     parser.add_argument('--use_saved_weights', default=use_saved_weights,
                         type=int, help="Load weights if avaiable")
     parser.add_argument('--train', default=train, type=int,
+                        help="Train or just test")
+    parser.add_argument('--random_state', default=random_state, type=int,
                         help="Train or just test")
     args = parser.parse_args()
 

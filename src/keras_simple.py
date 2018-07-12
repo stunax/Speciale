@@ -44,55 +44,54 @@ if __name__ == '__main__':
     h5s = config.get_h5(
         annotation_name=config.c_anno_groupname, ignore_1_2=True)
 
-    for i in range(2):
-        model = make_model(args)
+    model = make_model(args)
 
-        tb = callbacks.TensorBoard(
-            log_dir=config.logs_path + args.run_name + "_run_%i" % i,
-            batch_size=args.batch_size, histogram_freq=config.histogram_freq)
-        earlyStopping = callbacks.EarlyStopping(
-            monitor='val_loss', patience=3, verbose=0, mode='auto')
+    tb = callbacks.TensorBoard(
+        log_dir=config.logs_path + args.run_name,
+        batch_size=args.batch_size, histogram_freq=config.histogram_freq)
+    earlyStopping = callbacks.EarlyStopping(
+        monitor='val_loss', patience=5, verbose=0, mode='auto')
 
-        X_train, X_test = train_test_split(
-            h5s, test_size=0.2)
-        X_train, X_val = train_test_split(
-            X_train, test_size=0.2)
+    X_train, X_test = train_test_split(
+        h5s, test_size=0.2)
+    X_train, X_val = train_test_split(
+        X_train, test_size=0.2)
 
-        X_train_batcher = data_model.as_batcher(
-            X_train, config.batch_size, 9999999)  # config.len_settings)
-        X_val_batcher = data_model.as_batcher(
-            X_val, config.batch_size, 9999999)  # config.len_settings)
+    X_train_batcher = data_model.as_batcher(
+        X_train, config.batch_size, 9999999)  # config.len_settings)
+    X_val_batcher = data_model.as_batcher(
+        X_val, config.batch_size, 9999999)  # config.len_settings)
 
-        model.fit_generator(
-            X_train_batcher, steps_per_epoch=len(
-                X_train) * config.len_settings * 4**augment,
-            epochs=10, verbose=1,
-            callbacks=[tb, earlyStopping],
-            validation_data=X_val_batcher,
-            validation_steps=int(
-                len(X_val) * config.len_settings),
-            class_weight=None,
-            max_queue_size=config.max_queue_size, workers=1,
-            use_multiprocessing=True,
-            shuffle=True, initial_epoch=0
-        )
+    model.fit_generator(
+        X_train_batcher, steps_per_epoch=len(
+            X_train) * config.len_settings * 4**augment,
+        epochs=10, verbose=1,
+        callbacks=[tb, earlyStopping],
+        validation_data=X_val_batcher,
+        validation_steps=int(
+            len(X_val) * config.len_settings),
+        class_weight=None,
+        max_queue_size=config.max_queue_size, workers=1,
+        use_multiprocessing=True,
+        shuffle=True, initial_epoch=0
+    )
 
-        X_train_batcher = None
-        X_val_batcher = None
+    X_train_batcher = None
+    X_val_batcher = None
 
-        X_test_batcher = data_model.as_batcher(
-            X_test, config.batch_size, 9999999)  # config.len_settings)
+    X_test_batcher = data_model.as_batcher(
+        X_test, config.batch_size, 9999999)  # config.len_settings)
 
-        test_res = model.evaluate_generator(
-            X_test_batcher, steps=len(
-                X_test) * config.len_settings * 4**augment,
-            max_queue_size=config.max_queue_size, workers=1,
-            use_multiprocessing=True,
-        )
-        X_test_batcher = None
-        model = None
-        config.print_to_result("False", str(bool(args.normalize)),
-                               args.median_time, test_res[0], test_res[1],
-                               close_size=0)
+    test_res = model.evaluate_generator(
+        X_test_batcher, steps=len(
+            X_test) * config.len_settings * 4**augment,
+        max_queue_size=config.max_queue_size, workers=1,
+        use_multiprocessing=True,
+    )
+    X_test_batcher = None
+    model = None
+    config.print_to_result("False", str(bool(args.normalize)),
+                           args.median_time, test_res[0], test_res[1],
+                           close_size=0)
 
     print(get_conf_mat(model, data_model, X_test))

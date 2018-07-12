@@ -1,11 +1,11 @@
 from keras import backend as K
 from keras import callbacks
-from model_data import Model_data
 from keras_autoencoder import make_autoencoder_model, make_predictor, \
-    train_predictor
+    train_predictor, train_encoder
 import config
 import gc
 import debug
+import os.path
 
 encoded_size = 128
 # patch_size = (32, 32, 5)
@@ -16,11 +16,14 @@ augment = True
 weights_path = config.weights_path
 
 
-def train_encoder(model, args):
+def train_encoder2(model, args):
     ae_weights_path = weights_path % (
         "ae", args.normalize, args.median_time, augment, args.close_size)
 
-    model.load_weights(ae_weights_path)
+    if os.path.isfile(ae_weights_path):
+        model.load_weights(ae_weights_path)
+    else:
+        train_encoder(model, args)
 
 
 def run(earlyStopping):

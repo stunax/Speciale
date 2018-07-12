@@ -41,7 +41,7 @@ def make_model(args):
 
 
 if __name__ == '__main__':
-    args = config.get_args()
+    args = config.get_args("simple")
     # print(args)
 
     model = make_model(args)
@@ -76,9 +76,9 @@ if __name__ == '__main__':
         annotation_name=config.c_anno_groupname, ignore_1_2=True)
 
     X_train, X_test = train_test_split(
-        h5s, test_size=0.2, random_state=config.random_state)
+        h5s, test_size=0.2, random_state=args.random_state)
     X_train, X_val = train_test_split(
-        X_train, test_size=0.2, random_state=config.random_state)
+        X_train, test_size=0.2, random_state=args.random_state)
 
     model.summary()
 

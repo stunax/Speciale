@@ -568,6 +568,8 @@ class model_data_batcher:
         self.start_threads()
 
     def next_iter(self):
+        self.data = None
+
         # self.join_threads()
         self.data = self.iter.__next__()
         gc.collect()
