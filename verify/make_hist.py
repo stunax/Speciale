@@ -25,7 +25,7 @@ df['dataset'] = [x.split('/')[-1] for x in df['dataset']]
 df['z'] = [int(x.split('_')[1]) for x in df.fname]
 df['t'] = [int(x.split('_')[0]) for x in df.fname]
 
-ylabel = ylab("                   Sum of slice intensity")
+ylabel = ylab("\tSum of slice intensity")
 
 fn = out_extra + 'sum_density_z.png'
 p = ggplot(aes(x='z', y='sums', colour='dataset'), data=df)
