@@ -108,7 +108,7 @@ def make_predictor(args, ae):
 
 
 def train(model, data_model, h5s, args, n,
-          callbacks, input_target, weights_path):
+          callbacks, input_target, weights_path, get_conf=True):
     X_train, X_test = train_test_split(
         h5s, test_size=0.2, random_state=args.random_state)
     X_train, X_val = train_test_split(
@@ -137,6 +137,9 @@ def train(model, data_model, h5s, args, n,
             max_queue_size=n / args.batch_size, workers=1,
             use_multiprocessing=False, initial_epoch=0
         )
+        model.load_weights(weights_path)
+        X_train_batcher = None
+        X_val_batcher = None
 
     X_test_batcher = data_model.as_batcher(
         X_test, config.batch_size, 9999999, input_target=input_target)
@@ -146,8 +149,12 @@ def train(model, data_model, h5s, args, n,
         max_queue_size=config.max_queue_size, workers=1,
         use_multiprocessing=True,
     )
+    if get_conf:
+        conf_mat = config.get_conf_mat(model, data_model, X_test, args)
+    else:
+        conf_mat = [0, 0, 0, 0]
 
-    return results
+    return results, conf_mat
 
 
 def train_encoder(model, args):
@@ -175,7 +182,7 @@ def train_encoder(model, args):
         annotation_name=config.c_anno_groupname, ignore_1_2=True)
 
     train(model, data_model, h5s, args, image_samples,
-          callbacks_list, True, ae_weights_path)
+          callbacks_list, True, ae_weights_path, get_conf=False)
 
 
 def train_predictor(model, args, earlyStopping=earlyStopping):
@@ -204,14 +211,16 @@ def train_predictor(model, args, earlyStopping=earlyStopping):
     h5s = config.get_h5(
         annotation_name=config.c_anno_groupname, ignore_1_2=True)
 
-    test_res = train(
+    test_res, conf_mat = train(
         model, data_model, h5s, args, n, callbacks_list,
         False, pred_weights_path)
     # Semisupervised, normalized, median filter, loss, accuracy
     # print("True,%s,%i %%,%f,%f" % (
     #     str(args.normalized), args.median_time, test_res[0], test_res[1]))
+
     config.print_to_result("True", str(args.normalize),
-                           args.median_time, test_res[0], test_res[1])
+                           args.median_time, test_res[0], test_res[1],
+                           conf_mat=conf_mat)
 
     return data_model
 

@@ -1,5 +1,7 @@
 import h5py
 from time import gmtime, strftime
+import numpy as np
+from sklearn.metrics import confusion_matrix
 
 data_path = "/home/dpj482/data/"
 save_path = data_path + "models/"
@@ -103,9 +105,11 @@ def get_h5(annotation_name=annotation_groupname, ignore_1_2=False):
 
 def print_to_result(
         Semisupervised, normalized, median_filter,
-        loss, accuracy, close_size=20):
-    string = "%s,%s,%i,%f,%f,%i\n" % (
-        Semisupervised, normalized, median_filter, loss, accuracy, close_size)
+        loss, accuracy, close_size=20, conf_mat=[0, 0, 0, 0]):
+    tp, fp, fn, tn = conf_mat
+    string = "%s,%s,%i,%f,%f,%i,%i,%i,%i,%i\n" % (
+        Semisupervised, normalized, median_filter, loss, accuracy, close_size,
+        conf_mat[0], conf_mat[1], conf_mat[2], conf_mat[3])
     with open(results_path, "a") as f:
         f.write(string)
 
@@ -141,3 +145,11 @@ def get_args(run_type):
     args = parser.parse_args()
 
     return args
+
+
+def get_conf_mat(model, data_model, data, args):
+    X, y = data_model.handle_images(data)
+    pred = model.predict(X, batch_size=args.batch_size)
+    pred = np.argmax(pred, 1)
+    y = np.argmax(y, 1)
+    return confusion_matrix(pred, y).ravel()

@@ -19,17 +19,19 @@ weights_path = config.weights_path
 def train_encoder2(model, args):
     ae_weights_path = weights_path % (
         "ae", args.normalize, args.median_time, augment, args.close_size)
+    print(ae_weights_path)
 
     if os.path.isfile(ae_weights_path):
         model.load_weights(ae_weights_path)
     else:
+        print("autoencoder not found. training autoencoder.")
         train_encoder(model, args)
 
 
 def run(earlyStopping):
     autoencoder = make_autoencoder_model(args)
 
-    train_encoder(autoencoder, args)
+    train_encoder2(autoencoder, args)
     gc.collect()
 
     predictor = make_predictor(args, autoencoder)
@@ -54,6 +56,6 @@ if __name__ == '__main__':
     run_name = args.run_name
     args.use_saved_weights = 0
     args.train = 1
-    for i in range(10):
-        args.run_name = run_name + "_%i" % i
+    for i in range(1):
+        args.run_name = run_name
         run(earlyStopping)

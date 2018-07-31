@@ -6,22 +6,11 @@
 import config
 from model_data import Model_data
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix
 from keras import callbacks
-import numpy as np
 from simple_keras import make_model
 
 leaky_alpha = 0.3
 augment = True
-
-
-def get_conf_mat(model, data_model, data):
-    data_model.bag_size *= 4
-    X, y = data_model.handle_images(data)
-    pred = model.predict(X, batch_size=config.batch_size)
-    pred = np.argmax(pred, 1)
-    y = np.argmax(y, 1)
-    return confusion_matrix(pred, y).ravel()
 
 
 if __name__ == '__main__':
@@ -65,7 +54,7 @@ if __name__ == '__main__':
     model.fit_generator(
         X_train_batcher, steps_per_epoch=len(
             X_train) * config.len_settings * 4**augment,
-        epochs=10, verbose=1,
+        epochs=args.epochs, verbose=1,
         callbacks=[tb, earlyStopping],
         validation_data=X_val_batcher,
         validation_steps=int(
@@ -88,10 +77,10 @@ if __name__ == '__main__':
         max_queue_size=config.max_queue_size, workers=1,
         use_multiprocessing=True,
     )
-    X_test_batcher = None
-    model = None
+
+    data_model.bag_size *= 4
+    conf_mat = config.get_conf_mat(model, data_model, X_test, args)
+
     config.print_to_result("False", str(bool(args.normalize)),
                            args.median_time, test_res[0], test_res[1],
-                           close_size=0)
-
-    print(get_conf_mat(model, data_model, X_test))
+                           close_size=args.close_size, conf_mat=conf_mat)
