@@ -1,26 +1,29 @@
 I dag:
- ✔ buy stuff @done (18-06-21 10:07)
- ☐ Skriv trainable parameters ind
- ✔ Fix referencer @done (18-06-21 12:01)
- ☐ Lav billeder af model struktur
- ☐ rewrite Introduction
- ☐ Near sampling results
- ☐ Lav billeder for rapport
 
+ ☐ Skriv trainable parameters ind
+   Mangler autoencoder tal
+
+Generelt todo:
+ ✔ Rerun experiments with "same" splits @done (18-07-18 12:23)
+ ✔ Genskriv start til Introduction @done (18-07-18 12:23)
+ ✔ Genskriv start til abstract @done (18-07-18 12:23)
+ ☐ Introducer deep learning for computer vision historie?
+ ✔ Mere start til data afsnit @done (18-07-18 12:23)
+ ☐ Evaluering afsnit til discussion
+ ☐ Snak med Pia omkring huller
+ ☐ Ret small error. Se udskrevet rapport
 
 Rapport:
-  ☐ Introduction 
-    ☐ Biologi @due(18-06-22 09:34)
-    ☐ Deep learning for vision @due(18-06-22 09:34)
+  ✔ Introduction @done (18-06-22 13:38)
   ✔ Data @due(18-06-07 12:06) @done (18-06-11 14:02)
    ✔ Overblik @due(18-06-07 12:05) @done (18-06-07 16:48)
    ✔ data udeladt @due(18-06-07 12:05) @done (18-06-07 16:54)
    ✔ Originale labels passer ikke? @due(18-06-07 12:05) @done (18-06-07 16:54)
    ✔ Nære labels @due(18-06-07 12:05) @done (18-06-13 10:01)
-  ☐ Methods
-    ☐ NN
+  ✔ Methods @done (18-07-12 13:25)
+    ✔ NN omrokker @done (18-07-12 13:25)
       ✔ generelt @due(18-06-08 12:57) @done (18-06-08 12:19)
-      ☐ convolution @due(18-06-17 12:19)
+      ✔ convolution @due(18-06-26 14:41) @done (18-07-12 13:25)
       ✔ Mini batching @due(18-06-08 13:19) @done (18-06-08 12:20)
       ✔ dropout @done (18-06-09 09:45)
       ✔ RELU @done (18-06-09 09:45)
@@ -36,26 +39,30 @@ Rapport:
   ✔ Implementation @done (18-06-11 14:01)
    ✔ Data pipeline @done (18-06-11 11:34)
    ✔ Simple network @done (18-06-11 12:25)
-     ☐ visualiser parametre @due(18-06-22 09:40)
+     ✔ visualiser parametre @due(18-06-22 09:40) @done (18-06-22 13:38)
    ✔ Autoencoder @done (18-06-11 12:25)
-     ☐ visualiser parametre @due(18-06-22 09:40)
+     ✔ visualiser parametre @due(18-06-22 09:40) @done (18-06-24 11:07)
   ✔ Experiments @done (18-06-11 15:39)
     ✔ Før efter nærhed @done (18-06-11 15:39)
     ✔ supervised @done (18-06-11 15:39)
     ✔ Semi supervised @done (18-06-11 15:39)
     ✔ Preprocesserings experimenter @done (18-06-11 15:39)
   ☐ results
-   ☐ Nærheds resultater @due(18-06-22 00:33)
-   ☐ Preprocessing
-   ☐ Supervised vs semi supervised
+    ☐ Mangler nogle tal
+   ✔ Nærheds resultater @due(18-06-22 00:33) @done (18-06-22 13:58)
+     ✔ Mangler Billeder @done (18-07-02 15:29)
+     ✔ Bliver genkørt, så nye tal @done (18-06-30 16:06)
+   ✔ Preprocessing @done (18-07-02 15:29)
+   ✔ Supervised vs semi supervised @done (18-07-02 15:29)
   ☐ discussion
-    ☐ What can be done better
-    ☐ future work
-      ☐ More data
-      ☐ New data pipeline
+    ✔ Which limitations have to be changed @done (18-07-12 13:26)
+    ✔ What can be done better @done (18-07-12 13:26)
+  ☐ Conclusion
+    ✔ future work @done (18-06-24 14:41)
+      ✔ More data @done (18-06-24 14:41)
+      ✔ New data pipeline @done (18-06-24 14:41)
 
 bugs:
- ✘ Autoencoder konvergerer ikke @cancelled (18-06-08 09:38)
 
 
 python:
@@ -63,6 +70,24 @@ python:
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+ ✘ Move to discussion @cancelled (18-07-18 12:24) @project(Rapport)
+ ✔ insert new results @due(18-06-28 11:05) @done (18-07-12 13:26) @project(Generelt todo)
+ ✔ Skriv limitations @done (18-07-12 13:26) @project(I dag)
+ ✔ Rewrite convolution part @done (18-07-12 13:26) @project(Generelt todo)
+ ✔ Lav billeder for rapport @done (18-07-12 13:26) @project(I dag)
+ ✔ Lav kode til at finde gennemsnit og std @done (18-07-02 12:44) @project(I dag)
+ ✔ Lav billeder af model struktur @done (18-07-02 11:08) @project(I dag)
+ ✔ Find a way to visiualize structure? @done (18-06-30 16:08) @project(Generelt todo)
+ ✔ Find papers for all methods, so I do not have to describe it @done (18-06-30 10:55) @project(Generelt todo)
+ ✔ Find paper references @done (18-06-24 14:19) @project(I dag)
+ ✔ Write new data pipeline @done (18-06-24 13:49) @project(I dag)
+ ✔ Write future work @done (18-06-24 13:48) @project(I dag)
+ ✔ rerun simple tests to update images @done (18-06-24 11:05) @project(Generelt todo)
+ ✔ Near sampling resultaters @done (18-06-22 14:41) @project(I dag)
+ ✔ rewrite Introduction @done (18-06-22 13:22) @project(I dag)
+ ✔ Fix referencer @done (18-06-21 12:01) @project(I dag)
+ ✔ buy stuff @done (18-06-21 10:07) @project(I dag)
+ ✘ Autoencoder konvergerer ikke @cancelled (18-06-08 09:38) @project(bugs)
  ✔ start og debug testrun af simple_cnn3 @done (18-05-01 10:44) @project(I dag)
  ✔ genkør lav kmeans @done (18-05-01 10:44) @project(I dag)
  ✔ Start langsom simple_cnn hvis ikke den anden virker @done (18-04-16 13:12) @project(I dag)
